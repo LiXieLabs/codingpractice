@@ -9,6 +9,11 @@ public class WordBreak {
 
     /*************** Solution 1: 1D Bottom-up DP ************************/
     /**
+     * 完全一样
+     * 139. Word Break (https://leetcode.com/problems/word-break/)
+     * 140. Word Break II (https://leetcode.com/problems/word-break-ii/)
+     * 472. Concatenated Words (https://leetcode.com/problems/concatenated-words/description/)
+     *
      * dp[i] 表示 s[0:i] 能否被分解为 wordDict 中 word 的组合
      * i 这里理解为 char 之间的缝隙，因此 dp[0] 是 ""，总是 true
      * 对于 0 <= j < i 的缝隙，dp[i] = dp[j] && wordSet.contains(s[j:i])

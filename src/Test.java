@@ -42,7 +42,7 @@ public class Test {
         res.add("123");
         res.add("abc");
 //        String.join("/", res);
-        System.out.println(res);
+        System.out.println("123".substring(0, 0).length());
 //
 //        List<Integer> lst = new ArrayList<>();
 //        lst.add(123);

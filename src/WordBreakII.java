@@ -11,7 +11,10 @@ public class WordBreakII {
 
     /************** Solution 1: 1D Bottom-up DP *****************/
     /**
-     * 类似 139. Word Break (https://leetcode.com/problems/word-break/)
+     * 完全一样
+     * 139. Word Break (https://leetcode.com/problems/word-break/)
+     * 140. Word Break II (https://leetcode.com/problems/word-break-ii/)
+     * 472. Concatenated Words (https://leetcode.com/problems/concatenated-words/description/)
      * 只不过每个位置的dp不止记录boolean标记能否分解，对于可以分解的，要记录到该点的所有分解方式
      *
      * Time: O(N X 2^N)
