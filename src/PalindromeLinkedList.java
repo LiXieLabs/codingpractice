@@ -6,23 +6,19 @@ public class PalindromeLinkedList {
      */
     public boolean isPalindrome(ListNode head) {
         // Step 1
-        // 找到中点, 并用total记录step3要比较的个数
-        // 1 -> 2 -> 3 -> 4 is 3 => total == 2
-        // 1 -> 2 -> 3 -> 4 -> 5 is 3 => total == 2
-        ListNode slow = head;
-        ListNode fast = head;
-        int total = 0;
+        // 找到中点
+        // 1 -> 2 -> 3 -> 4 is 3
+        // 1 -> 2 -> 3 -> 4 -> 5 is 3
+        ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
-            total++;
         }
         // Step 2
         // reverse second half
         // 1 -> 2 -> 3 <- 4
         // 1 -> 2 -> 3 <- 4 <- 5
-        ListNode prev = slow;
-        ListNode curr = slow.next;
+        ListNode prev = null, curr = slow;
         while (curr != null) {
             ListNode temp = curr.next;
             curr.next = prev;
@@ -30,9 +26,8 @@ public class PalindromeLinkedList {
             curr = temp;
         }
         // 左右比较
-        ListNode l = head;
-        ListNode r = prev;
-        for (int i = 0; i < total; i++) {
+        ListNode l = head, r = prev;
+        while (r != null) {
             if (l.val != r.val) return false;
             l = l.next;
             r = r.next;

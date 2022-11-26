@@ -1,5 +1,9 @@
 public class ContainerWithMostWater {
 
+    /************** Solution 1: Two Pointers ***************/
+    /**
+     * Time: O(N)   Space: O(1)
+     */
     public int maxArea(int[] height) {
         int l = 0, r = height.length - 1, res = 0;
         while (l < r) {
