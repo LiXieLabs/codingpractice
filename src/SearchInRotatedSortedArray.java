@@ -1,6 +1,17 @@
 public class SearchInRotatedSortedArray {
 
-    /************************* Solution 1: ************************/
+    /************* Solution 1: Binary Search and Move based on Pattern ***************/
+    /**
+     * index    0 1 2 3 4 5 6
+     * sample1  4 5 6 7 1 2 3
+     * sample2  1 2 3 4 5 6 7
+     *
+     * nums[mid] 和 target 同时和 nums[0] 比较
+     * 如果都比 nums[0] 大，或者 都比 nums[0] 小，则在pivot的同一边，
+     * 否则分别在 pivot 两边，同样适用于没有pivot的original array
+     *
+     * Time: O(logN)   Space: O(1)
+     */
     public int search(int[] nums, int target) {
         int lo = 0, hi = nums.length - 1;
         while (lo <= hi) {

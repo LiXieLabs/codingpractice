@@ -31,6 +31,12 @@ public class KthSmallestElementInASortedMatrix {
 
     /******************* Solution 2: 在可行解中Binary Search + Row&Col sorted 2D matrix 找 bisectRight ********************/
     /**
+     * 类似:
+     * 410. Split Array Largest Sum (https://leetcode.com/problems/split-array-largest-sum/)
+     * 378. Kth Smallest Element in a Sorted Matrix (https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+     * 1011. Capacity To Ship Packages Within D Days (https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/)
+     * 1231. Divide Chocolate (https://leetcode.com/problems/divide-chocolate/)
+     *
      * Time: O((R+C) X log(maxV - minV))
      * Space: O(1)
      */

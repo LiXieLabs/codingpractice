@@ -4,8 +4,6 @@ import java.util.Map;
 
 public class DivideChocolate {
 
-    // Similar as 410. Split Array Largest Sum
-
     private int[] sweetness;
     private Map<String, Integer> memo;
 
@@ -39,6 +37,12 @@ public class DivideChocolate {
 
     /*********** Solution 2: Binary Search *******************/
     /**
+     * 类似:
+     * 410. Split Array Largest Sum (https://leetcode.com/problems/split-array-largest-sum/)
+     * 378. Kth Smallest Element in a Sorted Matrix (https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+     * 1011. Capacity To Ship Packages Within D Days (https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/)
+     * 1231. Divide Chocolate (https://leetcode.com/problems/divide-chocolate/)
+     *
      * N denotes # of chunks, S denotes total sweetness
      * Time: O(N * log(S/(k+1)))
      * Space: O(1)
@@ -76,6 +80,5 @@ public class DivideChocolate {
         System.out.println(solution.maximizeSweetness(new int[]{1,2,3,4,5,6,7,8,9}, 5));
         System.out.println(solution.maximizeSweetness(new int[]{5,6,7,8,9,1,2,3,4}, 8));
         System.out.println(solution.maximizeSweetness(new int[]{1,2,2,1,2,2,1,2,2}, 2));
-
     }
 }
