@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 1152. Analyze User Website Visit Pattern (https://leetcode.com/problems/analyze-user-website-visit-pattern/description/)
+ */
 public class AnalyzeUserWebsiteVisitPattern {
 
+    /**************** Solution 1: HashMap + Backtracking + Sorting ****************/
     public List<String> analyzeUserWebsiteVisitPattern(String[] username, int[] timestamp, String[] website) {
         // build user visit history map, key = username, value = list of website in ascendant time order then lexicographically
         int[][] sortTime = new int[timestamp.length][2];
