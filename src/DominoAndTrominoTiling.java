@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 790. Domino and Tromino Tiling (https://leetcode.com/problems/domino-and-tromino-tiling/description/)
  */
@@ -62,13 +65,74 @@ public class DominoAndTrominoTiling {
      *
      * Time: O(N)   Space: O(1)
      */
-    public int numTilings(int n) {
+    public int numTilings3(int n) {
         long[] f = new long[4];
         f[0] = f[1] = 1;
         for (int i = 2; i <= n; i++) {
             f[i % 4] = (2 * f[(i + 3) % 4] + f[(i + 1) % 4]) % MOD;
         }
         return (int) f[n % 4];
+    }
+
+    /************ Solution 4: Matrix Exponentiation *****************/
+    /**
+     * f[i]    = 1f[i-1] + 1f[i-2] + 2p[i-1]
+     * f[i-1]  = 1f[i-1] + 0f[i-2] + 0p[i-1]
+     * p[i]    = 0f[i-1] + 1f[i-2] + 1p[i-1]
+     *
+     * 递推公式可表示为矩阵乘法
+     * 「  f[i]    「1, 1, 2     「 f[i-1]
+     *   f[i-1]  =  1, 0, 0   X   f[i-2]
+     *    p[i] 」   0, 1, 1」       p[i] 」
+     *
+     *    M[i]   =   MATRIX   X   M[i-1]
+     *    M[i]   =   MATRIX^(i-2) X M[2]
+     *
+     * 先 recur + memo 计算 MATRIX^(i-2)
+     *
+     * Time: O(logN)   Space: O(logN)
+     */
+    private static final long[][] MATRIX = {
+            {1, 1, 2},
+            {1, 0, 0},
+            {0, 1, 1}
+    };
+    private Map<Integer, long[][]> cache;
+    public int numTilings(int n) {
+        if (n <= 2) return n; // 必须handle special cases，不然会stackoverflow error
+        cache = new HashMap<>();
+        long[] res = matrixExpo(n - 2)[0];
+        return (int) ((res[0] * 2 + res[1] * 1 + res[2] * 1) % MOD);
+    }
+
+    private long[][] matrixExpo(int n) {
+        if (!cache.containsKey(n)) {
+            long[][] res;
+            if (n == 1) {
+                res = MATRIX;
+            } else if (n % 2 == 1) {
+                res = matrixProduct(matrixExpo(n - 1), MATRIX);
+            } else {
+                res = matrixProduct(matrixExpo(n / 2), matrixExpo(n / 2));
+            }
+            cache.put(n, res);
+        }
+        return cache.get(n);
+    }
+
+    private long[][] matrixProduct(long[][] m1, long[][] m2) {
+        int r1 = m1.length, c1r2 = m1[0].length, c2 = m2[0].length;
+        long[][] res = new long[r1][c2];
+        for (int i = 0; i < r1; i++) {
+            for (int j = 0; j < c2; j++) {
+                long cell = 0;
+                for (int k = 0; k < c1r2; k++) {
+                    cell = (cell + m1[i][k] * m2[k][j]) % MOD;
+                }
+                res[i][j] = cell;
+            }
+        }
+        return res;
     }
 
     public static void main(String[] args) {

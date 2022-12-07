@@ -1,6 +1,9 @@
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 79. Word Search (https://leetcode.com/problems/word-search/)
+ */
 public class WordSearch {
 
     private final static int[][] direc = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -12,7 +15,7 @@ public class WordSearch {
     /******************* Solution 1: Backtracking *********************/
     /**
      * N is the number of cells in the board and L is the length of the word to be matched.
-     * Time: O(N*3^L) from each cell in board, explore 3 directions (as cannot go back, so 4 - 1 directions)
+     * Time: O(N*3^L) from each cell in board, explore 3 directions (as cannot go back, so 4 - 1 directions), like 3-ary tree
      * Space: O(L) from call stack
      */
     public boolean exist(char[][] board, String word) {
