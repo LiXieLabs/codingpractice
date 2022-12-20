@@ -1,9 +1,16 @@
 import java.util.Arrays;
-import java.util.Collections;
 
+/**
+ * 1937. Maximum Number of Points with Cost (https://leetcode.com/problems/maximum-number-of-points-with-cost/description/)
+ */
 public class MaximumNumberOfPointsWithCost {
 
-    // O(R * C^2)
+    /****************** Solution 1: DP ****************************/
+    /**
+     * dp[i][j] = max(dp[i-1][x] - abs(x - j) for x = [0, c])
+     *
+     * Time: O(R * C^2)    Space: O(C)
+     */
     public long maxPoints(int[][] points) {
         int r = points.length, c = points[0].length;
         System.out.printf("totalRow: %d, totalCol %d\n", r, c);
@@ -25,7 +32,11 @@ public class MaximumNumberOfPointsWithCost {
         return Arrays.stream(prev).max().getAsLong();
     }
 
-    // O(R * 3N)
+    //
+    /****************** Solution 2: DP ****************************/
+    /**
+     * Time: O(R * 3C)    Space: O(C)
+     */
     public long maxPoints1(int[][] points) {
         int r = points.length, c = points[0].length;
         long[] prev = Arrays.stream(points[0]).mapToLong(i -> i).toArray();
