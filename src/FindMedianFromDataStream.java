@@ -1,5 +1,8 @@
 import java.util.PriorityQueue;
 
+/**
+ * 295. Find Median from Data Stream (https://leetcode.com/problems/find-median-from-data-stream/)
+ */
 public class FindMedianFromDataStream {
 
     // minHeap holds larger elements
