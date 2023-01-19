@@ -1,6 +1,9 @@
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 560. Subarray Sum Equals K (https://leetcode.com/problems/subarray-sum-equals-k/description/)
+ */
 public class SubarraySumEqualsK {
 
     /******************* Solution 1: Prefix Sum *********************/
@@ -39,6 +42,10 @@ public class SubarraySumEqualsK {
 
     /******************* Solution 3: HashMap 记录 Prefix Sum *********************/
     /**
+     * 类似 TwoSum
+     * 此处是寻找 curSum - preSum == k
+     * 再将 curSum 更新入保存 preSum : count 的 hashMap
+     *
      * Time: O(N)  Space: O(N)
      */
     public int subarraySum(int[] nums, int k) {
