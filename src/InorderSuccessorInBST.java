@@ -1,6 +1,9 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * 285. Inorder Successor in BST (https://leetcode.com/problems/inorder-successor-in-bst/description/)
+ */
 public class InorderSuccessorInBST {
 
     /************** Solution 1: Iterative Inorder Traversal ****************/
@@ -47,7 +50,7 @@ public class InorderSuccessorInBST {
      * Time: O(3N) = O(N), each node/edge is visited 3 times - find predecessor/inorder traversal/disconnect
      * Space: O(1)
      */
-    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+    public TreeNode inorderSuccessor3(TreeNode root, TreeNode p) {
         TreeNode prev = null, curr = root;
         while(curr != null) {
             if (curr.left == null) {
@@ -73,6 +76,23 @@ public class InorderSuccessorInBST {
         return null;
     }
 
+    /**************** Solution 4: Take Advantage of BST Properties ***************/
+    /**
+     * Time: O(H) worst O(N)   Space: O(1)
+     */
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        TreeNode successor = null;
+        while (root != null) {
+            if (root.val <= p.val) {
+                root = root.right;
+            } else {
+                successor = root;
+                root = root.left;
+            }
+        }
+        return successor;
+    }
+
     public static void main(String[] args) {
         InorderSuccessorInBST solution = new InorderSuccessorInBST();
 
@@ -81,7 +101,7 @@ public class InorderSuccessorInBST {
                 p1,
                 new TreeNode(3));
         TreeNode r1 = solution.inorderSuccessor(root1, p1);
-        System.out.println(r1 == null ? "null" : r1.val);
+        System.out.println(r1 == null ? "null" : r1.val); // 2
 
         TreeNode p2 = new TreeNode(6);
         TreeNode root2 = new TreeNode(5,
@@ -92,6 +112,6 @@ public class InorderSuccessorInBST {
                         new TreeNode(4)),
                 p2);
         TreeNode r2 = solution.inorderSuccessor(root2, p2);
-        System.out.println(r2 == null ? "null" : r2.val);
+        System.out.println(r2 == null ? "null" : r2.val); // null
     }
 }
