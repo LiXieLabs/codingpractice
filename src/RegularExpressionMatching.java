@@ -6,7 +6,9 @@ import java.util.Set;
  */
 public class RegularExpressionMatching {
 
-    /******************** Solution 1: Top Down Recursive + Memo (TLE) *******************/
+    // https://app.gitbook.com/o/-LEzdBqqw8FawHA3mleT/s/-LEzdBqr7mNEEfIbMstL/dp/10.-regular-expression-matching
+
+    /******************** Solution 1: Top Down Recursive + Memo *******************/
     /**
      * Time:
      * before memo O(2^(S+P))
