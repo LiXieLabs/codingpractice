@@ -29,10 +29,7 @@ public class LongestConsecutiveSequence {
 
     /***************** Solution 2: Set + 找连续的第一个 *******************/
     /**
-     * Time: O(N)
-     * init => O(N); find/union => amortized ~ O(N)
-     *
-     * Space: O(N) by maps
+     * Time: O(N)    Space: O(N) by HashSet
      */
     public int longestConsecutive(int[] nums) {
         Set<Integer> numSet = Arrays.stream(nums).boxed().collect(Collectors.toSet());
