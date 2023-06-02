@@ -6,6 +6,8 @@ public class TrappingRainWater {
     /****************** Solution 1: Descending Monotonic Stack **********************/
     /**
      * Time: O(N)   Space: O(N)
+     *
+     * 累加横向积水
      */
     public int trap1(int[] height) {
         int res = 0;
@@ -33,6 +35,8 @@ public class TrappingRainWater {
      * 如果当前高度比墙高，则刷新墙高
      *
      * Time: O(N)   Space: O(1)
+     *
+     * 累加纵向积水
      */
     public int trap(int[] height) {
         int res = 0;
