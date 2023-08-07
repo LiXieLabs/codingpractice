@@ -87,7 +87,7 @@ public class BasicCalculatorIII {
                     cur = sign * n;
                 }
                 n = 0;
-                // 再根绝当前 char 决定运算层
+                // 再根据当前 char 决定运算层
                 if (i == s.length()) { // 当前层即为最外层，返回结果
                     return total + cur;
                 } else if (s.charAt(i) == ')') { // 当前层结束，结果为上一层的 n，pop出剩下的中间结果
