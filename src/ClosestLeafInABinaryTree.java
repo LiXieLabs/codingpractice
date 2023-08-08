@@ -13,8 +13,10 @@ public class ClosestLeafInABinaryTree {
 
     /************ Solution 1: DFS + BFS ****************/
     /**
+     * 类似 863. All Nodes Distance K in Binary Tree (https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/)
+     *
      * DFS to convert to graph by building adj list
-     * BFS from kNode to find closest leaf
+     * BFS from kNode to find the closest leaf
      *
      * 需要跨root查找的需要看作graph而非tree
      * tree的adj list只需要parent，因为TreeNode结构left&right已经自动记录了其他相邻node
@@ -80,7 +82,6 @@ public class ClosestLeafInABinaryTree {
                 new TreeNode(3)
         );
         System.out.println(solution.findClosestLeaf(root3, 2));
-
     }
 
 }
