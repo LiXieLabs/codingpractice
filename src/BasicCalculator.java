@@ -58,7 +58,7 @@ public class BasicCalculator {
                 cur += sign * n;
                 n = 0;
                 // 再根据当前 char 决定运算层
-                if (i == s.length()) { // 当前层结束且为最外层，返回结果
+                if (i == s.length()) { // 当前层结束，且为最外层，返回结果
                     return cur;
                 } else if (s.charAt(i) == ')') { // 当前层结束，当前结果为上一层 n，pop 上一层 cur 和 sign
                     n = cur;
