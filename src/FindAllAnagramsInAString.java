@@ -17,6 +17,8 @@ public class FindAllAnagramsInAString {
      * (1) map1.equals(map2)
      * (2) Arrays.equals(arr1, arr2)
      *
+     * 类似 567. Permutation in String (https://leetcode.com/problems/permutation-in-string/)
+     *
      * Time: O(S)   Space: O(1) max 26 character
      */
     public List<Integer> findAnagrams(String s, String p) {
