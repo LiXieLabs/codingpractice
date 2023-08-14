@@ -1,6 +1,9 @@
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * 31. Next Permutation (https://leetcode.com/problems/next-permutation/)
+ */
 public class NextPermutation {
 
     /************* Solution 1: Two Pointers ****************/
