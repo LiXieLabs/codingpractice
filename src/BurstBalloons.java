@@ -1,3 +1,6 @@
+/**
+ * 312. Burst Balloons (https://leetcode.com/problems/burst-balloons/description/)
+ */
 public class BurstBalloons {
 
     /************** Solution 1: 2D DP *******************/
@@ -12,36 +15,37 @@ public class BurstBalloons {
      * 遍历所有 i (left <= i <= right), 最大的 gain + remain => dp[left][right]
      *
      * （1）dp 只有右上半边(包含对角线)有意义
-     * （2）dp[0][r] 和 dp[l][n-1] 没有意义，因为不能 burst fake ballons
-     * （3）为了保证在求 dp[left][right] 时，所有 dp[left][i-1] 和 dp[i+1][right] 都已知，需从右下方开始横向z字型向上求解
-     *     dp[left][i-1] 在 dp[left][right] 的同行左侧
-     *     dp[i+1][right] 在 dp[left][right] 的同列下方
-     *     
+     * （2）为了保证在求 dp[left][right] 时，所有 dp[left][i-1] 和 dp[i+1][right] 都已知，需从对角线向右上方推进
+     *     即先从1开始遍历长度，left递增，类似制造一个逐渐增大的sliding window
+     *
      * Time: O(N^3)   Space: O(N^2) by 2D DP array
      */
     public int maxCoins(int[] nums) {
         // add 2 fake balloons and guardians, but never burst them.
-        int n = nums.length + 2;
-        int[] newNums = new int[n];
-        System.arraycopy(nums, 0, newNums, 1, nums.length);
-        newNums[0] = newNums[n - 1] = 1;
+        int n = nums.length;
+        int[] newNums = new int[n + 2];
+        System.arraycopy(nums, 0, newNums, 1, n);
+        newNums[0] = newNums[n + 1] = 1;
 
         int[][] dp = new int[n][n];
-        for (int l = n - 2; l >= 1; l--) {
-            for (int r = l; r <= n - 2; r++) {
-                for (int i = l; i <= r; i++) {
-                    int gain = newNums[l - 1] * newNums[i] * newNums[r + 1];
-                    int remain = dp[l][i - 1] + dp[i + 1][r];
-                    dp[l][r] = Math.max(dp[l][r], gain + remain);
+        for (int l = 1; l <= nums.length; l++) {
+            for (int i = 0; i + l <= nums.length; i++) {
+                int maxij = 0;
+                int j = i + l - 1;
+                for (int k = i; k <= j; k++) {
+                    int left = i < k ? dp[i][k-1] : 0;
+                    int right = k < j ? dp[k+1][j] : 0;
+                    maxij = Math.max(maxij, left + right + newNums[i] * newNums[k+1] * newNums[j+2]);
                 }
+                dp[i][j] = maxij;
             }
         }
-        return dp[1][n - 2];
+        return dp[0][n - 1];
     }
 
     public static void main(String[] args) {
         BurstBalloons solution = new BurstBalloons();
-        System.out.println(solution.maxCoins(new int[]{3,1,5,8}));
-        System.out.println(solution.maxCoins(new int[]{1,5}));
+        System.out.println(solution.maxCoins(new int[]{3,1,5,8})); // 167
+        System.out.println(solution.maxCoins(new int[]{1,5})); // 10
     }
 }
