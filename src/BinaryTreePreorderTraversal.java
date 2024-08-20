@@ -4,6 +4,9 @@ import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 144. Binary Tree Preorder Traversal (https://leetcode.com/problems/binary-tree-preorder-traversal/description/)
+ */
 public class BinaryTreePreorderTraversal {
 
     /******************** Solution 1: recursive *************************/
@@ -59,7 +62,7 @@ public class BinaryTreePreorderTraversal {
     /**
      * Time: O(3N) = O(N), each node/edge is visited 3 times - find predecessor/inorder traversal/disconnect
      * Space: O(1)
-     * 优点: 无recurisve, 无stack, constant space
+     * 优点: 无recursive, 无stack, constant space
      * 算法:
      * Step 1: Initialize current as root
      * Step 2: While current is not NULL,
@@ -107,12 +110,15 @@ public class BinaryTreePreorderTraversal {
 
     public static void main(String[] args) {
         BinaryTreePreorderTraversal solution = new BinaryTreePreorderTraversal();
+        // TC1
         TreeNode root1 = new TreeNode(1, null, new TreeNode(2, new TreeNode(3), null));
-        System.out.println(print(solution.preorderTraversal(root1)));
+        System.out.println(print(solution.preorderTraversal(root1))); // 1,2,3
+
+        // TC2
         TreeNode root2 = new TreeNode(1,
                 new TreeNode(2, new TreeNode(4), new TreeNode(5)),
                 new TreeNode(3, new TreeNode(6), new TreeNode(7))
         );
-        System.out.println(print(solution.preorderTraversal(root2)));
+        System.out.println(print(solution.preorderTraversal(root2))); // 1,2,4,5,3,6,7
     }
 }
