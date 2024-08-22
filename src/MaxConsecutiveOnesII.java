@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 487. Max Consecutive Ones II (https://leetcode.com/problems/max-consecutive-ones-ii/description/)
+ */
 public class MaxConsecutiveOnesII {
 
     /*************** Solution 1: 类似DP *****************/
@@ -37,7 +40,12 @@ public class MaxConsecutiveOnesII {
     }
 
     /************** Solution 2: Sliding Window *******************/
-    public int findMaxConsecutiveOnes(int[] nums) {
+    /**
+     * cnt标记flip了几个0，r尽可能向右移动，遇到0则flip
+     * l向右移动维护，当前flip的0不超过1个
+     * 更新最大值，并继续右移r
+     */
+    public int findMaxConsecutiveOnes2(int[] nums) {
         int l = 0, r = 0, cnt = 0, res = 0;
         while (r < nums.length) {
             if (nums[r] == 0) cnt++;
@@ -48,5 +56,39 @@ public class MaxConsecutiveOnesII {
             res = Math.max(res, r++ - l + 1);
         }
         return res;
+    }
+
+    /************** Solution 3: 另一种 Sliding Window *******************/
+    /**
+     * flipped 0 不超过 1 的前提下，尽可能右移 r
+     * 更新最大值
+     * 右移 l 直到 flipped 0 少于一个了
+     */
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int maxSum = 0;
+        int l = 0, r = 0;
+        int flipped = 0;
+        while (r < nums.length) {
+            while (r < nums.length && (nums[r] != 0 || flipped < 1)) {
+                if (nums[r] == 0) {
+                    flipped++;
+                }
+                r++;
+            }
+            maxSum = Math.max(maxSum, r - l);
+            while (l < r && flipped == 1) {
+                if (nums[l] == 0) {
+                    flipped--;
+                }
+                l++;
+            }
+        }
+        return maxSum;
+    }
+
+    public static void main(String[] args) {
+        MaxConsecutiveOnesII solution = new MaxConsecutiveOnesII();
+        System.out.println(solution.findMaxConsecutiveOnes(new int[]{1,0,1,1,0})); // 4
+        System.out.println(solution.findMaxConsecutiveOnes(new int[]{1,0,1,1,0,1})); // 4
     }
 }
