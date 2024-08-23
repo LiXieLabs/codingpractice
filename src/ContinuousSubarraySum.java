@@ -35,26 +35,28 @@ public class ContinuousSubarraySum {
      *
      * 类似 2 Sum，区别是
      * （1）不是针对 num 本身，而是针对 prefixSum % k
-     * （2）不是在 map 中找 target 互补数，而是找相等的数
+     * （2）不是在 map 中找 target 互补数，而是找相等的数，
+     *      因为 prefixSum[j] - prefixSum[i] == 0 意味着 sum(n[i+1]...n[j]) % k == 0
      *
      * Time: O(N)   Space: O(N)
      */
     public boolean checkSubarraySum(int[] nums, int k) {
         Map<Integer, Integer> remainderToIndex = new HashMap<>();
         remainderToIndex.put(0, -1);
-        int prefixSum = 0;
+        int curSum = 0;
         for (int i = 0; i < nums.length; i++) {
-            prefixSum += nums[i];
-            if (i - remainderToIndex.getOrDefault(prefixSum % k, i) >= 2) return true;
-            remainderToIndex.putIfAbsent(prefixSum % k, i);
+            curSum = (curSum + nums[i]) % k;
+            if (i - remainderToIndex.getOrDefault(curSum, i) >= 2) return true;
+            remainderToIndex.putIfAbsent(curSum, i);
         }
         return false;
     }
 
     public static void main(String[] args) {
         ContinuousSubarraySum solution = new ContinuousSubarraySum();
-        System.out.println(solution.checkSubarraySum(new int[]{23,2,4,6,7}, 6));
-        System.out.println(solution.checkSubarraySum(new int[]{23,2,6,4,7}, 6));
-        System.out.println(solution.checkSubarraySum(new int[]{23,2,6,4,7}, 13));
+        System.out.println(solution.checkSubarraySum(new int[]{23,2,4,6,7}, 6)); // true
+        System.out.println(solution.checkSubarraySum(new int[]{23,2,6,4,7}, 6)); // true
+        System.out.println(solution.checkSubarraySum(new int[]{23,2,6,4,7}, 13)); // false
+        System.out.println(solution.checkSubarraySum(new int[]{23,2,4,6,6}, 7)); // true
     }
 }
