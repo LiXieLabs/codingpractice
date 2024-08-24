@@ -1,6 +1,9 @@
 import java.util.PriorityQueue;
 import java.util.Random;
 
+/**
+ * 215. Kth Largest Element in an Array (https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
+ */
 public class KthLargestElementInAnArray {
 
     /************ Solution 1: K size Min-Heap ****************/
@@ -28,13 +31,12 @@ public class KthLargestElementInAnArray {
     public int findKthLargest(int[] nums, int k) {
         rand = new Random();
         if (nums == null || nums.length == 0 || k < 1 || k > nums.length) return -1;
-        return quickSelect(nums, 0, nums.length - 1, nums.length - k);
+        return quickSelect(nums, 0, nums.length - 1, nums.length - k); // If kth smallest, pass k
     }
 
     private int quickSelect(int[] nums, int start, int end, int k) {
         if (start >= end) return nums[k];
-        int index = rand.nextInt(end - start + 1) + start;
-        int pivot = nums[index];
+        int pivot = nums[rand.nextInt(end - start + 1) + start];
         int left = start, right = end;
         while (left <= right) {
             while (left <= right && nums[left] < pivot) left++;
@@ -49,16 +51,14 @@ public class KthLargestElementInAnArray {
         }
         if (k <= right) {
             return quickSelect(nums, start, right, k);
-        }
-        if (k >= left) {
+        } else {
             return quickSelect(nums, left, end, k);
         }
-        return nums[k];
     }
 
     public static void main(String[] args) {
         KthLargestElementInAnArray solution = new KthLargestElementInAnArray();
-        System.out.println(solution.findKthLargest(new int[]{3,2,1,5,6,4}, 2));
-        System.out.println(solution.findKthLargest(new int[]{3,2,3,1,2,4,5,5,6}, 4));
+        System.out.println(solution.findKthLargest(new int[]{3,2,1,5,6,4}, 2)); // 5
+        System.out.println(solution.findKthLargest(new int[]{3,2,3,1,2,4,5,5,6}, 4)); // 4
     }
 }

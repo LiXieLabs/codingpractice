@@ -1,3 +1,6 @@
+/**
+ * 240. Search a 2D Matrix II (https://leetcode.com/problems/search-a-2d-matrix-ii/description/)
+ */
 public class SearchA2DMatrixII {
 
     /********** Solution 1: Binary Search Each Column *****************/
@@ -39,7 +42,7 @@ public class SearchA2DMatrixII {
 
     /********** Solution 2: Binary Search Along Diagonal *****************/
     /**
-     * Time: O(logC!)     Space: O(1)
+     * Time: O(log(min(R,C))!) = O(min(R,C)log(min(R,C))    Space: O(1)
      */
     int[][] matrix;
     int target, row, col;
@@ -86,11 +89,8 @@ public class SearchA2DMatrixII {
         int i = row - 1, j = 0;
         while (i >= 0 && j < col) {
             if (matrix[i][j] == target) return true;
-            if (matrix[i][j] < target) {
-                j++;
-            } else {
-                i--;
-            }
+            else if (matrix[i][j] < target) j++;
+            else i--;
         }
         return false;
     }
@@ -103,13 +103,13 @@ public class SearchA2DMatrixII {
                 { 3, 6, 9,16,22},
                 {10,13,14,17,24},
                 {18,21,23,26,30}
-        }, 5));
+        }, 5)); // true
         System.out.println(solution.searchMatrix(new int[][]{
                 { 1, 4, 7,11,15},
                 { 2, 5, 8,12,19},
                 { 3, 6, 9,16,22},
                 {10,13,14,17,24},
                 {18,21,23,26,30}
-        }, 20));
+        }, 20)); // false
     }
 }

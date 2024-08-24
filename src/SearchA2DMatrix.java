@@ -12,8 +12,9 @@ public class SearchA2DMatrix {
         int lo = 0, hi = row * col - 1;
         while (lo <= hi) {
             int mid = (lo + hi) >> 1;
-            if (matrix[mid / col][mid % col] == target) return true;
-            if (matrix[mid / col][mid % col] < target) {
+            if (matrix[mid / col][mid % col] == target) {
+                return true;
+            } else if (matrix[mid / col][mid % col] < target) {
                 lo = mid + 1;
             } else {
                 hi = mid - 1;
@@ -28,11 +29,11 @@ public class SearchA2DMatrix {
                 { 1, 3, 5, 7},
                 {10,11,16,20},
                 {23,30,34,60}
-        }, 3));
+        }, 3)); // true
         System.out.println(solution.searchMatrix(new int[][]{
                 { 1, 3, 5, 7},
                 {10,11,16,20},
                 {23,30,34,60}
-        }, 13));
+        }, 13)); // false
     }
 }
