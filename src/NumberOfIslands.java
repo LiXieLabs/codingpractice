@@ -1,15 +1,18 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * 200. Number of Islands (https://leetcode.com/problems/number-of-islands/description/)
+ */
 public class NumberOfIslands {
 
-    static int[][] directions = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    private static final int[][] DIREC = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
     /***************** Solution 1 ~ 3: Recur DFS + Iter DFS + BFS ****************/
     /**
      * Time: O(R * C) Space: O(R * C)
      */
-    public int numIslands(char[][] grid) {
+    public int numIslands1(char[][] grid) {
         int count = 0;
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
@@ -27,7 +30,7 @@ public class NumberOfIslands {
     public void recurSink(char[][] grid, int i, int j) {
         int r = grid.length, c = grid[0].length;
         grid[i][j] = '0';
-        for (int[] d : directions) {
+        for (int[] d : DIREC) {
             int ni = i + d[0], nj = j + d[1];
             if (ni >= 0 && ni < r && nj >= 0 && nj < c && grid[ni][nj] == '1') {
                 recurSink(grid, ni, nj);
@@ -35,6 +38,7 @@ public class NumberOfIslands {
         }
     }
 
+    // Deque 也可以存 int[], 省去了转化
     public void dfsSink(char[][] grid, int i, int j) {
         int r = grid.length, c = grid[0].length;
         Deque<Integer> stack = new ArrayDeque<>();
@@ -43,7 +47,7 @@ public class NumberOfIslands {
             int cur = stack.pop();
             int ci = cur / c, cj = cur % c;
             grid[ci][cj] = '0'; // 也可以像BFS那样，但是不是必须的
-            for (int[] d : directions) {
+            for (int[] d : DIREC) {
                 int ni = ci + d[0], nj = cj + d[1];
                 if (ni >= 0 && ni < r && nj >= 0 && nj < c && grid[ni][nj] == '1') {
                     stack.push(ni * c + nj);
@@ -60,7 +64,7 @@ public class NumberOfIslands {
         while (!queue.isEmpty()) {
             int cur = queue.poll();
             int ci = cur / c, cj = cur % c;
-            for (int[] d : directions) {
+            for (int[] d : DIREC) {
                 int ni = ci + d[0], nj = cj + d[1];
                 if (ni >= 0 && ni < r && nj >= 0 && nj < c && grid[ni][nj] == '1') {
                     queue.offer(ni * c + nj);
@@ -70,6 +74,28 @@ public class NumberOfIslands {
         }
     }
 
+    /***************** Solution 4: Union Find ****************/
+    /**
+     * Time: O(R * C) Space: O(R * C)
+     */
+    public int numIslands(char[][] grid) {
+        int r = grid.length, c = grid[0].length;
+        UnionFind200 uf = new UnionFind200(grid);
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (grid[i][j] == '1') {
+                    for (int[] d : DIREC) {
+                        int ni = i + d[0], nj = j + d[1];
+                        if (0 <= ni && ni < r && 0 <= nj && nj < c && grid[ni][nj] == '1') {
+                            uf.union(i * c + j, ni * c + nj);
+                        }
+                    }
+                }
+            }
+        }
+        return uf.root;
+    }
+
     public static void main(String[] args) {
         NumberOfIslands solution = new NumberOfIslands();
         System.out.println(solution.numIslands(new char[][]{
@@ -77,6 +103,52 @@ public class NumberOfIslands {
                 {'1','1','0','0','0'},
                 {'0','0','1','0','0'},
                 {'0','0','0','1','1'}
-        }));
+        })); // 3
+    }
+}
+
+class UnionFind200 {
+
+    int[] id;
+    int[] sz;
+    int root;
+
+    public UnionFind200(char[][] grid) {
+        int r = grid.length, c = grid[0].length;
+        id = new int[r * c];
+        sz = new int[r * c];
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                int n = i * c + j;
+                id[n] = n;
+                if (grid[i][j] == '1') {
+                    sz[n] = 1;
+                    root++;
+                }
+            }
+        }
+    }
+
+    public int find(int p) {
+        while (id[p] != p) {
+            id[p] = id[id[p]]; // path compression
+            p = id[p];
+        }
+        return p;
+    }
+
+    public void union(int p1, int p2) {
+        int r1 = find(p1);
+        int r2 = find(p2);
+        if (r1 == r2) return;
+        // weight balance
+        if (sz[r1] > sz[r2]) {
+            id[r2] = r1;
+            sz[r1] += sz[r2];
+        } else {
+            id[r1] = r2;
+            sz[r2] += sz[r1];
+        }
+        root--;
     }
 }
