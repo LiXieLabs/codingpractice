@@ -38,14 +38,14 @@ public class Subsets {
         subset.remove(subset.size() - 1);
     }
 
-    /************* Solution 2: Backtracking by Picking 1st->2nd->3rd...num until out of range  ****************/
+    /****** Solution 2: Backtracking by Picking 1st -> 2nd -> 3rd num in subset ... until out of range  ********/
     /**
      * 思路参考 Solution 1 of
      * 90. Subsets II (https://leetcode.com/problems/subsets-ii/description/)
      *
      * Time: O(N X 2^N)   Space: O(N) by call stack
      */
-    public List<List<Integer>> subsets(int[] nums) {
+    public List<List<Integer>> subsets2(int[] nums) {
         res = new ArrayList<>();
         recur(nums, 0, new ArrayList<>());
         return res;
@@ -58,6 +58,28 @@ public class Subsets {
             recur(nums, i + 1, subset);
             subset.remove(subset.size() - 1);
         }
+    }
+
+    /************* Solution 3: Iterative Solution - 类似 BFS / Binary Tree Level Order Traversal ****************/
+    /**
+     * 每个数字存在两种情况，在 or 不在 subset 里面
+     * Iterative version of Solution 1
+     *
+     * Time: O(N X 2^N)   Space: O(1) without excluding result
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        res = new ArrayList<>();
+        res.add(new ArrayList<>());
+        for (int num : nums) {
+            List<List<Integer>> nextLevel = new ArrayList<>();
+            for (List<Integer> cur : res) {
+                List<Integer> nex = new ArrayList<>(cur);
+                nex.add(num);
+                nextLevel.add(nex);
+            }
+            res.addAll(nextLevel);
+        }
+        return res;
     }
 
     public static void main(String[] args) {
