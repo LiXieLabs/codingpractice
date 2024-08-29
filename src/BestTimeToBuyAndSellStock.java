@@ -13,7 +13,7 @@ public class BestTimeToBuyAndSellStock {
         return maxProfit;
     }
 
-    /********** Solution 2: Kadane's Algo  ***************/
+    /********** Solution 2: Kadane's Algo - 一种DP ***************/
     /**
      * https://zh.wikipedia.org/wiki/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E5%88%97%E9%97%AE%E9%A2%98
      * Kadane's algo 解决最大连续子数列和的问题，此处是求股价差值数列的最大连续子数列和
@@ -36,7 +36,7 @@ public class BestTimeToBuyAndSellStock {
 
     public static void main(String[] args) {
         BestTimeToBuyAndSellStock solution = new BestTimeToBuyAndSellStock();
-        System.out.println(solution.maxProfit(new int[]{7,1,5,3,6,4}));
-        System.out.println(solution.maxProfit(new int[]{7,6,4,3,1}));
+        System.out.println(solution.maxProfit(new int[]{7,1,5,3,6,4})); // 5
+        System.out.println(solution.maxProfit(new int[]{7,6,4,3,1})); // 0
     }
 }

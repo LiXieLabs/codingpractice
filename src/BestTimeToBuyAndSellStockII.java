@@ -8,20 +8,16 @@ public class BestTimeToBuyAndSellStockII {
      * 121. Best Time to Buy and Sell Stock (https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
      * Solution 2 Kadane's Algo 的衍生算法
      *
-     * 121 中 curMax + prices[i] - prices[i - 1] >= 0，就可以 hold 住股票，因为只有买卖一次的机会
+     * 121 中 curMax + prices[i] - prices[i - 1] >= 0，就可以 hold 住股票，因为只有买卖一次的机会，但不一定是max，需要一直跟max比较
      * 122 中 prices[i] - prices[i - 1] >= 0 hold 住股票才有意义，一旦下跌，没必要hold住股票，因为可以先卖了再买
      *
      * Time: O(N)   Space: O(1)
      */
     public int maxProfit1(int[] prices) {
-        int maxProfit = 0, curMax = 0;
-        for (int i = 1; i <= prices.length; i++) {
-            if (i < prices.length && prices[i] - prices[i - 1] >= 0) {
-                curMax += prices[i] - prices[i - 1];
-            } else {
-                maxProfit += curMax;
-                curMax = 0;
-            }
+        int maxProfit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            int curProfit = Math.max(prices[i] - prices[i - 1], 0);
+            maxProfit = Math.max(maxProfit, maxProfit + curProfit);
         }
         return maxProfit;
     }
@@ -45,8 +41,8 @@ public class BestTimeToBuyAndSellStockII {
 
     public static void main(String[] args) {
         BestTimeToBuyAndSellStockII solution = new BestTimeToBuyAndSellStockII();
-        System.out.println(solution.maxProfit(new int[]{7,1,5,3,6,4}));
-        System.out.println(solution.maxProfit(new int[]{1,2,3,4,5}));
-        System.out.println(solution.maxProfit(new int[]{7,6,4,3,1}));
+        System.out.println(solution.maxProfit(new int[]{7,1,5,3,6,4})); // 7
+        System.out.println(solution.maxProfit(new int[]{1,2,3,4,5})); // 4
+        System.out.println(solution.maxProfit(new int[]{7,6,4,3,1})); // 0
     }
 }

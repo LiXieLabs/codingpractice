@@ -21,7 +21,7 @@ public class SubsetsII {
     List<List<Integer>> res;
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         res = new ArrayList<>();
-        Arrays.sort(nums);
+        Arrays.sort(nums); // Necessary for TC#3!!!!!
         recur(nums, 0, new ArrayList<>());
         return res;
     }
@@ -39,7 +39,11 @@ public class SubsetsII {
 
     public static void main(String[] args) {
         SubsetsII solution = new SubsetsII();
+        // TC#1
         System.out.println(solution.subsetsWithDup(new int[]{1,2,2})); // [[], [1], [1, 2], [1, 2, 2], [2], [2, 2], [2]]
+        // TC#2
         System.out.println(solution.subsetsWithDup(new int[]{0})); // [[], [0]]
+        // TC#3
+        System.out.println(solution.subsetsWithDup(new int[]{4,4,4,1,4})); // [[], [1], [1, 4], [1, 4, 4], [1, 4, 4, 4], [1, 4, 4, 4, 4], [4], [4, 4], [4, 4, 4], [4, 4, 4, 4]]
     }
 }
