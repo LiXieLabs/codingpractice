@@ -19,7 +19,6 @@ public class BestTimeToBuyAndSellStockIV {
      * Time: O(kN)  Space: O(2k) = O(k)
      */
     public int maxProfit(int k, int[] prices) {
-        int l = prices.length;
         int[] costs = new int[k], profits = new int[k];
         Arrays.fill(costs, Integer.MAX_VALUE);
         for (int price : prices) {

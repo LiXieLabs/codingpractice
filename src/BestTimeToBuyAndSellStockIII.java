@@ -6,7 +6,7 @@ public class BestTimeToBuyAndSellStockIII {
     /************* Solution 1: Bi-directional 1D DP ***********************/
     /**
      * 对于每一个分割线，将prices分成两部分，左右两部分分别求一个 transaction 的 max profit
-     * 优化为左边向右计算 max profit，右边向左计算 max progit，再求 max(leftMax[i] + rightMax[i+1]), i 即为分割线位置
+     * 优化为左边向右计算 max profit，右边向左计算 max profit，再求 max(leftMax[i] + rightMax[i+1]), i 即为分割线位置
      *
      * Time: O(N) Space: O(N)
      */
