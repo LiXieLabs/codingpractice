@@ -3,6 +3,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 130. Surrounded Regions (https://leetcode.com/problems/surrounded-regions/description/)
+ */
 public class SurroundedRegions {
 
     private Set<Integer> visited;
@@ -71,18 +74,27 @@ public class SurroundedRegions {
     public static void main(String[] args) {
         SurroundedRegions solution = new SurroundedRegions();
 
-        char[][] board1 = new char[][]{{'X','X','X','X'},
-                                       {'X','O','O','X'},
-                                       {'X','X','O','X'},
-                                       {'X','O','X','X'}};
+        char[][] board1 = new char[][]{
+                {'X','X','X','X'},
+                {'X','O','O','X'},
+                {'X','X','O','X'},
+                {'X','O','X','X'}};
         solution.solve(board1);
         print(board1);
+//        [X, X, X, X]
+//        [X, X, X, X]
+//        [X, X, X, X]
+//        [X, O, X, X]
 
-        char[][] board2 = new char[][]{{'O','O','O'},
-                                       {'O','O','O'},
-                                       {'O','O','O'}};
+        char[][] board2 = new char[][]{
+                {'O','O','O'},
+                {'O','O','O'},
+                {'O','O','O'}};
         solution.solve(board2);
         print(board2);
+//        [O, O, O]
+//        [O, O, O]
+//        [O, O, O]
     }
 
 }
