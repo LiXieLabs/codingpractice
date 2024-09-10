@@ -6,12 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+/**
+ * 1675. Minimize Deviation in Array (https://leetcode.com/problems/minimize-deviation-in-array/description/)
+ */
 public class MinimizeDeviationInArray {
 
     /********************* Solution 1: Greedy + Max-Heap ************************/
     /**
-     * 先全部X2变为最大值，加入heap，按照最大值/2，直到最大值为奇数，
+     * 先全部X2变为，加入heap，按照最大值/2，直到最大值为奇数，
      * 最终状态不一定为最优解(Deviation最小)，但是中间一定会经过最优解
+     *
+     * 对于奇数，比如 3，loop is 3 => 6 => 3 => 6 => 3 => 6 ...
+     * 对于偶数，比如 16，loop is 16 => 8 => 4 => 2 => 1 => 2 ...
+     *
+     * 奇数先 x2，再 /2，就遍历了这个数字所有的可能性
+     * 偶数一直 /2 直到奇数，就遍历了这个数字所有的可能性
      *
      * Let N be the length of nums, and M be the largest number in nums.
      * In the worst case when M is the power of 2, there are log(M) possible values for M.
@@ -108,7 +117,10 @@ public class MinimizeDeviationInArray {
 
     public static void main(String[] args) {
         MinimizeDeviationInArray solution = new MinimizeDeviationInArray();
-        System.out.println(solution.minimumDeviation(new int[]{1,2,3,4}));
-        System.out.println(solution.minimumDeviation(new int[]{3,5}));
+        System.out.println(solution.minimumDeviation(new int[]{8,1,2,1})); // 0
+        System.out.println(solution.minimumDeviation(new int[]{1,2,3,4})); // 1
+        System.out.println(solution.minimumDeviation(new int[]{3,5})); // 1
+        System.out.println(solution.minimumDeviation(new int[]{4,1,5,20,3})); // 3
+        System.out.println(solution.minimumDeviation(new int[]{2,10,8})); // 3
     }
 }
