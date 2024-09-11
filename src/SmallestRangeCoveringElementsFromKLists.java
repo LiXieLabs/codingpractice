@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
+/**
+ * 632. Smallest Range Covering Elements from K Lists (https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/description/)
+ */
 public class SmallestRangeCoveringElementsFromKLists {
 
     /********************* Solution 1: Merge K sorted array by min-heap + Sliding Window *****************/
