@@ -9,9 +9,12 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
 
+/**
+ * 253. Meeting Rooms II (https://leetcode.com/problems/meeting-rooms-ii/description/)
+ */
 public class MeetingRoomsII {
 
-    /******************** Solution 1: Interate over sorted start and put end in heap ************/
+    /******************** Solution 1: Iterate over sorted start and put end in heap ************/
     /**
      * Space: O(N) worst case, each meeting has a new room and enters heap.
      * Time: O(NlogN) for both sort and each enter and exit heap.
@@ -108,8 +111,9 @@ public class MeetingRoomsII {
 
     public static void main(String[] args) {
         MeetingRoomsII solution = new MeetingRoomsII();
-        System.out.println(solution.minMeetingRooms(new int[][]{{0,30},{5,10},{15,20}}));
-        System.out.println(solution.minMeetingRooms(new int[][]{{7,10},{2,4}}));
-        System.out.println(solution.minMeetingRooms(new int[][]{{5,8},{6,8}}));
+        System.out.println(solution.minMeetingRooms(new int[][]{{0,30},{5,10},{15,20}})); // 2
+        System.out.println(solution.minMeetingRooms(new int[][]{{7,10},{2,4}})); // 1
+        System.out.println(solution.minMeetingRooms(new int[][]{{5,8},{6,8}})); // 2
+        System.out.println(solution.minMeetingRooms(new int[][]{{2,15},{36,45},{9,29},{16,23},{4,9}})); // 2
     }
 }

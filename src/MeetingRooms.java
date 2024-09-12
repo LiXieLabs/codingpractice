@@ -1,6 +1,9 @@
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * 252. Meeting Rooms (https://leetcode.com/problems/meeting-rooms/description/)
+ */
 public class MeetingRooms {
 
     public boolean canAttendMeetings(int[][] intervals) {
@@ -14,7 +17,7 @@ public class MeetingRooms {
 
     public static void main(String[] args) {
         MeetingRooms solution = new MeetingRooms();
-        System.out.println(solution.canAttendMeetings(new int[][]{{0,30},{5,10},{15,20}}));
-        System.out.println(solution.canAttendMeetings(new int[][]{{7,10},{2,4}}));
+        System.out.println(solution.canAttendMeetings(new int[][]{{0,30},{5,10},{15,20}})); // false
+        System.out.println(solution.canAttendMeetings(new int[][]{{7,10},{2,4}})); // true
     }
 }
