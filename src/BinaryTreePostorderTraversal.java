@@ -1,10 +1,14 @@
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 145. Binary Tree Postorder Traversal (https://leetcode.com/problems/binary-tree-postorder-traversal/description/)
+ */
 public class BinaryTreePostorderTraversal {
 
     /******************** Solution 1: recursive *************************/
@@ -25,7 +29,7 @@ public class BinaryTreePostorderTraversal {
     }
 
     /**
-     * Solution 2 & 3 are based on facts:
+     * Solution 2 & 3 & 4 are based on the facts:
      * Tree:                   [1,2,3,4,5,6,7]
      * Postorder:              [4,5,2,6,7,3,1]
      * Reverse of Postorder:   [1,3,7,6,2,5,4]
@@ -50,7 +54,7 @@ public class BinaryTreePostorderTraversal {
     }
 
     /******************* Solution 3: Iterative *************************/
-    public List<Integer> postorderTraversal(TreeNode root) {
+    public List<Integer> postorderTraversal3(TreeNode root) {
         List<Integer> res = new LinkedList<>();
         Deque<TreeNode> stack = new ArrayDeque<>();
         while (root != null || !stack.isEmpty()) {
@@ -67,14 +71,42 @@ public class BinaryTreePostorderTraversal {
         return res;
     }
 
+    /******************** Solution 4: Morris Traversal ********************/
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        while (root != null) {
+            if (root.right == null) {
+                res.add(root.val);
+                root = root.left;
+            } else {
+                TreeNode predecessor = root.right;
+                while (predecessor.left != null && predecessor.left != root) {
+                    predecessor = predecessor.left;
+                }
+                if (predecessor.left == null) {
+                    res.add(root.val);
+                    predecessor.left = root;
+                    root = root.right;
+                } else {
+                    predecessor.left = null;
+                    root = root.left;
+                }
+            }
+        }
+        Collections.reverse(res);
+        return res;
+    }
+
     public static String print(List<Integer> input) {
         return input.stream().map(String::valueOf).collect(Collectors.joining(","));
     }
 
     public static void main(String[] args) {
         BinaryTreePostorderTraversal solution = new BinaryTreePostorderTraversal();
+        // TC#1: 3,2,1
         TreeNode root1 = new TreeNode(1, null, new TreeNode(2, new TreeNode(3), null));
         System.out.println(print(solution.postorderTraversal(root1)));
+        // TC#2: 4,5,2,6,7,3,1
         TreeNode root2 = new TreeNode(1,
                 new TreeNode(2, new TreeNode(4), new TreeNode(5)),
                 new TreeNode(3, new TreeNode(6), new TreeNode(7))
