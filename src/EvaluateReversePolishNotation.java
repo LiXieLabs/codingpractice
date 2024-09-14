@@ -1,9 +1,14 @@
 import java.util.Stack;
 
+/**
+ * 150. Evaluate Reverse Polish Notation (https://leetcode.com/problems/evaluate-reverse-polish-notation/description/)
+ */
 public class EvaluateReversePolishNotation {
 
     /************* Solution 1: by Stack ****************/
     /**
+     * Deque 也行，操作一样
+     *
      * Time: O(N)   Space: O(N)
      */
     public int evalRPN(String[] tokens) {
@@ -24,8 +29,8 @@ public class EvaluateReversePolishNotation {
 
     public static void main(String[] args) {
         EvaluateReversePolishNotation solution = new EvaluateReversePolishNotation();
-        System.out.println(solution.evalRPN(new String[]{"2","1","+","3","*"}));
-        System.out.println(solution.evalRPN(new String[]{"4","13","5","/","+"}));
-        System.out.println(solution.evalRPN(new String[]{"10","6","9","3","+","-11","*","/","*","17","+","5","+"}));
+        System.out.println(solution.evalRPN(new String[]{"2","1","+","3","*"})); // 9
+        System.out.println(solution.evalRPN(new String[]{"4","13","5","/","+"})); // 6
+        System.out.println(solution.evalRPN(new String[]{"10","6","9","3","+","-11","*","/","*","17","+","5","+"})); // 22
     }
 }

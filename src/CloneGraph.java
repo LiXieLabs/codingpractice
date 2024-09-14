@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 133. Clone Graph (https://leetcode.com/problems/clone-graph/description/)
+ */
 public class CloneGraph {
 
     /************** Solution 1: BFS ************************/
@@ -14,32 +17,62 @@ public class CloneGraph {
      * Space occupied by the indexToCopiedNode - O(N) and in addition to that
      * Space occupied by the queue - O(W) where W is the width of the graph.
      * Overall, the space complexity would be O(N).
-     *
-     * Recur DFS 也可以！！！
-     *
      */
-    public Node cloneGraph(Node node) {
-        // key 是 original Node 也可以！！！
-        Map<Integer, Node> indexToCopiedNode = new HashMap<>();
-        Node res = null;
+    public Node cloneGraph1(Node node) {
         // 小心 edge case！！！
-        if (node == null) return res;
+        if (node == null) return null;
+        // key 是 original node 也可以
+        Map<Integer, Node> mapIdToNode = new HashMap<>();
         Deque<Node> queue = new ArrayDeque<>();
+        Node newNode = new Node(node.val);
         queue.offer(node);
+        mapIdToNode.put(node.val, newNode);
         while (!queue.isEmpty()) {
             Node curr = queue.poll();
-            indexToCopiedNode.putIfAbsent(curr.val, new Node(curr.val));
-            Node curCopy = indexToCopiedNode.get(curr.val);
-            if (res == null) res = curCopy;
-            for (Node next : curr.neighbors) {
-                if (!indexToCopiedNode.containsKey(next.val)) {
-                    indexToCopiedNode.put(next.val, new Node(next.val));
-                    queue.offer(next);
+            Node copy = mapIdToNode.get(curr.val);
+            for (Node neighbor : curr.neighbors) {
+                if (!mapIdToNode.containsKey(neighbor.val)) {
+                    mapIdToNode.put(neighbor.val, new Node(neighbor.val));
+                    // 如果 mapIdToNode 本来没有这个 neighbor，则是第一次遇到这个 neighbor，
+                    // 而不是遍历过的点，则需要加入 queue
+                    queue.offer(neighbor);
                 }
-                indexToCopiedNode.get(curr.val).neighbors.add(indexToCopiedNode.get(next.val));
+                // 如果 mapIdToNode 本来已经有这个 neighbor 了，则是连回去那条线
+                // 如果 mapIdToNode 本来没有这个 neighbor，则是连出去那条线
+                // 但是两种情况，都要连线，因为是双向的 adj list
+                mapIdToNode.get(neighbor.val).neighbors.add(copy);
             }
         }
-        return res;
+        return newNode;
+    }
+
+    /**************** Solution 2: Recur DFS **********************/
+    /**
+     * Time: O(V + E) = min O(N) max O(N^2)
+     * Space: O(N).
+     * Space occupied by the map - O(N) and in addition to that
+     * Space occupied by the recur call stack - O(D) where D is the width of the graph.
+     * Overall, the space complexity would be O(N).
+     */
+    Map<Integer, Node> map;
+    public Node cloneGraph(Node node) {
+        if (node == null) return null;
+        map = new HashMap<>();
+        Node newNode = new Node(node.val);
+        map.put(node.val, newNode);
+        recur(node);
+        return newNode;
+    }
+
+    private void recur(Node curr) {
+        Node copy = map.get(curr.val);
+        for (Node neighbor : curr.neighbors) {
+            if (!map.containsKey(neighbor.val)) {
+                map.put(neighbor.val, new Node(neighbor.val));
+                recur(neighbor);
+            }
+            map.get(neighbor.val).neighbors.add(copy);
+        }
     }
 
     public static void main(String[] args) {
@@ -57,8 +90,7 @@ public class CloneGraph {
         n3.neighbors.add(n4);
         n4.neighbors.add(n1);
         n4.neighbors.add(n3);
-        Node res = solution.cloneGraph(n1);
-
+        Node res = solution.cloneGraph(n1); // [[2,4],[1,3],[2,4],[1,3]]
     }
 }
 
