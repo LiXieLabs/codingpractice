@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 94. Binary Tree Inorder Traversal (https://leetcode.com/problems/binary-tree-inorder-traversal/description/)
+ */
 public class BinaryTreeInorderTraversal {
 
     /******************** Solution 1: recursive *************************/
@@ -97,8 +100,11 @@ public class BinaryTreeInorderTraversal {
 
     public static void main(String[] args) {
         BinaryTreeInorderTraversal solution = new BinaryTreeInorderTraversal();
+        // TC1: [1,3,2]
         TreeNode root1 = new TreeNode(1, null, new TreeNode(2, new TreeNode(3), null));
         System.out.println(print(solution.inorderTraversal(root1)));
+
+        // TC2: [4,2,5,1,6,3,7]
         TreeNode root2 = new TreeNode(1,
                 new TreeNode(2, new TreeNode(4), new TreeNode(5)),
                 new TreeNode(3, new TreeNode(6), new TreeNode(7))
