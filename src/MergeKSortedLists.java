@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
+/**
+ * 23. Merge k Sorted Lists (https://leetcode.com/problems/merge-k-sorted-lists/description/)
+ */
 public class MergeKSortedLists {
 
     /********** Solution 1: K pointers + Min Heap *************/
@@ -75,8 +78,11 @@ public class MergeKSortedLists {
 
     public static void main(String[] args) {
         MergeKSortedLists solution = new MergeKSortedLists();
+        // TC1: []
         print(solution.mergeKLists(new ListNode[]{null}));
+        // TC2: []
         print(solution.mergeKLists(new ListNode[]{}));
+        // TC3: [1,1,2,3,4,4,5,6]
         ListNode l1 = new ListNode(1, new ListNode(4, new ListNode(5)));
         ListNode l2 = new ListNode(1, new ListNode(3, new ListNode(4)));
         ListNode l3 = new ListNode(2, new ListNode(6));

@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 21. Merge Two Sorted Lists (https://leetcode.com/problems/merge-two-sorted-lists/description/)
+ */
 public class MergeTwoSortedLists {
 
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
@@ -32,6 +35,7 @@ public class MergeTwoSortedLists {
 
     public static void main(String[] args) {
         MergeTwoSortedLists solution = new MergeTwoSortedLists();
+        // TC1: [1,1,2,3,4,4]
         ListNode l1 = new ListNode(1, new ListNode(2, new ListNode(4)));
         ListNode l2 = new ListNode(1, new ListNode(3, new ListNode(4)));
         print(solution.mergeTwoLists(l1, l2));
