@@ -1,3 +1,6 @@
+/**
+ * 96. Unique Binary Search Trees (https://leetcode.com/problems/unique-binary-search-trees/description/)
+ */
 public class UniqueBinarySearchTrees {
 
     /****************** Solution 1: Recursive ******************/
@@ -26,15 +29,19 @@ public class UniqueBinarySearchTrees {
 
     }
 
-    /****************** Solution 2: DP ******************/
+    /****************** Solution 2: 1D DP ******************/
     /**
-     * Time: O(1 + 2 + ... + N) = O(N^2)
+     * dp[c] = Sum(dp[i] x dp[c - i - 1]) for i = [0, c]
+     * dp[c] 表示 c 个 node 时，有 dp[c] 种排列组合
+     * i 表示当前 root 左侧有多少个 node
+     * c - i - 1 表示当前 root 右侧有多少个 node
+     *
+     * Time: O(1 + 2 + ... + N) = O(N^2)   Space: O(N)
      */
     public int numTrees(int n) {
         if (n <= 1) return 1;
         int[] dp = new int[n + 1];
-        dp[0] = 1;
-        dp[1] = 1;
+        dp[0] = dp[1] = 1;
         for (int c = 2; c < n + 1; c++) {
             for (int i = 0; i < c / 2; i++) {
                 dp[c] += dp[i] * dp[c - i - 1] * 2;
@@ -42,7 +49,6 @@ public class UniqueBinarySearchTrees {
             if (c % 2 == 1) dp[c] += Math.pow(dp[c / 2], 2);
         }
         return dp[n];
-
     }
 
     /*************** TODO: Solution 3: Catalan Number 递推公式 O(N) ***************/
@@ -51,12 +57,11 @@ public class UniqueBinarySearchTrees {
 
     public static void main(String[] args) {
         UniqueBinarySearchTrees solution = new UniqueBinarySearchTrees();
-        System.out.println(solution.numTrees(0));
-        System.out.println(solution.numTrees(1));
-        System.out.println(solution.numTrees(2));
-        System.out.println(solution.numTrees(3));
-        System.out.println(solution.numTrees(4));
-        System.out.println(solution.numTrees(5));
-
+        System.out.println(solution.numTrees(0)); // 1
+        System.out.println(solution.numTrees(1)); // 1
+        System.out.println(solution.numTrees(2)); // 2
+        System.out.println(solution.numTrees(3)); // 5
+        System.out.println(solution.numTrees(4)); // 14
+        System.out.println(solution.numTrees(5)); // 42
     }
 }
