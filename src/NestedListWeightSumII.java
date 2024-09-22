@@ -3,6 +3,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 364. Nested List Weight Sum II (https://leetcode.com/problems/nested-list-weight-sum-ii/description/)
+ */
 public class NestedListWeightSumII {
 
     /************ Solution 2: One Pass 参见同名.png文件 NestedListWeightSumII.png ************/

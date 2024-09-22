@@ -3,6 +3,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 339. Nested List Weight Sum (https://leetcode.com/problems/nested-list-weight-sum/description/)
+ */
 public class NestedListWeightSum {
 
     /****************** Solution 1: Level order BFS ******************/
@@ -12,7 +15,7 @@ public class NestedListWeightSum {
      */
     public int depthSum1(List<NestedInteger> nestedList) {
         int res = 0, d = 1;
-        while (nestedList.size() != 0) {
+        while (!nestedList.isEmpty()) {
             List<NestedInteger> nextLevel = new ArrayList<>();
             for (NestedInteger ni : nestedList) {
                 if (ni.isInteger()) {
@@ -24,11 +27,32 @@ public class NestedListWeightSum {
             nestedList = nextLevel;
             d += 1;
         }
-
         return res;
     }
 
     /****************** Solution 2: recur DFS *********************/
+    /**
+     * Time: O(# of recur call + # of loop in each recur call) < O(2N) = O(N)
+     * Space: O(N) for max call stack in worst case (all int are nested into depth N)
+     */
+    public int depthSum2(List<NestedInteger> nestedList) {
+        int res = 0;
+        for (NestedInteger ni : nestedList) {
+            res += recur(ni, 1);
+        }
+        return res;
+    }
+
+    private int recur(NestedInteger curr, int depth) {
+        if (curr.isInteger()) return curr.getInteger() * depth;
+        int res = 0;
+        for (NestedInteger ni : curr.getList()) {
+            res += recur(ni, depth + 1);
+        }
+        return res;
+    }
+
+    /****************** Solution 3: optimized recur DFS *********************/
     /**
      * Time: O(# of recur call + # of loop in each recur call) < O(2N) = O(N)
      * Space: O(N) for max call stack in worst case (all int are nested into depth N)
