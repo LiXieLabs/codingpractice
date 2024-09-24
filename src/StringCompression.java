@@ -1,5 +1,8 @@
 import java.util.Arrays;
 
+/**
+ * 443. String Compression (https://leetcode.com/problems/string-compression/description/)
+ */
 public class StringCompression {
 
     /********************* Solution 1: Two Pointers *******************/
@@ -11,20 +14,34 @@ public class StringCompression {
      * Time: O(N)   Space: O(1)
      */
     public int compress(char[] chars) {
-        int pre = 0, start = 0, end = -1;
-        while (++end < chars.length) {
-            // chars结尾或者下一个char不等于当前char的话，结束当前这个char遍历，写入结果
-            if (end == chars.length - 1 || chars[end + 1] != chars[start]) {
-                chars[pre++] = chars[start];
-                if (end - start > 0) {
-                    for (char c : String.valueOf(end - start + 1).toCharArray()) {
-                        chars[pre++] = c;
-                    }
-                }
-                start = end + 1;
+        int pre = 0, cur = 0;
+        while (cur < chars.length) {
+            int end = cur + 1;
+            while (end < chars.length && chars[end] == chars[cur]) {
+                end++;
             }
+            chars[pre++] = chars[cur];
+            if (end - cur > 1) {
+//                for (Character c : intToCharArray(end - cur)) {
+//                    chars[pre++] = c;
+//                }
+                for (Character c : String.valueOf(end - cur).toCharArray()) {
+                    chars[pre++] = c;
+                }
+            }
+            cur = end;
         }
         return pre;
+    }
+
+    private char[] intToCharArray(int n) {
+        StringBuilder sb = new StringBuilder();
+        while (n > 0) {
+            sb.append(n % 10);
+            n /= 10;
+        }
+        sb.reverse();
+        return sb.toString().toCharArray();
     }
 
     public static void main(String[] args) {

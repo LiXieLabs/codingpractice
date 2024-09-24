@@ -3,6 +3,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 244. Shortest Word Distance II (https://leetcode.com/problems/shortest-word-distance-ii/description/)
+ */
 public class ShortestWordDistanceII {
 
     private Map<String, List<Integer>> map;
@@ -38,11 +41,13 @@ public class ShortestWordDistanceII {
     }
 
     public static void main(String[] args) {
+
         ShortestWordDistanceII solution1 = new ShortestWordDistanceII(new String[]{"practice", "makes", "perfect", "coding", "makes"});
-        System.out.println(solution1.shortest("coding", "practice"));
-        System.out.println(solution1.shortest("makes", "coding"));
+        System.out.println(solution1.shortest("coding", "practice")); // 3
+        System.out.println(solution1.shortest("makes", "coding")); // 1
+
         ShortestWordDistanceII solution2 = new ShortestWordDistanceII(new String[]{"a", "c", "b", "a"});
-        System.out.println(solution2.shortest("a", "b"));
-        System.out.println(solution2.shortest("b", "a"));
+        System.out.println(solution2.shortest("a", "b")); // 1
+        System.out.println(solution2.shortest("b", "a")); // 1
     }
 }
