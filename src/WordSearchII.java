@@ -85,7 +85,7 @@ public class WordSearchII {
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
                 if (root.children[board[i][j] - 'a'] != null) {
-                    visited = new HashSet<>();
+                    visited = new HashSet<>(); // 在 for loop 外面也行！！！
                     recurFind(i, j, root.children[board[i][j] - 'a']);
                 }
             }
