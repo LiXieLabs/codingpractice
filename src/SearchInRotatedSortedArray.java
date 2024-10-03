@@ -1,6 +1,42 @@
+/**
+ * 33. Search in Rotated Sorted Array (https://leetcode.com/problems/search-in-rotated-sorted-array/description/)
+ */
 public class SearchInRotatedSortedArray {
 
     /************* Solution 1: Binary Search and Move based on Pattern ***************/
+    /**
+     * 比 Solution 2 更好理解
+     *
+     * Time: O(logN)   Space: O(1)
+     */
+    public int search1(int[] nums, int target) {
+        int lo = 0, hi = nums.length - 1;
+        while (lo <= hi) {
+            int mid = (lo + hi) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                if (nums[0] <= nums[mid]) {
+                    lo = mid + 1;
+                } else if (nums[0] <= target) {
+                    hi = mid - 1;
+                } else {
+                    lo = mid + 1;
+                }
+            } else {
+                if (nums[mid] <= nums[nums.length - 1]) {
+                    hi = mid - 1;
+                } else if (target <= nums[nums.length - 1]) {
+                    lo = mid + 1;
+                } else {
+                    hi = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /************* Solution 2: Optimized Solution1 - Binary Search and Move based on Pattern ***************/
     /**
      * index    0 1 2 3 4 5 6
      * sample1  4 5 6 7 1 2 3
@@ -38,10 +74,10 @@ public class SearchInRotatedSortedArray {
 
     public static void main(String[] args) {
         SearchInRotatedSortedArray solution = new SearchInRotatedSortedArray();
-        System.out.println(solution.search(new int[]{4,5,6,7,0,1,2}, 0));
-        System.out.println(solution.search(new int[]{4,5,6,7,0,1,2}, 3));
-        System.out.println(solution.search(new int[]{1}, 0));
-        System.out.println(solution.search(new int[]{1,2,3,4,5,6,7}, 3));
-        System.out.println(solution.search(new int[]{3,5,1}, 3));
+        System.out.println(solution.search(new int[]{4,5,6,7,0,1,2}, 0)); // 4
+        System.out.println(solution.search(new int[]{4,5,6,7,0,1,2}, 3)); // -1
+        System.out.println(solution.search(new int[]{1}, 0)); // -1
+        System.out.println(solution.search(new int[]{1,2,3,4,5,6,7}, 3)); // 2
+        System.out.println(solution.search(new int[]{3,5,1}, 3)); // 0
     }
 }
