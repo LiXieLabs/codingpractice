@@ -3,7 +3,7 @@ import java.util.stream.Collectors;
 
 /**
  * 34. Find First and Last Position of Element in Sorted Array
- * https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/
+ * (https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/)
  */
 public class FindFirstAndLastPositionOfElementInSortedArray {
 
@@ -92,8 +92,8 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
     public static void main(String[] args) {
         FindFirstAndLastPositionOfElementInSortedArray solution = new FindFirstAndLastPositionOfElementInSortedArray();
-        print(solution.searchRange(new int[]{5,7,7,8,8,10},8));
-        print(solution.searchRange(new int[]{5,7,7,8,8,10},6));
-        print(solution.searchRange(new int[]{},0));
+        print(solution.searchRange(new int[]{5,7,7,8,8,10},8)); // [3,4]
+        print(solution.searchRange(new int[]{5,7,7,8,8,10},6)); // [-1,-1]
+        print(solution.searchRange(new int[]{},0)); // [-1,-1]
     }
 }
