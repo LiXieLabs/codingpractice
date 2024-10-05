@@ -7,6 +7,9 @@ public class ValidateBinarySearchTree {
     /**
      * 返回值 {subtree最小值，subtree最大值，该subtree是否是valid BST}
      * base case 不能是 root == null, return {MAX_INT, MIN_INT, 1}, 因为有等于最大最小值情况！！！
+     *
+     * Time: O(N) each node visited once
+     * Space: recur stack O(H), worst O(N)
      */
     public boolean isValidBST1(TreeNode root) {
         if (root == null) return true;
@@ -33,7 +36,11 @@ public class ValidateBinarySearchTree {
     }
 
     /************* Solution 2: Iterative In-order Traversal **************/
-    public boolean isValidBST(TreeNode root) {
+    /**
+     * Time: O(N) each node visited once
+     * Space: stack O(H), worst O(N)
+     */
+    public boolean isValidBST2(TreeNode root) {
         Deque<TreeNode> stack = new ArrayDeque<>();
         Integer prev = null;
         while (root != null || !stack.isEmpty()) {
@@ -50,8 +57,25 @@ public class ValidateBinarySearchTree {
     }
 
     /************* Solution 3: Recursive In-order Traversal **************/
-    // Need a class variable to hold prev!!!
-    // https://leetcode.com/problems/validate-binary-search-tree/solution/
+    /**
+     * 注意 prev 是怎么移动的！！！
+     *
+     * Time: O(N) each node visited once
+     * Space: recur stack O(H), worst O(N)
+     */
+    Integer prev = null;
+    public boolean isValidBST(TreeNode root) {
+        prev = null;
+        return inorderRecur(root);
+    }
+
+    private boolean inorderRecur(TreeNode curr) {
+        if (curr == null) return true;
+        if (!inorderRecur(curr.left)) return false;
+        if (prev != null && prev >= curr.val) return false;
+        prev = curr.val;
+        return inorderRecur(curr.right);
+    }
 
     public static void main(String[] args) {
         ValidateBinarySearchTree solution = new ValidateBinarySearchTree();
@@ -66,7 +90,7 @@ public class ValidateBinarySearchTree {
                 new TreeNode(6,
                         new TreeNode(5), new TreeNode(7))
         );
-        System.out.println(solution.isValidBST(root1));
-        System.out.println(solution.isValidBST(root2));
+        System.out.println(solution.isValidBST(root1)); // false
+        System.out.println(solution.isValidBST(root2)); // true
     }
 }
