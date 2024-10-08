@@ -1,10 +1,15 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * 695. Max Area of Island (https://leetcode.com/problems/max-area-of-island/description/)
+ */
 public class MaxAreaOfIsland {
 
     /***************** Solution 1: Iterative DFS by Stack **************************/
     /**
+     * 直接变成 BFS (queue) 也可以
+     *
      * Time: O(R X C)
      * Space: O(R X C) by stack
      */
@@ -17,7 +22,7 @@ public class MaxAreaOfIsland {
                 if (grid[i][j] == 0) continue;
                 Deque<int[]> stack = new ArrayDeque<>();
                 stack.push(new int[]{i, j});
-                grid[i][j] = 0;
+                grid[i][j] = 0; // 必须先变成0，不能等 pop 出来再变，会 fail
                 int curArea = 0;
                 while (!stack.isEmpty()) {
                     int[] cur = stack.pop();
@@ -91,17 +96,25 @@ public class MaxAreaOfIsland {
             }
         }
 
-        int maxArea = 0;
-        for (int i = 0; i < r * c; i++) {
-            maxArea = Math.max(maxArea, uf.sz[i]);
-        }
-        return maxArea;
+        // 优化为在 uf 中维护一个 maxSize
+//        int maxArea = 0;
+//        for (int i = 0; i < r * c; i++) {
+//            maxArea = Math.max(maxArea, uf.sz[i]);
+//        }
+//        return maxArea;
+
+        return uf.maxSize;
     }
 
     public static void main(String[] args) {
         MaxAreaOfIsland solution = new MaxAreaOfIsland();
 
         // TC1
+        System.out.println(solution.maxAreaOfIsland(new int[][]{
+                {1}
+        }));
+
+        // TC2
         System.out.println(solution.maxAreaOfIsland(new int[][]{
                 {0,0,1,0,0,0,0,1,0,0,0,0,0},
                 {0,0,0,0,0,0,0,1,1,1,0,0,0},
@@ -113,7 +126,7 @@ public class MaxAreaOfIsland {
                 {0,0,0,0,0,0,0,1,1,0,0,0,0}
         })); // 6
 
-        // TC2
+        // TC3
         System.out.println(solution.maxAreaOfIsland(new int[][]{
                 {0,0,0,0,0,0,0,0}
         })); // 0
@@ -124,16 +137,19 @@ class UnionFind695 {
 
     int[] id;
     int[] sz;
+    int maxSize;
 
     public UnionFind695(int[][] grid) {
         int r = grid.length, c = grid[0].length;
         id = new int[r * c];
         sz = new int[r * c];
+        maxSize = 0;
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
                 int n = i * c + j;
                 id[n] = n;
                 sz[n] = grid[i][j];
+                maxSize = Math.max(maxSize, grid[i][j]); // 必须如此！否则 TC1 会 fail
             }
         }
     }
@@ -153,9 +169,11 @@ class UnionFind695 {
         if (sz[r1] > sz[r2]) {
             id[r2] = r1;
             sz[r1] += sz[r2];
+            maxSize = Math.max(maxSize, sz[r1]);
         } else {
             id[r1] = r2;
             sz[r2] += sz[r1];
+            maxSize = Math.max(maxSize, sz[r2]);
         }
     }
 }
