@@ -1,9 +1,9 @@
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * 99. Recover Binary Search Tree (https://leetcode.com/problems/recover-binary-search-tree/description/)
+ */
 public class RecoverBinarySearchTree {
 
     /************** Solution 1: Iterative In-order traversal ************/
@@ -104,20 +104,22 @@ public class RecoverBinarySearchTree {
     public static void main(String[] args) {
         RecoverBinarySearchTree solution = new RecoverBinarySearchTree();
 
+        // TC1
         TreeNode root1 = new TreeNode(4,
                 new TreeNode(7, new TreeNode(1), new TreeNode(3)),
                 new TreeNode(6, new TreeNode(5), new TreeNode(2))
         );
-        Utils.print(root1);
+        Utils.print(root1); // [4,7,6,1,3,5,2,null,null,null,null,null,null,null,null]
         solution.recoverTree(root1);
-        Utils.print(root1);
+        Utils.print(root1); // [4,2,6,1,3,5,7,null,null,null,null,null,null,null,null]
 
+        // TC2
         TreeNode root2 = new TreeNode(3,
                 new TreeNode(1),
                 new TreeNode(4, new TreeNode(2), null)
         );
-        Utils.print(root2);
+        Utils.print(root2); // [3,1,4,null,null,2,null,null,null]
         solution.recoverTree(root2);
-        Utils.print(root2);
+        Utils.print(root2); // [2,1,4,null,null,3,null,null,null]
     }
 }
