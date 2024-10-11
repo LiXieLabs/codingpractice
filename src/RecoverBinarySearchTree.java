@@ -12,6 +12,12 @@ public class RecoverBinarySearchTree {
      * in-order遍历，
      * 第一次遇到数值下降的情况，则把prev赋给n1
      * 每一次遇到数值下降的情况，则把curr赋给n2
+     *
+     * 两种情况：
+     * 1，3，2，4，5，6，7 一次下降
+     *   n1 n2
+     * 1，7，3，4，5，6，2 两次下降
+     *   n1           n2
      */
     public void recoverTree1(TreeNode root) {
         TreeNode n1 = null, n2 = null, prev = null;
