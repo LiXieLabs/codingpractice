@@ -6,32 +6,38 @@ import java.util.Deque;
  */
 public class MinStack {
 
-    /**** Solution 1: Each node 记录到该点为止的最小值 **************/
-//    private Deque<int[]> stack;
+    /**** Solution 1: Two Stacks, 一个是regular的，一个monotonic的 **************/
+//    Deque<Integer> stack;
+//    Deque<Integer> minStack;
 //
-//    public MinStack() {
+//    public MinStackCopy() {
 //        stack = new ArrayDeque<>();
+//        minStack = new ArrayDeque<>();
 //    }
 //
 //    public void push(int val) {
-//        int preMin = stack.isEmpty() ? Integer.MAX_VALUE : stack.peek()[1];
-//        int curMin = Math.min(preMin, val);
-//        stack.push(new int[]{val, curMin});
+//        stack.push(val);
+//        if (minStack.isEmpty() || val <= minStack.peek()) {
+//            minStack.push(val);
+//        }
 //    }
 //
 //    public void pop() {
-//        stack.pop();
+//        int val = stack.pop();
+//        if (!minStack.isEmpty() && minStack.peek() == val) {
+//            minStack.pop();
+//        }
 //    }
 //
 //    public int top() {
-//        return stack.peek()[0];
+//        return stack.peek();
 //    }
 //
 //    public int getMin() {
-//        return stack.peek()[1];
+//        return minStack.peek();
 //    }
 
-    /************* Solution 2: Two Stacks ********************/
+    /************* Solution 2: Solution 1 优化 ********************/
     /**
      * Time: O(1) for all operations
      * Space: O(N)
@@ -83,9 +89,9 @@ public class MinStack {
         minStack.push(-2);
         minStack.push(0);
         minStack.push(-3);
-        System.out.println(minStack.getMin());
+        System.out.println(minStack.getMin()); // -3
         minStack.pop();
-        System.out.println(minStack.top());
-        System.out.println(minStack.getMin());
+        System.out.println(minStack.top()); // 0
+        System.out.println(minStack.getMin()); // -2
     }
 }
