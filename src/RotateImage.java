@@ -32,7 +32,32 @@ public class RotateImage {
         }
     }
 
-    /****** Solution 2: 分为四个象限 + 遍历左上角第一象限 + 一次交换中心对称的四个元素 **************/
+    /****** Solution 2: 上下翻转 + 对角线交换 **************/
+    /**
+     * 先上下翻转
+     * 再以 i=j 对角线交换对称元素 => 转置(transpose)
+     *
+     * Time: O(N)   Space: O(1)
+     */
+    public void rotate2(int[][] matrix) {
+        int r = matrix.length, c = matrix[0].length;
+        for (int i = 0; i < r / 2; i++) {
+            for (int j = 0; j < c; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[r - i - 1][j];
+                matrix[r - i - 1][j] = tmp;
+            }
+        }
+        for (int i = 0; i < r - 1; i++) {
+            for (int j = i + 1; j < c; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = tmp;
+            }
+        }
+    }
+
+    /****** Solution 3: 分为四个象限 + 遍历左上角第一象限 + 一次交换中心对称的四个元素 **************/
     /**
      *  1  2 |  3  4
      *  5  6 |  7  8      第一象限
@@ -46,6 +71,10 @@ public class RotateImage {
      *  --------           4
      *  7    8 |  9
      *
+     * 重点！！！
+     * 0,1 -> 1,3 -> 3,2 -> 2,0
+     * i,j -> j,n-i-1 -> n-i-1,n-j-1 -> n-j-1,i
+     * 每个到下一个，都按照 x,y -> y,n-x-1 推导
      *
      * Time: O(N)   Space: O(1)
      */
@@ -81,6 +110,10 @@ public class RotateImage {
         };
         solution.rotate(m1);
         print(m1);
+//        [7,4,1]
+//        [8,5,2]
+//        [9,6,3]
+
 
         int[][] m2 = new int[][]{
                 { 1, 2, 3, 4},
@@ -90,5 +123,9 @@ public class RotateImage {
         };
         solution.rotate(m2);
         print(m2);
+//        [13,9,5,1]
+//        [14,10,6,2]
+//        [15,11,7,3]
+//        [16,12,8,4]
     }
 }
