@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 101. Symmetric Tree (https://leetcode.com/problems/symmetric-tree/description/)
+ */
 public class SymmetricTree {
 
-    /**************** Solution 1: Iterative ********************/
+    /**************** Solution 1: Iterative - Level Order Traversal ********************/
     public boolean isSymmetric1(TreeNode root) {
         List<TreeNode> currLevel = new ArrayList<>();
         currLevel.add(root);
@@ -11,10 +14,8 @@ public class SymmetricTree {
             List<TreeNode> nextLevel = new ArrayList<>();
             List<String> lst = new ArrayList<>();
             for (TreeNode node : currLevel) {
-                if (node == null) {
-                    lst.add("n");
-                } else {
-                    lst.add(String.valueOf(node.val));
+                lst.add(node == null ? "n" : String.valueOf(node.val));
+                if (node != null) {
                     nextLevel.add(node.left);
                     nextLevel.add(node.right);
                 }
@@ -49,11 +50,11 @@ public class SymmetricTree {
         TreeNode root1 = new TreeNode(1,
                 new TreeNode(2, new TreeNode(3), null),
                 new TreeNode(2, null, new TreeNode(3)));
-        System.out.println(solution.isSymmetric(root1));
+        System.out.println(solution.isSymmetric(root1)); // true
 
         TreeNode root2 = new TreeNode(1,
                 new TreeNode(2, new TreeNode(3), null),
                 new TreeNode(2, new TreeNode(3), null));
-        System.out.println(solution.isSymmetric(root2));
+        System.out.println(solution.isSymmetric(root2)); // false
     }
 }
