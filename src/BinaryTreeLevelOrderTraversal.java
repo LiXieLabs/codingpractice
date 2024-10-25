@@ -4,6 +4,9 @@ import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 102. Binary Tree Level Order Traversal (https://leetcode.com/problems/binary-tree-level-order-traversal/description/)
+ */
 public class BinaryTreeLevelOrderTraversal {
 
     /************* Solution 1: Iterative level-order traversal ******************/
@@ -55,13 +58,13 @@ public class BinaryTreeLevelOrderTraversal {
         TreeNode root1 = new TreeNode(3,
                 new TreeNode(9),
                 new TreeNode(20, new TreeNode(15), new TreeNode(7)));
-        print(solution.levelOrder(root1));
+        print(solution.levelOrder(root1)); // [[3],[9,20],[15,7]]
 
         TreeNode root2 = null;
-        print(solution.levelOrder(root2));
+        print(solution.levelOrder(root2)); // []
 
         TreeNode root3 = new TreeNode(3);;
-        print(solution.levelOrder(root3));
+        print(solution.levelOrder(root3)); // [[3]]
     }
 
 }
