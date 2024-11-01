@@ -76,7 +76,7 @@ public class WordLadderII {
      *
      * Time: O(26NL)  Space: O(NL)
      */
-    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+    public List<List<String>> findLadders2(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
         Set<String> wordSet = new HashSet<>(wordList);
         if (!wordSet.contains(endWord)) return res;
@@ -123,6 +123,71 @@ public class WordLadderII {
         return res;
     }
 
+    /************** Solution 3: Bi-directional BFS + DFS ***********************/
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> res = new ArrayList<>();
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.remove(endWord)) return res; // 注意！！！必须 remove beginWord & endWord！！！
+        wordSet.remove(beginWord);
+
+        // Bi-directional BFS to build adjacency list - parents
+        Map<String, List<String>> parents = new HashMap<>();
+        Set<String> beginSet = new HashSet<>(), endSet = new HashSet<>();
+        beginSet.add(beginWord);
+        endSet.add(endWord);
+        boolean found = false, forward = true;
+        while (!beginSet.isEmpty() && !endSet.isEmpty() && !found) {
+//            System.out.println("<- new level -> ");
+            if (beginSet.size() > endSet.size()) {
+                Set<String> temp = beginSet;
+                beginSet = endSet;
+                endSet = temp;
+                forward = !forward;
+            }
+            Set<String> nextSet = new HashSet<>(), visited = new HashSet<>();
+            for (String word : beginSet) {
+                for (int i = 0; i < word.length(); i++) {
+                    for (char c : CANDIDATES) {
+                        String newWord = word.substring(0, i) + c + word.substring(i + 1);
+                        if (endSet.contains(newWord)) {
+                            found = true;
+                            addEdge(word, newWord, parents, forward);
+                        } else if (wordSet.contains(newWord) && !found) {
+                            addEdge(word, newWord, parents, forward);
+                            if (visited.add(newWord)) {
+                                nextSet.add(newWord);
+                            }
+                        }
+                    }
+                }
+            }
+            beginSet = nextSet;
+            wordSet.removeAll(visited);
+        }
+        // DFS backtracking build res
+        if (found) {
+            List<String> path = new ArrayList<>();
+            path.add(endWord);
+            recur(endWord, beginWord, parents, path, res);
+        }
+        return res;
+    }
+
+    private void addEdge(String parent, String child, Map<String, List<String>> parents, boolean forward) {
+//        if (forward) {
+//            System.out.println(parent + " -> " + child);
+//        } else {
+//            System.out.println(child + " <- " + parent);
+//        }
+        if (!forward) {
+            String temp = parent;
+            parent = child;
+            child = temp;
+        }
+        parents.putIfAbsent(child, new ArrayList<>());
+        parents.get(child).add(parent);
+    }
+
     private void recur(String word, String beginWord, Map<String, List<String>> parents, List<String> path, List<List<String>> res) {
         if (beginWord.equals(word)) {
             List<String> clonedPath = new ArrayList<>(path);
@@ -136,8 +201,6 @@ public class WordLadderII {
             path.remove(path.size() - 1);
         }
     }
-
-    /************** Solution 3: TODO: Bi-directional BFS ***********************/
 
     public static void main(String[] args) {
         WordLadderII solution = new WordLadderII();
