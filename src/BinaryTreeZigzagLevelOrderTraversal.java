@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 103. Binary Tree Zigzag Level Order Traversal (https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/description/)
+ */
 class BinaryTreeZigzagLevelOrderTraversal {
 
     /******************** Solution 1: BFS + Collections.reverse ********************/
@@ -105,6 +108,8 @@ class BinaryTreeZigzagLevelOrderTraversal {
 
     public static void main(String[] args) {
         BinaryTreeZigzagLevelOrderTraversal solution = new BinaryTreeZigzagLevelOrderTraversal();
+
+        // [[3],[20,9],[15,7]]
         TreeNode tree1 = new TreeNode(3,
                 new TreeNode(9),
                 new TreeNode(20,
@@ -112,9 +117,11 @@ class BinaryTreeZigzagLevelOrderTraversal {
                         new TreeNode(7)));
         print(solution.binaryTreeZigzagLevelOrderTraversal(tree1));
 
+        // [[1]]
         TreeNode tree2 = new TreeNode(1);
         print(solution.binaryTreeZigzagLevelOrderTraversal(tree2));
 
+        // []
         TreeNode tree3 = null;
         print(solution.binaryTreeZigzagLevelOrderTraversal(tree3));
     }
