@@ -35,11 +35,11 @@ public class HappyNumber {
      * Space: O(1)
      */
     public boolean isHappy(int n) {
-        int slow = n, fast = getNext(n);
-        while (fast != 1 && fast != slow) {
+        int slow = n, fast = n;
+        do {
             slow = getNext(slow);
             fast = getNext(getNext(fast));
-        }
+        } while (slow != fast && fast != 1);
         return fast == 1;
     }
 
@@ -48,6 +48,7 @@ public class HappyNumber {
         while (n > 0) {
             int digit = n % 10;
             next += digit * digit;
+//            next += (int) Math.pow(n % 10, 2);
             n /= 10;
         }
         return next;
@@ -55,7 +56,7 @@ public class HappyNumber {
 
     public static void main(String[] args) {
         HappyNumber solution = new HappyNumber();
-        System.out.println(solution.isHappy(19));
-        System.out.println(solution.isHappy(2));
+        System.out.println(solution.isHappy(19)); // true
+        System.out.println(solution.isHappy(2)); // false
     }
 }
