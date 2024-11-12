@@ -10,6 +10,15 @@ public class RegularExpressionMatching {
 
     /******************** Solution 1: Top Down Recursive + Memo *******************/
     /**
+     * 几种情况需要考虑：
+     * p 到头了 => s 必须也到头了，s 不能还有没 match 的
+     * s 到头了 => p 不一定到头了，后面还可以有 *
+     * s[i] 和 p[j] 可以 match => firstMatch = i < s.length() && (s.charAt(i) == p.charAt(j) || '.' == p.charAt(j))
+     * （1）后面没有 *，必须 firstMatch && recur(i+1,j+1)
+     * （2）后面有 *，则
+     *     a. 当前 s[i] match 掉 => firstMatch && recur(i+1,j)
+     *     b. 当前 s[i] 不 match => recur(i,j+2)
+     *
      * Time:
      * before memo O(2^(S+P))
      * after memo O(S X P)
@@ -42,30 +51,36 @@ public class RegularExpressionMatching {
 
     /******************** Solution 2: Bottom Up DP *******************/
     /**
+     * dp[i][j] = dp[i-1][j-1] && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') ->【左上角向右下角转移】
+     *          || p.charAt[j] == '*' && (p[i][j-2] || (s.charAt(i) == p.charAt(j - 1) || p.charAt(j - 1) == '.') && dp[i-1][j])
+     *                                        |                                        |
+     *                          【左两列向右转移，即舍弃当前*项】               【上一行向下转移，即试图扩展当前*项】
+     *
      * Time: O(S X P)   Space: O(S X P)
      */
     public boolean isMatch(String s, String p) {
         s = "#" + s; p = "#" + p;
-        boolean[][] dp = new boolean[s.length()][p.length()];
+        int r = s.length(), c = p.length();
+        boolean[][] dp = new boolean[r][c];
 
         // 设置初始值, 第一列除第一个一定全为false
         dp[0][0] = true; // 相当于空的 s & p，match = true
-        for (int j = 2; j < p.length(); j++) {
+        for (int j = 2; j < c; j++) {
             // 相当于空s和a*b*c*，match = true
             if ('*' == p.charAt(j)) dp[0][j] = dp[0][j - 2];
         }
 
-        for (int i = 1; i < s.length(); i++) {
-            for (int j = 1; j < p.length(); j++) {
-                if (s.charAt(i) == p.charAt(j) || '.' == p.charAt(j)) {
-                    dp[i][j] = dp[i - 1][j - 1]; // 当前位置match
-                } else if ('*' == p.charAt(j)) {
-                    dp[i][j] = dp[i][j - 2] // 当前*组忽略
-                            || ((s.charAt(i) == p.charAt(j - 1) || '.' == p.charAt(j - 1)) && dp[i - 1][j]); // *前一个位置match
-                }
+        for (int i = 1; i < r; i++) {
+            for (int j = 1; j < c; j++) {
+                dp[i][j] = dp[i - 1][j - 1] && match(s, i, p, j)
+                        || p.charAt(j) == '*' && (dp[i][j - 2] || dp[i - 1][j] && match(s, i, p, j - 1));
             }
         }
         return dp[s.length() - 1][p.length() - 1];
+    }
+
+    private boolean match(String s, int i, String p, int j) {
+        return s.charAt(i) == p.charAt(j) || p.charAt(j) == '.';
     }
 
     public static void main(String[] args) {
