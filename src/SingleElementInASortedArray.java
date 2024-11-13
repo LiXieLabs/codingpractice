@@ -1,3 +1,6 @@
+/**
+ * 540. Single Element in a Sorted Array (https://leetcode.com/problems/single-element-in-a-sorted-array/description/)
+ */
 public class SingleElementInASortedArray {
 
     /************* Solution 1: Binary Search and Move based on Pattern ***************/
@@ -58,9 +61,9 @@ public class SingleElementInASortedArray {
 
     public static void main(String[] args) {
         SingleElementInASortedArray solution = new SingleElementInASortedArray();
-        System.out.println(solution.singleNonDuplicate(new int[]{1,1,2,3,3,4,4,8,8}));
-        System.out.println(solution.singleNonDuplicate(new int[]{3,3,7,7,10,11,11}));
-        System.out.println(solution.singleNonDuplicate(new int[]{1,1,2,2,3}));
-        System.out.println(solution.singleNonDuplicate(new int[]{1,2,2,3,3}));
+        System.out.println(solution.singleNonDuplicate(new int[]{1,1,2,3,3,4,4,8,8})); // 2
+        System.out.println(solution.singleNonDuplicate(new int[]{3,3,7,7,10,11,11})); // 10
+        System.out.println(solution.singleNonDuplicate(new int[]{1,1,2,2,3})); // 3
+        System.out.println(solution.singleNonDuplicate(new int[]{1,2,2,3,3})); // 1
     }
 }
