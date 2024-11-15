@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 104. Maximum Depth of Binary Tree (https://leetcode.com/problems/maximum-depth-of-binary-tree/description/)
+ */
 public class MaximumDepthOfBinaryTree {
 
     /*********** Soluion 1: Iterative BFS ***************/
@@ -37,8 +40,14 @@ public class MaximumDepthOfBinaryTree {
 
     public static void main(String[] args) {
         MaximumDepthOfBinaryTree solution = new MaximumDepthOfBinaryTree();
+
+        // 0
         System.out.println(solution.maxDepth(null));
+
+        // 2
         System.out.println(solution.maxDepth(new TreeNode(1, null, new TreeNode(2))));
+
+        // 3
         System.out.println(solution.maxDepth(new TreeNode(3,
                 new TreeNode(9),
                 new TreeNode(20,
