@@ -1,26 +1,38 @@
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * 260. Single Number III (https://leetcode.com/problems/single-number-iii/description/)
+ */
 public class SingleNumberIII {
 
+    /************ Solution 1: Bit Manipulation ****************/
+    /**
+     * (1) XOR 保留所有 odd time elements
+     * (2) a AND (-a) 提取 a 的第一个为 1 的 bit
+     *
+     * Time: O(2N) = O(N)  Space: O(N)
+     */
     public int[] singleNumber(int[] nums) {
+        // bitMask = x ^ y
+        int bitMask = 0;
+        for (int n : nums) bitMask ^= n;
+
+        // 此时 bitMask = x ^ y
+        // firstDiffBit 为 x 和 y 第一个不一样的 bit
+        int firstDiffBit = bitMask & (-bitMask);
+
+        // 把 nums 中，跟 x，y 其中一个一样的都挑出来再做一遍 xor
+        // 这样其中一个就单独留下来了
         int x = 0;
         for (int n : nums) {
-            x ^= n;
-        }
-        int y = 1;
-        while ((y & x) == 0) {
-            y <<= 1;
-        }
-        int a = 0, b = 0;
-        for (int n : nums) {
-            if ((n & y) == 0) {
-                a ^= n;
-            } else {
-                b ^= n;
+            if ((n & firstDiffBit) == 0) {
+                x ^= n;
             }
         }
-        return new int[]{a, b};
+
+        // bitMask ^ x = x ^ y ^ x = y
+        return new int[]{x, bitMask ^ x};
     }
 
     public String print(int[] input) {
@@ -29,7 +41,7 @@ public class SingleNumberIII {
 
     public static void main(String[] args) {
         SingleNumberIII solution = new SingleNumberIII();
-        System.out.println(solution.print(solution.singleNumber(new int[]{1,2,1,3,2,5})));
-        System.out.println(solution.print(solution.singleNumber(new int[]{-1,0})));
+        System.out.println(solution.print(solution.singleNumber(new int[]{1,2,1,3,2,5}))); // [5,3]
+        System.out.println(solution.print(solution.singleNumber(new int[]{-1,0}))); // [0,-1]
     }
 }
