@@ -1,6 +1,10 @@
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 105. Construct Binary Tree from Preorder and Inorder Traversal
+ * (https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/)
+ */
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     int[] preorder;
@@ -15,7 +19,7 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
      *
      * thus, at any time, preorder[0] is root, as values are already UNIQUE
      * we can find the root in inorder which is i, left to it is left subtree's inorder traversal, right to it is the right subtree's inorder traversal
-     * then we know the left & right subtree's size, we can get the their preorder traversal from preorder array.
+     * then we know the left & right subtree's size, we can get the preorder traversal from preorder array.
      * repeat the flow until the base case.
      *
      * Base cases are
@@ -54,10 +58,17 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     public static void main(String[] args) {
         ConstructBinaryTreeFromPreorderAndInorderTraversal solution = new ConstructBinaryTreeFromPreorderAndInorderTraversal();
-        Utils.print(solution.buildTree(new int[]{3,9,20,15,7}, new int[]{9,3,15,20,7})); // TC1
-        Utils.print(solution.buildTree(new int[]{3,20,15,7}, new int[]{3,15,20,7})); // TC2 右侧缺失
-        Utils.print(solution.buildTree(new int[]{3,20,15,7}, new int[]{15,20,7,3})); // TC3 右侧缺失
-        Utils.print(solution.buildTree(new int[]{-1}, new int[]{-1})); // TC4 base case
 
+        // TC1 => [3,9,20,null,null,15,7,null,null,null,null]
+        Utils.print(solution.buildTree(new int[]{3,9,20,15,7}, new int[]{9,3,15,20,7}));
+
+        // TC2 右侧缺失 => [3,null,20,15,7,null,null,null,null]
+        Utils.print(solution.buildTree(new int[]{3,20,15,7}, new int[]{3,15,20,7}));
+
+        // TC3 右侧缺失 => [3,20,null,15,7,null,null,null,null]
+        Utils.print(solution.buildTree(new int[]{3,20,15,7}, new int[]{15,20,7,3}));
+
+        // TC4 base case => [-1,null,null]
+        Utils.print(solution.buildTree(new int[]{-1}, new int[]{-1}));
     }
 }
