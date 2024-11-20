@@ -1,10 +1,11 @@
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 301. Remove Invalid Parentheses (https://leetcode.com/problems/remove-invalid-parentheses/description/)
+ */
 public class RemoveInvalidParentheses {
 
     /***************** Solution 1: BFS by HashSet ********************/
@@ -14,7 +15,8 @@ public class RemoveInvalidParentheses {
      * each combination, we need run isValid take O(N) to validate
      *
      * Space: O(N!)
-     * leaves count be N X (N-1) X (N-2) X...X 1 = O(N!)
+     * 第一层是 n-ary，第二层是 (n-1)-ary，第三层是（n-2)-ary...
+     * leaves count is N X (N-1) X (N-2) X...X 1 = O(N!)
      *
      * Recur DFS + Memo 也可以
      */
