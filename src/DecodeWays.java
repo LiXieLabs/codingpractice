@@ -15,17 +15,17 @@ public class DecodeWays {
     public int numDecodings1(String s) {
         memo = new HashMap<>();
         memo.put(s.length(), 1);
-        return recur(s, 0);
+        return recur1(s, 0);
     }
 
-    private int recur(String s, int startIdx) {
+    private int recur1(String s, int startIdx) {
         if (!memo.containsKey(startIdx)) {
             int res = 0;
             for (int endIdx = startIdx + 1; endIdx - startIdx <= 2 && endIdx <= s.length(); endIdx++) {
                 String str = s.substring(startIdx, endIdx);
                 int num = Integer.parseInt(str);
                 if (1 <= num && num <= 26 && !str.startsWith("0")) {
-                    res += recur(s, endIdx);
+                    res += recur1(s, endIdx);
                 }
             }
             memo.put(startIdx, res);
@@ -33,8 +33,35 @@ public class DecodeWays {
         return memo.get(startIdx);
     }
 
+    /********************* Solution 2: Solution 1 更好理解的版本 *********************/
+    /**
+     * Time: Memoized to O(N) as each index calls recur once
+     * Space: O(N) by memo HashMap & recur stack
+     */
+    public int numDecodings2(String s) {
+        memo = new HashMap<>();
+        memo.put(s.length(), 1);
+        return recur2(s, 0);
+    }
 
-    /********************* Solution 2: Bottom Up 1D DP *********************/
+    private int recur2(String s, int i) {
+        if (!memo.containsKey(i)) {
+            int res = 0;
+            // s[i] 单独 decode
+            if (s.charAt(i) != '0') res = recur2(s, i + 1);
+            // s[i,i+2] 一起 decode
+            if (i + 1 < s.length() && s.charAt(i) != '0') {
+                int doubleDigitNum = Integer.parseInt(s.substring(i, i + 2));
+                if (1 <= doubleDigitNum && doubleDigitNum <= 26) {
+                    res += recur2(s, i + 2);
+                }
+            }
+            memo.put(i, res);
+        }
+        return memo.get(i);
+    }
+
+    /********************* Solution 3: Bottom Up 1D DP *********************/
     /**
      * dp[i] 表示以 i 为 end index (exclusive) 的 s[0:i] 有 dp[i] 种 decode 结果
      *
@@ -47,7 +74,7 @@ public class DecodeWays {
      *
      * Time: O(N)   Space: O(N)
      */
-    public int numDecodings2(String s) {
+    public int numDecodings3(String s) {
         int[] dp = new int[s.length() + 1];
         dp[0] = 1;
         for (int endIdx = 1; endIdx <= s.length(); endIdx++) {
@@ -62,11 +89,11 @@ public class DecodeWays {
         return dp[s.length()];
     }
 
-    /********************* Solution 3: Solution 2 优化为 O(1) space *********************/
+    /********************* Solution 4: Solution 3 优化为 O(1) space *********************/
     /**
      * Time: O(N)   Space: O(1)
      */
-    public int numDecodings(String s) {
+    public int numDecodings4(String s) {
         int[] dp = new int[3];
         dp[0] = 1;
         for (int endIdx = 1; endIdx <= s.length(); endIdx++) {
@@ -80,6 +107,34 @@ public class DecodeWays {
             }
         }
         return dp[s.length() % 3];
+    }
+
+    /********************* Solution 5: Solution 4 更容易理解的版本 *********************/
+    /**
+     * dp[i] 表示到 s[i] 为止有多少种 decode ways
+     * dp[i] = s[i] 单独 decode
+     *       + s[i-1,i+1] 一起 decode
+     *       = dp[i-1] (s[i] != 0)
+     *       + dp[i-2] (1 <= s[i-1,i+1] <= 26)
+     * Time: O(N)   Space: O(1)
+     */
+    public int numDecodings(String s) {
+        int prepre = 0, pre = 1;
+        for (int i = 0; i < s.length(); i++) {
+            int cur = 0;
+            // s[i] 单独 decode
+            if (s.charAt(i) != '0') cur = pre;
+            // s[i-1,i+1] 一起 decode
+            if (i - 1 >= 0 && s.charAt(i - 1) != '0') {
+                int doubleDigitNum = Integer.parseInt(s.substring(i - 1, i + 1));
+                if (1 <= doubleDigitNum && doubleDigitNum <= 26) {
+                    cur += prepre;
+                }
+            }
+            prepre = pre;
+            pre = cur;
+        }
+        return pre;
     }
 
     public static void main(String[] args) {
