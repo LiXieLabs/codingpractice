@@ -15,21 +15,17 @@ public class FindKClosestElements {
     public List<Integer> findClosestElements1(int[] arr, int k, int x) {
         int pos = bisectLeft(arr, x);
         int l = pos - 1, r = pos;
-        Deque<Integer> deque = new ArrayDeque<>();
-        while (deque.size() < k) {
+        Deque<Integer> res = new ArrayDeque<>();
+        while (res.size() < k) {
             int left = l >= 0 ? Math.abs(arr[l] - x) : Integer.MAX_VALUE;
             int right = r < arr.length ? Math.abs(arr[r] - x) : Integer.MAX_VALUE;
             if (left <= right) {
-                deque.push(arr[l--]);
+                res.push(arr[l--]);
             } else {
-                deque.offer(arr[r++]);
+                res.offer(arr[r++]);
             }
         }
-        List<Integer> res = new ArrayList<>();
-        while (!deque.isEmpty()) {
-            res.add(deque.pop());
-        }
-        return res;
+        return new ArrayList<>(res);
     }
 
     private int bisectLeft(int[] arr, int target) {
@@ -47,7 +43,7 @@ public class FindKClosestElements {
 
     /************** Solution 2: Binary Search Left Bound of the K-size Window **************/
     /**
-     * 左边界的范围 [0, arr.length()-k]
+     * 左边界的范围 [0, arr.length()-k] (inclusive)
      * arr[mid] 和 arr[mid+k] 肯定不在同一个k-size里
      * 如果 arr[mid+k] 离 x 更近，需向右移动window
      * 反之，结果在当前边界及其左边中
@@ -58,6 +54,8 @@ public class FindKClosestElements {
         int lo = 0, hi = arr.length - k;
         while (lo < hi) {
             int mid = lo + (hi - lo >> 1);
+            // 注意！！！Math.abs(arr[mid + k] - x) < Math.abs(arr[mid] - x) 不行！！！否则 TC1 会 fail！！！
+            // x 一定在 arr[mid] 和 arr[mid + k] 之间！！！
             if (x - arr[mid] <= arr[mid + k] - x) {
                 hi = mid;
             } else {
@@ -65,16 +63,19 @@ public class FindKClosestElements {
             }
         }
         List<Integer> res = new ArrayList<>();
-        while (res.size() < k) {
-            res.add(arr[lo++]);
-        }
+        while (res.size() < k) res.add(arr[lo++]);
         return res;
     }
 
     public static void main(String[] args) {
         FindKClosestElements solution = new FindKClosestElements();
+        // TC1 => [2, 3, 3]
+        System.out.println(solution.findClosestElements(new int[]{1,1,2,2,2,2,2,3,3}, 3, 3));
+        // TC2 => [1, 2, 3, 4]
         System.out.println(solution.findClosestElements(new int[]{1,2,3,4,5}, 4, 3));
+        // TC3 => [1, 2, 3, 4]
         System.out.println(solution.findClosestElements(new int[]{1,2,3,4,5}, 4, -1));
+        // TC4 => [2, 3, 4, 5]
         System.out.println(solution.findClosestElements(new int[]{1,2,3,4,5}, 4, 20));
     }
 }
