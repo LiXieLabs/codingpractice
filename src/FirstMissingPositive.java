@@ -1,6 +1,9 @@
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 41. First Missing Positive (https://leetcode.com/problems/first-missing-positive/description/)
+ */
 public class FirstMissingPositive {
 
     /************ Solution 1: O(N) Time + O(N) Space ***********/
@@ -51,7 +54,7 @@ public class FirstMissingPositive {
      * 需要预处理: 将<=0的数赋值为1+判断本身是否有1
      */
     public int firstMissingPositive(int[] nums) {
-        // 预处理
+        // 预处理: 将 <=0 的数赋值为 1 + 判断本身是否有 1
         boolean containsOne = false;
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] == 1) containsOne = true;
@@ -61,7 +64,7 @@ public class FirstMissingPositive {
 
         for (int i = 0; i < nums.length; i++) {
             int val = Math.abs(nums[i]);
-            if (0 < val && val <= nums.length && nums[val-1] > 0) {
+            if (0 < val && val <= nums.length && nums[val - 1] > 0) {
                 nums[val-1] *= -1;
             }
         }
@@ -73,9 +76,9 @@ public class FirstMissingPositive {
 
     public static void main(String[] args) {
         FirstMissingPositive solution = new FirstMissingPositive();
-        System.out.println(solution.firstMissingPositive(new int[]{1,2,0,1,-5,3,4}));
-        System.out.println(solution.firstMissingPositive(new int[]{1,2,0,1,-5,2,4}));
-        System.out.println(solution.firstMissingPositive(new int[]{-5,0}));
-        System.out.println(solution.firstMissingPositive(new int[]{3,4,-1,1}));
+        System.out.println(solution.firstMissingPositive(new int[]{1,2,0,1,-5,3,4})); // 5
+        System.out.println(solution.firstMissingPositive(new int[]{1,2,0,1,-5,2,4})); // 3
+        System.out.println(solution.firstMissingPositive(new int[]{-5,0})); // 1
+        System.out.println(solution.firstMissingPositive(new int[]{3,4,-1,1})); // 2
     }
 }
