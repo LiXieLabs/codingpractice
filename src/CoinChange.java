@@ -1,3 +1,6 @@
+/**
+ * 322. Coin Change (https://leetcode.com/problems/coin-change/description/)
+ */
 public class CoinChange {
 
     /*************** Solution 1: DP bottom up *******************/
@@ -25,6 +28,10 @@ public class CoinChange {
 
     /***************** Solution 2: Recur + Memo Top Down ***************/
     /**
+     * 也可以：
+     * Map<Integer, Integer> memo = new HashMap<>();
+     * memo.put(0, 0);
+     *
      * Time complexity : O(S X N).
      * In the worst case the recursive tree of the algorithm has height of S
      * and the algorithm solves only S subproblems because it caches precalculated solutions in a table.
@@ -57,9 +64,9 @@ public class CoinChange {
 
     public static void main(String[] args) {
         CoinChange solution = new CoinChange();
-        System.out.println(solution.coinChange(new int[]{1,2,5}, 11));
-        System.out.println(solution.coinChange(new int[]{2}, 3));
-        System.out.println(solution.coinChange(new int[]{1}, 0));
-        System.out.println(solution.coinChange(new int[]{2147483647}, 2));
+        System.out.println(solution.coinChange(new int[]{1,2,5}, 11)); // 3
+        System.out.println(solution.coinChange(new int[]{2}, 3)); // -1
+        System.out.println(solution.coinChange(new int[]{1}, 0)); // 0
+        System.out.println(solution.coinChange(new int[]{2147483647}, 2)); // -1
     }
 }
