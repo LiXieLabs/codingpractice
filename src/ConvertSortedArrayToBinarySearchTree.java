@@ -1,5 +1,8 @@
 import java.util.Random;
 
+/**
+ * 108. Convert Sorted Array to Binary Search Tree (https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/)
+ */
 public class ConvertSortedArrayToBinarySearchTree {
 
     int[] nums;
@@ -31,7 +34,7 @@ public class ConvertSortedArrayToBinarySearchTree {
 
     public static void main(String[] args) {
         ConvertSortedArrayToBinarySearchTree solution = new ConvertSortedArrayToBinarySearchTree();
-        Utils.print(solution.sortedArrayToBST(new int[]{-10,-3,0,5,9}));
-        Utils.print(solution.sortedArrayToBST(new int[]{1,3}));
+        Utils.print(solution.sortedArrayToBST(new int[]{-10,-3,0,5,9})); // [0,-10,5,null,-3,null,9,null,null,null,null]
+        Utils.print(solution.sortedArrayToBST(new int[]{1,3})); // [1,null,3,null,null]
     }
 }

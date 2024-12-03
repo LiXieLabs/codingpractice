@@ -42,7 +42,7 @@ public class TimeBasedKeyValueStore {
                 hi = mid;
             }
         }
-        return lo == 0 ? "" : pairs.get(lo - 1).getValue();
+        return lo == 0 ? "" : pairs.get(lo - 1).getValue(); // 小心！！！
     }
 
     /********* Solution 2: TreeMap if timestamp is not input in increasing order **************/
