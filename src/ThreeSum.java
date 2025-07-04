@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 15. 3Sum (https://leetcode.com/problems/3sum/description/)
+ */
 public class ThreeSum {
 
     /************* Solution 1: Two Pointers similar as 2SumII *****************/
@@ -41,7 +44,44 @@ public class ThreeSum {
         return res;
     }
 
-    /************* Solution 2: HashSet similar as 2Sum *****************/
+    /************* Solution 2: 更好理解的 Solution 1 *****************/
+    /**
+     * 可modify input array情况下最优解
+     *
+     * Time: O(NlogN + N^2) = O(N^2)
+     * Space: O(1)
+     */
+    public List<List<Integer>> threeSum2(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> results = new ArrayList<>();
+        int target = 0;
+        for (int i = 0; i < nums.length - 2 && nums[i] <= target; i++) {
+            if (i == 0 || nums[i] != nums[i-1]) { // 注意第一个num不能重复，否则会有重复解！
+                for (List<Integer> result : twoSum(nums, i + 1, nums.length - 1, target - nums[i])) {
+                    results.add(Arrays.asList(nums[i], result.get(0), result.get(1)));
+                }
+            }
+        }
+        return results;
+    }
+
+    private List<List<Integer>> twoSum(int[] nums, int i, int j, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        while (i < j) {
+            if (nums[i] + nums[j] == target) {
+                result.add(Arrays.asList(nums[i], nums[j]));
+                do {i++;} while(i < j && nums[i] == nums[i-1]);
+                do {j--;} while(i < j && nums[j] == nums[j+1]);
+            } else if (nums[i] + nums[j] < target) {
+                do {i++;} while(i < j && nums[i] == nums[i-1]);
+            } else {
+                do {j--;} while(i < j && nums[j] == nums[j+1]);
+            }
+        }
+        return result;
+    }
+
+    /************* Solution 3: HashSet similar as 2Sum *****************/
     /**
      * follow up: 不允许modify input array和sort
      * 等同于

@@ -1,7 +1,13 @@
+/**
+ * 680. Valid Palindrome II (https://leetcode.com/problems/valid-palindrome-ii/description/)
+ */
 public class ValidPalindromeII {
 
-    // Time: O(N) Space: O(1) + O(logN) recur call stack
-    // Solution: https://leetcode.com/problems/valid-palindrome-ii/solution/
+    /************** Solution 1: Two Pointers + Recursive ***************/
+    /**
+     * Time: O(N) Space: O(1) + O(logN) recur call stack
+     * Solution: https://leetcode.com/problems/valid-palindrome-ii/solution/
+     */
     public boolean validPalindrome(String s) {
         return isPalindrome(s, 0, s.length() - 1, 1);
     }
@@ -15,9 +21,9 @@ public class ValidPalindromeII {
 
     public static void main(String[] args) {
         ValidPalindromeII solution = new ValidPalindromeII();
-        System.out.println(solution.validPalindrome("aba"));
-        System.out.println(solution.validPalindrome("abca"));
-        System.out.println(solution.validPalindrome("abc"));
-        System.out.println(solution.validPalindrome("cbbcc"));
+        System.out.println(solution.validPalindrome("aba")); // true
+        System.out.println(solution.validPalindrome("abca")); // true
+        System.out.println(solution.validPalindrome("abc")); // false
+        System.out.println(solution.validPalindrome("cbbcc")); // true
     }
 }
