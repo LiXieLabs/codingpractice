@@ -12,23 +12,22 @@ public class SearchInRotatedSortedArray {
     public int search1(int[] nums, int target) {
         int lo = 0, hi = nums.length - 1;
         while (lo <= hi) {
-            int mid = (lo + hi) / 2;
-            if (nums[mid] == target) {
-                return mid;
-            } else if (nums[mid] < target) {
-                if (nums[0] <= nums[mid]) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) return mid;
+            if (nums[mid] < target) {
+                if (nums[0] <= nums[mid]) { // mid 处于第一个递增区间，一定向右移动
                     lo = mid + 1;
-                } else if (nums[0] <= target) {
+                } else if (nums[0] <= target) { // mid 处于第二个递增区间，target 处于第一个递增区间，向左移动
                     hi = mid - 1;
-                } else {
+                } else { // mid 处于第二个递增区间，target 也处于第二个递增区间，向右移动
                     lo = mid + 1;
                 }
             } else {
-                if (nums[mid] <= nums[nums.length - 1]) {
+                if (nums[mid] <= nums[nums.length - 1]) { // mid 处于第二个递增区间，target 也处于第二个递增区间，向左移动
                     hi = mid - 1;
-                } else if (target <= nums[nums.length - 1]) {
+                } else if (target <= nums[nums.length - 1]) { // mid 处于第一个递增区间，target 处于第二个递增区间，向右移动
                     lo = mid + 1;
-                } else {
+                } else { // mid 处于第一个递增区间，target 也处于第一个递增区间，向左移动
                     hi = mid - 1;
                 }
             }
@@ -51,7 +50,7 @@ public class SearchInRotatedSortedArray {
     public int search(int[] nums, int target) {
         int lo = 0, hi = nums.length - 1;
         while (lo <= hi) {
-            int mid = (lo + hi) / 2;
+            int mid = lo + (hi - lo) / 2;
             boolean diffSide = (nums[mid] >= nums[0] ^ target >= nums[0]);
             if (nums[mid] < target) {
                 if (diffSide) {

@@ -89,11 +89,12 @@ public class FourSum {
         return kSum(nums, target, 4, 0);
     }
 
+    // long target - or else TC3 fail
     private List<List<Integer>> kSum(int[] nums, long target, int k, int start) {
         List<List<Integer>> res = new ArrayList<>();
         if (k == 2) {
-//            return twoSumBy2Pointers(nums, target, start);
-            return twoSumByHashSet(nums, target, start);
+            return twoSumBy2Pointers(nums, target, start);
+//            return twoSumByHashSet(nums, target, start);
         }
         for (int i = start; i < nums.length - k + 1; i++) {
             if (i != start && nums[i] == nums[i - 1]) continue;
@@ -106,6 +107,7 @@ public class FourSum {
         return res;
     }
 
+    // long target - or else TC3 fail
     private List<List<Integer>> twoSumBy2Pointers(int[] nums, long target, int start) {
         List<List<Integer>> res = new ArrayList<>();
         int l = start, r = nums.length - 1;
@@ -126,6 +128,7 @@ public class FourSum {
         return res;
     }
 
+    // long target - or else TC3 fail
     private List<List<Integer>> twoSumByHashSet(int[] nums, long target, int start) {
         Set<List<Integer>> res = new HashSet<>();
         Set<Long> seenRemain = new HashSet<>();
