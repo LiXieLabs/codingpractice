@@ -8,13 +8,13 @@ public class SearchA2DMatrix {
      * Time: O(log(RC))    Space: O(1)
      */
     public boolean searchMatrix(int[][] matrix, int target) {
-        int row = matrix.length, col = matrix[0].length;
-        int lo = 0, hi = row * col - 1;
+        int r = matrix.length, c = matrix[0].length;
+        int lo = 0, hi = r * c - 1;
         while (lo <= hi) {
-            int mid = (lo + hi) >> 1;
-            if (matrix[mid / col][mid % col] == target) {
-                return true;
-            } else if (matrix[mid / col][mid % col] < target) {
+            int mid = lo + (hi - lo) / 2;
+            int i = mid / c, j = mid % c;
+            if (matrix[i][j] == target) return true;
+            if (matrix[i][j] < target) {
                 lo = mid + 1;
             } else {
                 hi = mid - 1;

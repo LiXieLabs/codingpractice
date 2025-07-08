@@ -89,7 +89,7 @@ public class SearchA2DMatrixII {
         int i = row - 1, j = 0;
         while (i >= 0 && j < col) {
             if (matrix[i][j] == target) return true;
-            else if (matrix[i][j] < target) j++;
+            if (matrix[i][j] < target) j++;
             else i--;
         }
         return false;
