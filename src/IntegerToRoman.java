@@ -23,7 +23,7 @@ public class IntegerToRoman {
 
     /********** Solution 1: Hardcode Digits **********/
     /**
-     * Time: O(1)   Space: O(1)
+     * Time: O(N)   Space: O(1)
      */
     public String intToRoman1(int num) {
         List<String> res = new ArrayList<>();
@@ -38,9 +38,9 @@ public class IntegerToRoman {
 
     /************** Solution 2: Greedy *************/
     /**
-     * Time: O(1)   Space: O(1)
+     * Time: O(N)   Space: O(1)
      */
-    public String intToRoman(int num) {
+    public String intToRoman2(int num) {
         StringBuilder sb = new StringBuilder();
         int i = 0;
         while (num > 0) {
@@ -50,6 +50,22 @@ public class IntegerToRoman {
             } else {
                 i++;
             }
+        }
+        return sb.toString();
+    }
+
+    /************** Solution 3: Another Greedy *************/
+    /**
+     * Time: O(N)   Space: O(1)
+     */
+    public String intToRoman(int num) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < values.length && num > 0; i++) {
+            int n = values[i];
+            for (int j = num / n; j > 0; j--) {
+                sb.append(symbols[i]);
+            }
+            num %= n;
         }
         return sb.toString();
     }

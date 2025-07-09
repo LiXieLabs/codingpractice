@@ -1,12 +1,12 @@
-import com.sun.jmx.remote.internal.ArrayQueue;
-
 import java.util.HashMap;
-    import java.util.Map;
+import java.util.Map;
 
+/**
+ * 13. Roman to Integer (https://leetcode.com/problems/roman-to-integer/description/)
+ */
 public class RomanToInteger {
 
     static Map<Character, Integer> map = new HashMap<>();
-
     static {
         map.put('I', 1);
         map.put('V', 5);
@@ -17,6 +17,10 @@ public class RomanToInteger {
         map.put('M', 1000);
     }
 
+    /************ Solution 1: Greedy - Right to Left ****************/
+    /**
+     * Time: O(N) Space: O(1)
+     */
     public int romanToInt(String s) {
         int res = 0, i = s.length() - 1;
         while (i >= 0) {
@@ -31,8 +35,8 @@ public class RomanToInteger {
 
     public static void main(String[] args) {
         RomanToInteger solution = new RomanToInteger();
-        System.out.println(solution.romanToInt("III"));
-        System.out.println(solution.romanToInt("LVIII"));
-        System.out.println(solution.romanToInt("MCMXCIV"));
+        System.out.println(solution.romanToInt("III")); // 3
+        System.out.println(solution.romanToInt("LVIII")); // 58
+        System.out.println(solution.romanToInt("MCMXCIV")); // 1994
     }
 }
