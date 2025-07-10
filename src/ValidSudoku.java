@@ -49,7 +49,7 @@ public class ValidSudoku {
      * and 1st 9 bits of the number stands for a number in the row/col/cube
      * 1 means it presents, or else 0 means it doesn't present.
      *
-     * Time: O(N^2)   Space: O(N)
+     * Time: O(N^2)   Space: O(1)
      */
     public boolean isValidSudoku(char[][] board) {
         int N = 9;

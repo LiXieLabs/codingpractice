@@ -4,10 +4,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * 49. Group Anagrams (https://leetcode.com/problems/group-anagrams/description/)
+ */
 public class GroupAnagrams {
 
     /************ Solution 1: Hash by counter in alphabetical order *********/
     /**
+     * 另一种方法是
+     * char[] ca = s.toCharArray()
+     * Arrays.sort(ca) => 用作 hash
+     * 但是时间复杂度NKlogK，会超时
+     *
      * N is the length of strs, and K is the maximum length of a string in strs.
      * Time Complexity: O(NK), counting each string is linear in the size of the string, and we count every string.
      * Space Complexity: O(NK), the total information content stored in ans.
@@ -24,12 +32,14 @@ public class GroupAnagrams {
     }
 
     public String build(String s) {
+        // 用 int[26] 也可以
         Map<Character,Integer> counter = new HashMap<>();
         for (Character c : s.toCharArray()) {
             counter.put(c, counter.getOrDefault(c, 0) + 1);
         }
         StringBuilder sb = new StringBuilder();
         // int和char比较，可以直接操作， 不用cast
+        // 也可以不带char，直接按字母顺序，用；连接即可
         for (int i = 'a'; i <= 'z'; i++) {
             Character c = (char) i;
             if (counter.containsKey(c)) {
