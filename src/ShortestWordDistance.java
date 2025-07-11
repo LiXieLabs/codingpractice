@@ -3,7 +3,28 @@
  */
 public class ShortestWordDistance {
 
-    /********** Solution 1: One Pass ***************/
+    /********** Solution 1: Intuitive Two Pointers ***************/
+    /**
+     * Time: O(2 * L * N) L is wordsDict len & N is length of word1 and word2
+     * Space: O(1)
+     */
+    public int shortestDistance1(String[] wordsDict, String word1, String word2) {
+        int i = 0, j = 0;
+        while (!word1.equals(wordsDict[i])) i++;
+        while (!word2.equals(wordsDict[j])) j++;
+        int res = wordsDict.length;
+        while (i < wordsDict.length && j < wordsDict.length) {
+            res = Math.min(res, Math.abs(i - j));
+            if (i < j) {
+                do { i++; } while (i < wordsDict.length && !word1.equals(wordsDict[i]));
+            } else {
+                do { j++; } while (j < wordsDict.length && !word2.equals(wordsDict[j]));
+            }
+        }
+        return res;
+    }
+
+    /******************* Solution 2: One Pass *******************/
     /**
      * Time: O(L * N) L is wordsDict len & N is length of word1 and word2
      * Space: O(1)
@@ -25,8 +46,8 @@ public class ShortestWordDistance {
 
     public static void main(String[] args) {
         ShortestWordDistance solution = new ShortestWordDistance();
-        System.out.println(solution.shortestDistance(new String[]{"practice", "makes", "perfect", "coding", "makes"}, "coding", "practice"));
-        System.out.println(solution.shortestDistance(new String[]{"practice", "makes", "perfect", "coding", "makes"}, "makes", "coding"));
+        System.out.println(solution.shortestDistance(new String[]{"practice", "makes", "perfect", "coding", "makes"}, "coding", "practice")); // 3
+        System.out.println(solution.shortestDistance(new String[]{"practice", "makes", "perfect", "coding", "makes"}, "makes", "coding")); // 1
     }
 }
 

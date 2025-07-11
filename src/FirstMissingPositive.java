@@ -31,6 +31,13 @@ public class FirstMissingPositive {
      */
     public int firstMissingPositive2(int[] nums) {
         for (int i = 0; i < nums.length; i++) {
+            /**
+             * 本来应该是:
+             * while (0 < nums[i] && nums[i] <= nums.length && nums[i] - 1 != i && nums[nums[i] - 1] != nums[i])
+             * 1. nums[i] - 1 != i 表示当前位置正整数值是不是当前index值
+             * 2. nums[nums[i] - 1] != nums[i] 是防止 [1,1] 陷入死循环
+             * 实际上 nums[i] - 1 != i 可以被省略，因为 2. 满足，则 1. 一定满足
+             */
             // if nums[i] is candidate & nums[nums[i]-1]还没被标记上
             while (0 < nums[i] && nums[i] <= nums.length && nums[nums[i]-1] != nums[i]) {
                 // 交换值直到不是candidate或者对应位置已经被标记过了
@@ -80,5 +87,6 @@ public class FirstMissingPositive {
         System.out.println(solution.firstMissingPositive(new int[]{1,2,0,1,-5,2,4})); // 3
         System.out.println(solution.firstMissingPositive(new int[]{-5,0})); // 1
         System.out.println(solution.firstMissingPositive(new int[]{3,4,-1,1})); // 2
+        System.out.println(solution.firstMissingPositive(new int[]{1,1})); // 2
     }
 }
