@@ -1,8 +1,9 @@
-import com.sun.jmx.remote.internal.ArrayQueue;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * 32. Longest Valid Parentheses (https://leetcode.com/problems/longest-valid-parentheses/description/)
+ */
 public class LongestValidParentheses {
 
     /************** Solution 1: 2D DP ******************/
@@ -73,30 +74,36 @@ public class LongestValidParentheses {
      * Time: O(N)  Space: O(N) by stack
      *
      * Stack记录还没有被匹配上的括号的index
+     * 该方法最好理解 + 容易想到和实现！！！
      */
     public int longestValidParentheses3(String s) {
-        int res = 0, l = s.length();
+        int maxLen = 0;
         Deque<Integer> stack = new ArrayDeque<>();
-        for (int i = 0; i < l; i++) {
-            if (s.charAt(i) == '(') {
-                stack.push(i);
-            } else if (!stack.isEmpty() && s.charAt(stack.peek()) == '(') {
-                stack.pop();
+        stack.push(-1);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == ')') {
+                if (stack.peek() != -1 && s.charAt(stack.peek()) == '(') {
+                    stack.pop();
+                    maxLen = Math.max(maxLen, i - stack.peek());
+                } else {
+                    stack.push(i);
+                }
             } else {
                 stack.push(i);
             }
-            int lastUnmatched = stack.isEmpty() ? -1 : stack.peek();
-            res = Math.max(res, i - lastUnmatched);
         }
-        return res;
+        return maxLen;
     }
 
-    /**************** Solution 4: Two-pass without extra space ***************/
+    /**************** Solution 4: Greedy Two-pass without extra space ***************/
     /**
      * Time: O(N)  Space: O(1)
      */
     public int longestValidParentheses(String s) {
         int res = 0, l = s.length();
+        // 从左往右，左右括号数量相等则更新res，
+        // 可以用数量判断的前提是：一旦右括号多，则前面的肯定无效，左右数量都归零！！！
         int left = 0, right = 0;
         for (int i = 0; i < l; i++) {
             if (s.charAt(i) == '(') {
@@ -110,6 +117,8 @@ public class LongestValidParentheses {
                 left = right = 0;
             }
         }
+        // 从右往左，左右括号数量相等则更新res，
+        // 可以用数量判断的前提是：一旦左括号多，则后面的肯定无效，左右数量都归零！！！
         left = right = 0;
         for (int i = l - 1; i >= 0; i--) {
             if (s.charAt(i) == '(') {
@@ -128,10 +137,9 @@ public class LongestValidParentheses {
 
     public static void main(String[] args) {
         LongestValidParentheses solution = new LongestValidParentheses();
-        System.out.println(solution.longestValidParentheses("(()"));
-        System.out.println(solution.longestValidParentheses(")()())"));
-        System.out.println(solution.longestValidParentheses(""));
-
+        System.out.println(solution.longestValidParentheses("(()"));  // 2
+        System.out.println(solution.longestValidParentheses(")()())")); // 4
+        System.out.println(solution.longestValidParentheses("")); // 0
     }
 
 }
