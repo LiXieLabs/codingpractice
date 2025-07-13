@@ -15,10 +15,10 @@ public class BasicCalculator {
      * Time: O(N)   Space: O(N)
      */
     public int calculate1(String s) {
-        Deque<Integer> stack = new ArrayDeque<>();
-        int operand = 0;
-        int res = 0;
-        int sign = 1;
+        Deque<Integer> stack = new ArrayDeque<>(); // 外面每一层的总和以及里面一层的符号
+        int operand = 0; // 当前操作数
+        int res = 0; // 当前括号层总和
+        int sign = 1; // 当前符号
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (Character.isDigit(c)) {
@@ -27,12 +27,12 @@ public class BasicCalculator {
                 res += sign * operand;
                 operand = 0;
                 sign = c == '+' ? 1 : -1;
-            } else if (c == '(') {
+            } else if (c == '(') { // 开启新的一层，该层数字，和新一层符号放入stack
                 stack.push(res);
                 stack.push(sign);
                 res = 0;
                 sign = 1;
-            } else if (c == ')') {
+            } else if (c == ')') { // 结束当前层，从stack读取当前层符号，和上一层总和
                 res += sign * operand;
                 res *= stack.pop();
                 res += stack.pop();
