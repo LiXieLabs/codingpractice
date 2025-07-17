@@ -6,6 +6,10 @@ import java.util.Comparator;
  */
 public class MeetingRooms {
 
+    /*********** Solution 1: Array Sort ********************/
+    /**
+     * Time: O(NlogN)  Space: O(1)
+     */
     public boolean canAttendMeetings(int[][] intervals) {
         if (intervals.length <= 1) return true;
         Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));

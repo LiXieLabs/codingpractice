@@ -16,8 +16,8 @@ public class MeetingRoomsII {
 
     /******************** Solution 1: Iterate over sorted start and put end in heap ************/
     /**
-     * Space: O(N) worst case, each meeting has a new room and enters heap.
      * Time: O(NlogN) for both sort and each enter and exit heap.
+     * Space: O(N) worst case, each meeting has a new room and enters heap.
      */
     public int minMeetingRooms1(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
@@ -38,8 +38,7 @@ public class MeetingRoomsII {
      * （2）end时间排序，对应每一个房间
      * （3）遍历会议的start时间，end时间指向当前最早end的room，
      *     最开始假设每个会议一个房间，每当找到一对start>=end意味着可以少用一个房间，则房间总数减1
-     * Space: O(N)
-     * Time: O(NlogN)
+     * Time: O(NlogN)  Space: O(N)
      */
     public int minMeetingRooms2(int[][] intervals) {
         int[] starts = new int[intervals.length];

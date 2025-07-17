@@ -8,8 +8,7 @@ public class KthLargestElementInAnArray {
 
     /************ Solution 1: K size Min-Heap ****************/
     /**
-     * Space: O(K)
-     * Time: O(NlogK)
+     * Space: O(K)  Time: O(NlogK)
      */
     public int findKthLargest1(int[] nums, int k) {
         PriorityQueue<Integer> heap = new PriorityQueue<>();
@@ -24,8 +23,7 @@ public class KthLargestElementInAnArray {
 
     /*********** Solution 2: Quick Select ********************/
     /**
-     * Time: O(N) worst O(N^2)
-     * Space: O(1)
+     * Time: O(N) worst O(N^2)  Space: O(1)
      */
     Random rand;
     public int findKthLargest(int[] nums, int k) {

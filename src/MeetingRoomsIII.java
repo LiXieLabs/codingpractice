@@ -19,7 +19,7 @@ public class MeetingRoomsIII {
      * Time Complexity: O(MlogM + NlogN + MlogN) --- assume M >> N ----> O(MlogM)
      * Space Complexity: O(N)
      */
-    public int mostBooked(int n, int[][] meetings) {
+    public int mostBooked1(int n, int[][] meetings) {
         Arrays.sort(meetings, Comparator.comparingInt(i -> i[0]));
         long[] rooms = new long[n]; // long处理！！！
         int[] counts = new int[n];
@@ -55,6 +55,46 @@ public class MeetingRoomsIII {
             }
         }
         return maxIdx;
+    }
+
+
+    /********** Solution 2: Another version of Solution 1 **********/
+    /**
+     * Same as Solution 1, just merged long[rooms] for tracking end time to the busy Heap.
+     *
+     * Time Complexity: O(MlogM + NlogN + MlogN) --- assume M >> N ----> O(MlogM)
+     * Space Complexity: O(N)
+     */
+    public int mostBooked(int n, int[][] meetings) {
+        PriorityQueue<Integer> idle = new PriorityQueue<>();
+        for (int i = 0; i < n; i++) {
+            idle.offer(i);
+        }
+        Comparator<long[]> comp1 = Comparator.comparingLong(i -> i[0]);
+        Comparator<long[]> comp2 = Comparator.comparingLong(i -> i[1]);
+        PriorityQueue<long[]> busy = new PriorityQueue<>(comp1.thenComparing(comp2));
+        Arrays.sort(meetings, Comparator.comparingInt(i -> i[0]));
+        int resRm = 0;
+        long[] count = new long[n];
+        for (int[] meeting : meetings) {
+            while (!busy.isEmpty() && busy.peek()[0] <= (long) meeting[0]) {
+                idle.offer((int) busy.poll()[1]);
+            }
+            int curRm;
+            if (!idle.isEmpty()) {
+                curRm = idle.poll();
+                busy.offer(new long[]{(long) meeting[1], curRm});
+            } else {
+                long[] next = busy.poll();
+                curRm = (int) next[1];
+                busy.offer(new long[]{next[0] + (long) meeting[1] - meeting[0], curRm});
+            }
+            count[curRm]++;
+            if (count[curRm] > count[resRm] || count[curRm] == count[resRm] && curRm < resRm) {
+                resRm = curRm;
+            }
+        }
+        return resRm;
     }
 
     public static void main(String[] args) {
