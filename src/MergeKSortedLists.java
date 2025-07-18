@@ -47,7 +47,7 @@ public class MergeKSortedLists {
         if (i == j) return null;
         if (i + 1 == j) return lists[i];
         // Divide
-        int mid = (i + j) / 2;
+        int mid = i + (j - i) / 2;
         ListNode l = merge(lists, i, mid);
         ListNode r = merge(lists, mid, j);
         // Conquer

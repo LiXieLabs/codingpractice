@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
  */
 public class MergeTwoSortedLists {
 
+    /***************** Solution 1: Two Pointers *********************/
+    /**
+     * Time: O(M + N)  Space: O(1)
+     */
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         ListNode dummy = new ListNode();
         ListNode curr = dummy;

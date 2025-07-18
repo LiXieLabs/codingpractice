@@ -1,6 +1,9 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * 346. Moving Average from Data Stream (https://leetcode.com/problems/moving-average-from-data-stream/description/)
+ */
 public class MovingAverageFromDataStream {
 
     /************************* Solution 1: Queue **************************/
@@ -51,12 +54,11 @@ public class MovingAverageFromDataStream {
         return (double) this.sum / n;
     }
 
-
     public static void main(String[] args) {
         MovingAverageFromDataStream solution = new MovingAverageFromDataStream(3);
-        System.out.println(solution.next(1));
-        System.out.println(solution.next(10));
-        System.out.println(solution.next(3));
-        System.out.println(solution.next(5));
+        System.out.println(solution.next(1)); // 1.0
+        System.out.println(solution.next(10)); // 5.5
+        System.out.println(solution.next(3)); // 4.666666666666667
+        System.out.println(solution.next(5)); // 6.0
     }
 }

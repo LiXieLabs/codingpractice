@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 353. Design Snake Game (https://leetcode.com/problems/design-snake-game/description/)
+ */
 public class DesignSnakeGame {
 
     /************************** Solution 1: 2D存储 ************************/
@@ -56,59 +59,63 @@ public class DesignSnakeGame {
 //    }
 
     /**************************** Solution 2: 1D存储 ******************************/
-     Set<Integer> occupied;
-     Deque<Integer> snake;
-     int i;
-     int r;
-     int c;
-     int[][] foods;
+    private static final Map<String, int[]> map;
+    static {
+        map = new HashMap<>();
+        map.put("R", new int[]{0, 1});
+        map.put("L", new int[]{0, -1});
+        map.put("U", new int[]{-1, 0});
+        map.put("D", new int[]{1, 0});
+    }
 
-     public DesignSnakeGame(int width, int height, int[][] food) {
-        occupied = new HashSet<>();
-        occupied.add(0);
+    private Deque<Integer> snake;
+    private Set<Integer> body;
+    private int r, c;
+    private int[] food;
+    private int fp; // food pointer
 
-        snake = new ArrayDeque<>();
-        snake.offer(0);
+    public DesignSnakeGame(int width, int height, int[][] food) {
+        this.r = height;
+        this.c = width;
+        this.snake = new ArrayDeque<>();
+        this.snake.offer(0);
+        this.body = new HashSet<>();
+        this.food = new int[food.length];
+        int i = 0;
+        for (int[] f : food) {
+            this.food[i++] = f[0] * c + f[1];
+        }
+        this.fp = 0;
+    }
 
-        r = height;
-        c = width;
-
-        foods = food;
-        i = 0;
-     }
-
-     public int move(String direction) {
-         int headr = snake.peekLast() / c;
-         int headc = snake.peekLast() % c;
-         switch (direction) {
-             case "U": headr--; break;
-             case "D": headr++; break;
-             case "L": headc--; break;
-             default: headc++;
-         }
-         int newHead = headr * c + headc;
-         int tail = snake.peek();
-         if (headr < 0 || headr == r || headc < 0 || headc == c || occupied.contains(newHead) && tail != newHead) {
-             return -1;
-         }
-         if (i < foods.length && foods[i][0] == headr && foods[i][1] == headc) {
-             i++;
-         } else {
-             snake.poll();
-             occupied.remove(tail);
-         }
-         snake.offer(newHead);
-         occupied.add(newHead);
-         return snake.size() - 1;
-     }
+    public int move(String direction) {
+        int[] d = map.get(direction);
+        int head = snake.peekLast();
+        int i = head / c;
+        int j = head % c;
+        int ni = i + d[0];
+        int nj = j + d[1];
+        if (ni < 0 || ni >= r || nj < 0 || nj >= c) return -1;
+        int next = ni * c + nj;
+        if (fp < food.length && next == food[fp]) { // 该 move 吃到 food，得分！
+            body.add(next);
+            snake.offer(next);
+            fp++;
+        } else { // 该 move 没吃到 food，不得分。
+            body.remove(snake.poll());
+            if (!body.add(next)) return -1;
+            snake.offer(next);
+        }
+        return fp;
+    }
 
     public static void main(String[] args) {
         DesignSnakeGame solution = new DesignSnakeGame(3, 2, new int[][]{{1, 2}, {0, 1}});
-        System.out.println(solution.move("R"));
-        System.out.println(solution.move("D"));
-        System.out.println(solution.move("R"));
-        System.out.println(solution.move("U"));
-        System.out.println(solution.move("L"));
-        System.out.println(solution.move("U"));
+        System.out.println(solution.move("R")); // 0
+        System.out.println(solution.move("D")); // 0
+        System.out.println(solution.move("R")); // 1
+        System.out.println(solution.move("U")); // 1
+        System.out.println(solution.move("L")); // 2
+        System.out.println(solution.move("U")); // -1
     }
 }
