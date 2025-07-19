@@ -16,11 +16,10 @@ public class MinimumSizeSubarraySum {
         for (int r = 0; r < nums.length; r++) {
             curSum += nums[r];
             while (l < r && curSum - nums[l] >= target) {
-                curSum -= nums[l];
-                l++;
+                curSum -= nums[l++];
             }
-            if (curSum >= target) {
-                minLen = Math.min(minLen, r - l + 1);
+            if (curSum >= target && r - l + 1 < minLen) {
+                minLen = r - l + 1;
             }
         }
         return minLen == nums.length + 1 ? 0 : minLen;
@@ -28,14 +27,9 @@ public class MinimumSizeSubarraySum {
 
     public static void main(String[] args) {
         MinimumSizeSubarraySum solution = new MinimumSizeSubarraySum();
-
         System.out.println(solution.minSubArrayLen(15, new int[]{1,2,3,4,5})); // 5
-
         System.out.println(solution.minSubArrayLen(7, new int[]{2,3,1,2,4,3})); // 2
-
         System.out.println(solution.minSubArrayLen(4, new int[]{1,4,4})); // 1
-
         System.out.println(solution.minSubArrayLen(11, new int[]{1,1,1,1,1,1,1,1})); // 0
-
     }
 }

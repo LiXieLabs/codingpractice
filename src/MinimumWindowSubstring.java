@@ -55,8 +55,8 @@ public class MinimumWindowSubstring {
 
     public static void main(String[] args) {
         MinimumWindowSubstring solution = new MinimumWindowSubstring();
-        System.out.println(solution.minWindow("ADOBECODEBANC", "ABC"));
-        System.out.println(solution.minWindow("a", "a"));
-        System.out.println(solution.minWindow("a", "aa"));
+        System.out.println(solution.minWindow("ADOBECODEBANC", "ABC")); // "BANC"
+        System.out.println(solution.minWindow("a", "a")); // "a"
+        System.out.println(solution.minWindow("a", "aa")); // ""
     }
 }
