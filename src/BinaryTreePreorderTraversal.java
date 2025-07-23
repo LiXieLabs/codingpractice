@@ -14,17 +14,19 @@ public class BinaryTreePreorderTraversal {
      * 也可以用同一个method，每次initiate一个list，左右结果addAll()
      * 也可以用LinkedList，操作相同
      */
+    List<Integer> res = new ArrayList<>();
+
     public List<Integer> preorderTraversal1(TreeNode root) {
-        List<Integer> res = new ArrayList<>();
-        recur(root, res);
+        res = new ArrayList<>();
+        recur(root);
         return res;
     }
 
-    public void recur(TreeNode root, List<Integer> res) {
+    public void recur(TreeNode root) {
         if (root == null) return;
-        res.add(root.val);
-        recur(root.left, res);
-        recur(root.right, res);
+        res.add(root.val); // -----> 在这加！
+        recur(root.left);
+        recur(root.right);
     }
 
     /******************* Solution 2: DFS by Stack *************************/
@@ -35,7 +37,7 @@ public class BinaryTreePreorderTraversal {
         stack.push(root);
         while (!stack.isEmpty()) {
             TreeNode curr = stack.pop();
-            res.add(curr.val);
+            res.add(curr.val); // -----> 在这加！
             if (curr.right != null) stack.push(curr.right);
             if (curr.left != null) stack.push(curr.left);
         }
@@ -48,7 +50,7 @@ public class BinaryTreePreorderTraversal {
         Deque<TreeNode> stack = new ArrayDeque<>();
         while (root != null || !stack.isEmpty()) {
             while (root != null) {
-                res.add(root.val);
+                res.add(root.val); // -----> 在这加！
                 stack.push(root);
                 root = root.left;
             }
@@ -70,7 +72,7 @@ public class BinaryTreePreorderTraversal {
      *             a. Add current’s value
      *             b. Go to the right, i.e., current = current.right
      *           Else
-     *             In current's left subtree, keep going right until None or == curr
+     *             In current's left subtree, keep going right until right == null or curr
      *             If is None # 1st time visit
      *               a. Connect rightmost to curr
      *               b. Add current’s value
@@ -83,7 +85,7 @@ public class BinaryTreePreorderTraversal {
         List<Integer> res = new ArrayList<>();
         while (root != null) {
             if (root.left == null) {
-                res.add(root.val);
+                res.add(root.val); // -----> 在这加！
                 root = root.right;
             } else {
                 TreeNode predecessor = root.left;
@@ -91,11 +93,10 @@ public class BinaryTreePreorderTraversal {
                     predecessor = predecessor.right;
                 }
                 if (predecessor.right == null) {
-                    res.add(root.val);
+                    res.add(root.val); // -----> 在这加！
                     predecessor.right = root;
                     root = root.left;
-                } else {
-                    // predecessor == root
+                } else { // predecessor.right == root
                     predecessor.right = null;
                     root = root.right;
                 }

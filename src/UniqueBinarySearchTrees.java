@@ -13,7 +13,7 @@ public class UniqueBinarySearchTrees {
      * T(N-1) =          T(N-2) + ... + T(0)
      * T(N)   = 2 x T(N-1) = 2^k x T(N-k) = O(2^N)
      *
-     * 可以加上Memo => 那么实际就是DP了 => 见solution2！！！
+     * 可以加上Memo => 那么实际就是DP了 => 见 solution 2 & 3！！！
      */
     public int numTrees1(int n) {
         if (n <= 1) return 1;
@@ -27,6 +27,35 @@ public class UniqueBinarySearchTrees {
 
         return cnt;
 
+    }
+
+    /****************** Solution 2: 加 memoization 的 solution 1 ******************/
+    /**
+     * Time: O(N^2)  Space: O(N)
+     */
+    private int[] memo;
+
+    public int numTrees2(int n) {
+        memo = new int[n + 1];
+        return recur(n);
+    }
+
+    private int recur(int n) {
+        int res = memo[n];
+        if (res == 0) {
+            if (n <= 2) { // base case
+                res = n == 0 ? 1 : n;
+            } else {
+//                for (int i = 1; i <= n; i++) {
+//                    res += recur(i - 1) * recur(n - i);
+                for (int i = 0; i < n / 2; i++) {
+                    res += recur(i) * recur(n - i - 1) * 2;
+                }
+                if (n % 2 == 1) res += Math.pow(recur(n / 2), 2);
+            }
+        }
+        memo[n] = res;
+        return res;
     }
 
     /****************** Solution 2: 1D DP ******************/

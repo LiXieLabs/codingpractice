@@ -15,17 +15,18 @@ public class BinaryTreeInorderTraversal {
      * Space: Average O(logN) Worst O(N) by recur call stack
      * 也可以用同一个method，每次initiate一个list，左右结果addAll()
      */
+    List<Integer> res;
     public List<Integer> inorderTraversal1(TreeNode root) {
-        List<Integer> res = new LinkedList<>();
-        recur(root, res);
+        res = new LinkedList<>();
+        recur(root);
         return res;
     }
 
-    public void recur(TreeNode root, List<Integer> res) {
+    public void recur(TreeNode root) {
         if (root == null) return;
-        recur(root.left, res);
-        res.add(root.val);
-        recur(root.right, res);
+        recur(root.left);
+        res.add(root.val); // -----> 在这加！
+        recur(root.right);
     }
 
     /******************* Solution 2: Iterative *************************/
@@ -42,7 +43,7 @@ public class BinaryTreeInorderTraversal {
                 root = root.left;
             }
             root = stack.pop();
-            res.add(root.val);
+            res.add(root.val); // -----> 在这加！
             root = root.right;
         }
         return res;
@@ -73,7 +74,7 @@ public class BinaryTreeInorderTraversal {
         List<Integer> res = new LinkedList<>();
         while (root != null) {
             if (root.left == null) {
-                res.add(root.val);
+                res.add(root.val); // -----> 在这加！
                 root = root.right;
             } else {
                 TreeNode predecessor = root.left;
@@ -83,10 +84,9 @@ public class BinaryTreeInorderTraversal {
                 if (predecessor.right == null) {
                     predecessor.right = root;
                     root = root.left;
-                } else {
-                    // predecessor == root
+                } else { // predecessor.right == root
                     predecessor.right = null;
-                    res.add(root.val);
+                    res.add(root.val); // -----> 在这加！
                     root = root.right;
                 }
             }

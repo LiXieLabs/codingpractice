@@ -1,6 +1,9 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * 98. Validate Binary Search Tree (https://leetcode.com/problems/validate-binary-search-tree/description/)
+ */
 public class ValidateBinarySearchTree {
 
     /************* Solution 1: Recursive Post-order Traversal **************/
@@ -56,7 +59,38 @@ public class ValidateBinarySearchTree {
         return true;
     }
 
-    /************* Solution 3: Recursive In-order Traversal **************/
+    /************* Solution 3: Morris Iterative In-order Traversal **************/
+    /**
+     * Time: O(3N) each node visited triple times
+     * Space: O(1)
+     */
+    public boolean isValidBST3(TreeNode root) {
+        Integer prev = null;
+        while (root != null) {
+            if (root.left == null) {
+                if (prev != null && prev >= root.val) return false;
+                prev = root.val; // // -----> 在这比较！
+                root = root.right;
+            } else {
+                TreeNode predecessor = root.left;
+                while (predecessor.right != null && predecessor.right != root) {
+                    predecessor = predecessor.right;
+                }
+                if (predecessor.right == null) {
+                    predecessor.right = root;
+                    root = root.left;
+                } else { // predecessor.right == root
+                    predecessor.right = null;
+                    if (prev != null && prev >= root.val) return false;
+                    prev = root.val; // -----> 在这比较！
+                    root = root.right;
+                }
+            }
+        }
+        return true;
+    }
+
+    /************* Solution 4: Recursive In-order Traversal **************/
     /**
      * 注意 prev 是怎么移动的！！！
      *

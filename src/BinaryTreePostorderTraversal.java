@@ -25,7 +25,7 @@ public class BinaryTreePostorderTraversal {
         if (root == null) return;
         recur(root.left, res);
         recur(root.right, res);
-        res.add(root.val);
+        res.add(root.val); // -----> 在这加！
     }
 
     /**
@@ -44,7 +44,7 @@ public class BinaryTreePostorderTraversal {
         stack.push(root);
         while (!stack.isEmpty()) {
             TreeNode curr = stack.pop();
-            res.add(curr.val);
+            res.add(curr.val); // -----> 在这加！
             if (curr.left != null) stack.push(curr.left);
             if (curr.right != null) stack.push(curr.right);
         }
@@ -59,7 +59,7 @@ public class BinaryTreePostorderTraversal {
         Deque<TreeNode> stack = new ArrayDeque<>();
         while (root != null || !stack.isEmpty()) {
             while (root != null) {
-                res.add(root.val);
+                res.add(root.val); // -----> 在这加！
                 stack.push(root);
                 root = root.right;
             }
@@ -76,7 +76,7 @@ public class BinaryTreePostorderTraversal {
         List<Integer> res = new ArrayList<>();
         while (root != null) {
             if (root.right == null) {
-                res.add(root.val);
+                res.add(root.val); // -----> 在这加！
                 root = root.left;
             } else {
                 TreeNode predecessor = root.right;
@@ -84,7 +84,7 @@ public class BinaryTreePostorderTraversal {
                     predecessor = predecessor.left;
                 }
                 if (predecessor.left == null) {
-                    res.add(root.val);
+                    res.add(root.val); // -----> 在这加！
                     predecessor.left = root;
                     root = root.right;
                 } else {
