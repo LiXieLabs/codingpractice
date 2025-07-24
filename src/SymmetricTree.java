@@ -12,33 +12,34 @@ public class SymmetricTree {
         currLevel.add(root);
         while (!currLevel.isEmpty()) {
             List<TreeNode> nextLevel = new ArrayList<>();
-            List<String> lst = new ArrayList<>();
-            for (TreeNode node : currLevel) {
-                lst.add(node == null ? "n" : String.valueOf(node.val));
-                if (node != null) {
-                    nextLevel.add(node.left);
-                    nextLevel.add(node.right);
+            List<Integer> currVal = new ArrayList<>();
+            for (TreeNode curr : currLevel) {
+                if (curr == null) {
+                    currVal.add(null);
+                } else {
+                    currVal.add(curr.val);
+                    nextLevel.add(curr.left);
+                    nextLevel.add(curr.right);
                 }
             }
-            int l = 0, r = lst.size() - 1;
-            while (l <= r) {
-                // Integer equals不是null safe的
-                // 如果用Integer需要类似solution2里面recur终止条件那样判断！！！
-                if (!lst.get(l++).equals(lst.get(r--))) return false;
+            int l = 0, r = currVal.size() - 1;
+            while (l < r) {
+                // 不能用 equals，因为不是 null safe 的！！！
+                if (currVal.get(l++) != currVal.get(r--)) return false;
             }
             currLevel = nextLevel;
         }
         return true;
     }
 
-    /******************* Solution 2: Recursive ***********************/
+    /******************* Solution 2: Recursive - Post Order Traversal ***********************/
     public boolean isSymmetric(TreeNode root) {
         return root == null || recur(root.left, root.right);
     }
 
     private boolean recur(TreeNode l, TreeNode r) {
-        if (l == null && r == null) return true;
-        if (l == null || r == null) return false;
+        if (l == null && r == null) return true; // Base case 1
+        if (l == null || r == null) return false; // Base case 2
         if (!recur(l.left, r.right)) return false;
         if (!recur(l.right, r.left)) return false;
         return l.val == r.val;

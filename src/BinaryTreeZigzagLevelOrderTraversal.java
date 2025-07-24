@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  */
 class BinaryTreeZigzagLevelOrderTraversal {
 
-    /******************** Solution 1: BFS + Collections.reverse ********************/
+    /******************** Solution 1: BFS + Collections.reverse() ********************/
     /**
      * Time: O(N)  Space: O(N)
      */

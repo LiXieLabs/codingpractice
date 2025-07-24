@@ -30,18 +30,20 @@ public class BinaryTreeLevelOrderTraversal {
     }
 
     /************* Solution 2: Recursive DFS + level number ******************/
+    List<List<Integer>> res;
+
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
-        recur(root, res, 0);
+        res = new ArrayList<>();
+        recur(root, 0);
         return res;
     }
 
-    private void recur(TreeNode node, List<List<Integer>> res, int level) {
-        if (node == null) return;
-        if (level == res.size()) res.add(new ArrayList<>());
-        res.get(level).add(node.val);
-        recur(node.left, res, level + 1);
-        recur(node.right, res, level + 1);
+    private void recur(TreeNode curr, int l) {
+        if (curr == null) return;
+        if (l == res.size()) res.add(new ArrayList<>());
+        res.get(l).add(curr.val);
+        recur(curr.left, l + 1);
+        recur(curr.right, l + 1);
     }
 
     public static void print(List<List<Integer>> input) {
