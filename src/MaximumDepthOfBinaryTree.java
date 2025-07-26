@@ -1,4 +1,8 @@
+import javafx.util.Pair;
+
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 /**
@@ -28,7 +32,28 @@ public class MaximumDepthOfBinaryTree {
         return depth;
     }
 
-    /************ Solution 2: Recursive DFS *************/
+    /************ Solution 2: Iterative DFS *************/
+    /**
+     * Time: O(N)
+     * Space: O(stack) = O(depth) = average O(logN) - worst O(N)
+     */
+    public int maxDepth2(TreeNode root) {
+        int res = 0;
+        Deque<Pair<TreeNode, Integer>> stack = new ArrayDeque<>();
+        if (root == null) return res;
+        stack.add(new Pair<>(root, 1));
+        while (!stack.isEmpty()) {
+            Pair<TreeNode, Integer> p = stack.pop();
+            TreeNode curr = p.getKey();
+            int depth = p.getValue();
+            res = Math.max(res, depth);
+            if (curr.right != null) stack.push(new Pair<>(curr.right, depth + 1));
+            if (curr.left != null) stack.push(new Pair<>(curr.left, depth + 1));
+        }
+        return res;
+    }
+
+    /************ Solution 3: Recursive DFS *************/
     /**
      * Time: O(N)
      * Space: O(stack) = O(depth) = average O(logN) - worst O(N)

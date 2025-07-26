@@ -15,7 +15,7 @@ public class BinaryTreeInorderTraversal {
      * Space: Average O(logN) Worst O(N) by recur call stack
      * 也可以用同一个method，每次initiate一个list，左右结果addAll()
      */
-    List<Integer> res;
+    LinkedList<Integer> res;
     public List<Integer> inorderTraversal1(TreeNode root) {
         res = new LinkedList<>();
         recur(root);
@@ -25,7 +25,7 @@ public class BinaryTreeInorderTraversal {
     public void recur(TreeNode root) {
         if (root == null) return;
         recur(root.left);
-        res.add(root.val); // -----> 在这加！
+        res.get(0); // -----> 在这加！
         recur(root.right);
     }
 

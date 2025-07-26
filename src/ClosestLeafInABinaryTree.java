@@ -29,6 +29,7 @@ public class ClosestLeafInABinaryTree {
         Deque<TreeNode> stack = new ArrayDeque<>();
         stack.push(root);
         TreeNode kNode = null;
+        // ⚠️⚠️⚠️ 注意 ⚠️⚠️⚠️ parents 只需要 root 到 kNode 这一段的！！！
         while (kNode == null) {
             TreeNode curr = stack.pop();
             if (curr.val == k) kNode = curr;
@@ -65,10 +66,10 @@ public class ClosestLeafInABinaryTree {
                 new TreeNode(3),
                 new TreeNode(2)
         );
-        System.out.println(solution.findClosestLeaf(root1, 1));
+        System.out.println(solution.findClosestLeaf(root1, 1)); // 3
 
         TreeNode root2 = new TreeNode(1);
-        System.out.println(solution.findClosestLeaf(root2, 1));
+        System.out.println(solution.findClosestLeaf(root2, 1)); // 1
 
 
         TreeNode root3 = new TreeNode(1,
@@ -81,7 +82,7 @@ public class ClosestLeafInABinaryTree {
                         null),
                 new TreeNode(3)
         );
-        System.out.println(solution.findClosestLeaf(root3, 2));
+        System.out.println(solution.findClosestLeaf(root3, 2)); // 3
     }
 
 }

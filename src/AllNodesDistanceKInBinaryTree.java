@@ -45,11 +45,11 @@ public class AllNodesDistanceKInBinaryTree {
             }
         }
 
+        Set<Integer> visited = new HashSet<>();
+        visited.add(target.val);
         // BFS to find k-th level
         List<TreeNode> curLevel = new ArrayList<>();
         curLevel.add(target);
-        Set<Integer> visited = new HashSet<>();
-        visited.add(target.val);
         int depth = 0;
         // 注意！！！!curLevel.isEmpty() 是为了防止 k 比 Tree DEPTH 大，如 TestCase2
         while (depth++ < k && !curLevel.isEmpty()) {
@@ -66,6 +66,25 @@ public class AllNodesDistanceKInBinaryTree {
             curLevel = nexLevel;
         }
         return curLevel.stream().map(n -> n.val).collect(Collectors.toList());
+
+        // BFS to find k-th level - 另一种场景
+//        Deque<TreeNode> queue = new ArrayDeque<>();
+//        queue.offer(target);
+//        List<Integer> res = null;
+//        for (int i = 0; i <= k; i++) {
+//            res = new ArrayList<>();
+//            int width = queue.size();
+//            for (int j = 0; j < width; j++) {
+//                TreeNode curr = queue.poll();
+//                res.add(curr.val);
+//                for (TreeNode next : Arrays.asList(curr.left, curr.right, parents.get(curr.val))) {
+//                    if (next != null && visited.add(next.val)) {
+//                        queue.offer(next);
+//                    }
+//                }
+//            }
+//        }
+//        return res;
     }
 
     public static void main(String[] args) {
