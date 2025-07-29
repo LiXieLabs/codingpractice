@@ -3,10 +3,14 @@
  */
 public class JumpGameII {
 
-    /*********** Solution 1: 1D Greedy Algo **************/
+    /*********** Solution 1: 1D Greedy Algo (本质是 BFS!!!) **************/
     /**
      * 与 55. Jump Game (https://leetcode.com/problems/jump-game/)
      * 区别是需要steps记录步数
+     *
+     *  本质是 BFS!!!
+     *  比如 [2,3,1,1,4]，root 是 2，可以到达 [3,1]，maxReach 为下一层需要遍历的范围
+     *  steps 本质是记录 BFS 层数！！！
      *
      * 类似
      *   1024. Video Stitching (https://leetcode.com/problems/video-stitching/)：

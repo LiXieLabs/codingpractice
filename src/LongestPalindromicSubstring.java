@@ -1,3 +1,6 @@
+/**
+ * 5. Longest Palindromic Substring (https://leetcode.com/problems/longest-palindromic-substring/description/)
+ */
 public class LongestPalindromicSubstring {
 
     /***** Solution 1: intuitive - check每个中心点，向两边扩散找最长，更新全局 *****/
@@ -40,22 +43,20 @@ public class LongestPalindromicSubstring {
      * Time: O(N^2) Space: O(N)
      */
     public String longestPalindrome(String s) {
-        boolean[] dp = new boolean[s.length()];
         String res = "";
+        boolean[] dp = new boolean[s.length()];
         for (int i = s.length() - 1; i >= 0; i--) {
             boolean pre = dp[i];
             for (int j = i; j < s.length(); j++) {
                 boolean tmp = dp[j];
                 if (i == j) {
                     dp[j] = true;
-                } else if (j - i == 1) {
-                    dp[j] = (s.charAt(i) == s.charAt(j));
+                } else if (i + 1 == j) {
+                    dp[j] = s.charAt(i) == s.charAt(j);
                 } else {
-                    dp[j] = (pre & s.charAt(i) == s.charAt(j));
+                    dp[j] = pre && s.charAt(i) == s.charAt(j);
                 }
-                if (dp[j] & j - i + 1 > res.length()) {
-                    res = s.substring(i, j + 1);
-                }
+                if (dp[j] && j - i + 1 > res.length()) res = s.substring(i, j + 1);
                 pre = tmp;
             }
         }
@@ -64,7 +65,7 @@ public class LongestPalindromicSubstring {
 
     public static void main(String[] args) {
         LongestPalindromicSubstring solution = new LongestPalindromicSubstring();
-        System.out.println(solution.longestPalindrome("babad"));
-        System.out.println(solution.longestPalindrome("cbbd"));
+        System.out.println(solution.longestPalindrome("babad")); // "aba"
+        System.out.println(solution.longestPalindrome("cbbd")); // "bb"
     }
 }

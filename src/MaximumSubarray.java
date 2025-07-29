@@ -3,7 +3,7 @@
  */
 public class MaximumSubarray {
 
-    /********** Solution 1: Kadane's Algo  ***************/
+    /********** Solution 1: Kadane's Algo - DP  ***************/
     /**
      * https://zh.wikipedia.org/wiki/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E5%88%97%E9%97%AE%E9%A2%98
      * Kadane's algo 解决最大连续子数列和的问题
@@ -14,7 +14,9 @@ public class MaximumSubarray {
     public int maxSubArray1(int[] nums) {
         int maxSum = nums[0], curMax = nums[0];
         for (int i = 1; i < nums.length; i++) {
+            // 先更新当前最大和的子数列，前面+当前 or 只取当前，取更大的。
             curMax = Math.max(curMax + nums[i], nums[i]);
+            // 更新全局最优解
             maxSum = Math.max(maxSum, curMax);
         }
         return maxSum;
@@ -22,7 +24,7 @@ public class MaximumSubarray {
 
     /********** Solution 2: Follow up - Divider and Conquer  ***************/
     /**
-     * Time: T(N) = 2T(N) + O(N) = O(NlogN)   Space: O(logN)
+     * Time: T(N) = 2T(N/2) + O(N) = O(NlogN)   Space: O(logN)
      */
     int[] nums;
     public int maxSubArray(int[] nums) {
