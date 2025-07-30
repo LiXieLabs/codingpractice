@@ -20,10 +20,11 @@ public class EditDistance {
      * Time: O(L1 X L2)   Space: O(L1 X L2)
      */
     public int minDistance1(String word1, String word2) {
+        // Edge cases: Optional
         if (word1 == null || word1.isEmpty()) return word2 == null ? 0 : word2.length();
         if (word2 == null || word2.isEmpty()) return word1.length();
-        word1 = " " + word1;
-        word2 = " " + word2;
+        word1 = "#" + word1;
+        word2 = "#" + word2;
         int l1 = word1.length(), l2 = word2.length();
         int[][] dp = new int[l1][l2];
         for (int i = 1; i < l1; i++) dp[i][0] = i; // 初始值为 i，不都是 1
@@ -44,10 +45,11 @@ public class EditDistance {
      * Time: O(L1 X L2)   Space: O(min(L1,L2))
      */
     public int minDistance(String word1, String word2) {
+        // Edge cases: Optional
         if (word1 == null || word1.isEmpty()) return word2 == null ? 0 : word2.length();
         if (word2 == null || word2.isEmpty()) return word1.length();
-        word1 = " " + word1;
-        word2 = " " + word2;
+        word1 = "#" + word1;
+        word2 = "#" + word2;
         // for Space Complexity = min(L1, L2)
         if (word2.length() < word1.length()) {
             String temp = word1;
