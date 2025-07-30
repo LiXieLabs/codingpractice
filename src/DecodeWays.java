@@ -118,7 +118,7 @@ public class DecodeWays {
      *       + dp[i-2] (1 <= s[i-1,i+1] <= 26)
      * Time: O(N)   Space: O(1)
      */
-    public int numDecodings(String s) {
+    public int numDecodings5(String s) {
         int prepre = 0, pre = 1;
         for (int i = 0; i < s.length(); i++) {
             int cur = 0;
@@ -130,6 +130,33 @@ public class DecodeWays {
                 if (1 <= doubleDigitNum && doubleDigitNum <= 26) {
                     cur += prepre;
                 }
+            }
+            prepre = pre;
+            pre = cur;
+        }
+        return pre;
+    }
+
+    /********************* Solution 6: Solution 5 不用 Integer.parseInt *********************/
+    /**
+     * dp[i] 表示到 s[i] 为止有多少种 decode ways
+     * dp[i] = s[i] 单独 decode
+     *       + s[i-1,i+1] 一起 decode
+     *       = dp[i-1] (s[i] != 0)
+     *       + dp[i-2] (1 <= s[i-1,i+1] <= 26)
+     * Time: O(N)   Space: O(1)
+     */
+    public int numDecodings(String s) {
+        int prepre = 1, pre = 1;
+        for (int i = 0; i < s.length(); i++) {
+            int cur = 0;
+            if ('0' < s.charAt(i) && s.charAt(i) <= '9') {
+                cur = pre;
+            }
+            if (i - 1 >= 0 &&
+                    (s.charAt(i - 1) == '1' && '0' <= s.charAt(i) && s.charAt(i) <= '9' // 10 - 19
+                            || s.charAt(i - 1) == '2' && '0' <= s.charAt(i) && s.charAt(i) <= '6')) { // 20 - 26
+                cur += prepre;
             }
             prepre = pre;
             pre = cur;
