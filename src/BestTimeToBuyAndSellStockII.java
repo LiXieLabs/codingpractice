@@ -26,6 +26,7 @@ public class BestTimeToBuyAndSellStockII {
     /**
      * 只买那些 i - 1，使得 prices[i] - prices[i - 1] >= 0 的日期
      * 一旦有 i - 1，使得 prices[i] - prices[i - 1] < 0，则在 i - 1 抛售
+     * 即求所有递增区间的和！！！
      *
      * Time: O(N)   Space: O(1)
      */

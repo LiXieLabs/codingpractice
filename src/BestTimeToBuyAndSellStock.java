@@ -4,6 +4,11 @@
 public class BestTimeToBuyAndSellStock {
 
     /********** Solution 1: Intuitive ***************/
+    /**
+     * 不断刷新最低点，当前值跟之前最低点求 curProfit，刷新 maxProfit.
+     *
+     * Time: O(N)  Space: O(1)
+     */
     public int maxProfit1(int[] prices) {
         int maxProfit = 0, minPrice = Integer.MAX_VALUE;
         for (int price : prices) {

@@ -30,7 +30,7 @@ public class BestTimeToBuyAndSellStockIII {
     /************* Solution 2: One-pass 1D DP ***********************/
     /**
      * cost1 和 profit1 对应 1st transaction 的最低成本和最高收益
-     * cost2 是将 profit1 用于支付 2nd transaction 的成本之后的净成本
+     * cost2 是将 profit1 用于支付 2nd transaction 的成本之后的净成本 => ⚠️关键点！！！要想到 cost2 是什么！！！
      * profit2 则是两个 transaction 都结束时的最大收益
      *
      * Time: O(N) Space: O(1)
