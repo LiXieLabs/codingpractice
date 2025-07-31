@@ -18,25 +18,23 @@ public class WordLadder {
      *
      * Time: O(26KN) K denotes length of each word, N denotes size of wordSet.
      * 每个 word 最多进 queue 一次，每个 word 处理是 26k 时间。
-     * Space: O(N) queue & visited can be in same size as wordSet.
+     * Space: O(N) queue can be in same size as wordSet.
      */
     public int ladderLength1(String beginWord, String endWord, List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList); // or else TLE!!!
         if (!wordSet.contains(endWord) || beginWord.length() != endWord.length()) return 0;
-        Set<String> visited = new HashSet<>();
         List<String> currLevel = new ArrayList<>();
         currLevel.add(beginWord);
         int length = 1;
         while (!currLevel.isEmpty()) {
-            length++;
+            length++; // ⚠️注意⚠️起点终点都算！
             List<String> nextLevel = new ArrayList<>();
             for (String word : currLevel) {
-                for (int i = 0; i < word.length(); i++) {
-                    for (char c : candidates) {
+                for (int i = 0; i < word.length(); i++) { // K
+                    for (char c : candidates) { // 26
                         String newWord = word.substring(0, i) + c + word.substring(i + 1);
                         if (endWord.equals(newWord)) return length;
-                        if (!visited.contains(newWord) && wordSet.contains(newWord)) {
-                            visited.add(newWord);
+                        if (wordSet.remove(newWord)) {
                             nextLevel.add(newWord);
                         }
                     }
@@ -61,6 +59,7 @@ public class WordLadder {
         int length = 1;
         while (!beginSet.isEmpty() && !endSet.isEmpty()) {
             length++;
+            // 永远遍历 size 小的那个！
             if (beginSet.size() > endSet.size()) {
                 Set<String> temp = beginSet;
                 beginSet = endSet;

@@ -29,7 +29,7 @@ public class MaximumProductSubarray {
      *
      * curMax是截止到包含当前位置的局部最大值
      * curMin是截止到包含当前未知的局部最小值
-     * 
+     *
      * curMax[i] = min(nums[i], curMax[i-1] * nums[i], curMin[i-1] * nums[i])
      * curMin[i] = max(nums[i], curMax[i-1] * nums[i], curMin[i-1] * nums[i])
      *

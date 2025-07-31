@@ -17,7 +17,11 @@ public class WordLadderII {
 
     /************** Solution 1: Intuitive - BFS build paths - TLE ***********************/
     /**
-     * 每层的都带着全部的路径，同一个word，会因为前面 prefix path 不同，多遍历很多遍，导致 TLE !!!
+     * 每层的都带着全部的路径，同一个word，会因为前面 prefix path 不同，多遍历很多遍，
+     * 而且不断 copy 导致 TLE !!!
+     * 优化方法就是只在结果的时候 copy，只能用 DFS + Backtracking！！！
+     *
+     * Time: O(N x L x 26^L)   Space: O(NL)
      */
     public List<List<String>> findLadders1(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
@@ -93,8 +97,8 @@ public class WordLadderII {
             List<String> nextLevel = new ArrayList<>();
             Set<String> nextVisited = new HashSet<>();
             for (String word : currLevel) {
-                for (int i = 0; i < word.length(); i++) {
-                    for (char c : CANDIDATES) {
+                for (int i = 0; i < word.length(); i++) { // L
+                    for (char c : CANDIDATES) { // 26
                         String newWord = word.substring(0, i) + c + word.substring(i + 1);
                         if (endWord.equals(newWord)) found = true;
                         if (wordSet.contains(newWord) && !visited.contains(newWord)) {
@@ -102,6 +106,7 @@ public class WordLadderII {
                             parents.putIfAbsent(newWord, new ArrayList<>());
                             parents.get(newWord).add(word);
                             // 小心！！！必须两个都check！！！不然 TC4 会把重复的 child enqueue，导致 TLE!!!
+                            // 或者 currLevel && nextLevel 用 HashSet 也行！！！
                             if (!visited.contains(newWord) && !nextVisited.contains(newWord)) {
                                 nextLevel.add(newWord);
                             }
@@ -146,8 +151,8 @@ public class WordLadderII {
             }
             Set<String> nextSet = new HashSet<>(), visited = new HashSet<>();
             for (String word : beginSet) {
-                for (int i = 0; i < word.length(); i++) {
-                    for (char c : CANDIDATES) {
+                for (int i = 0; i < word.length(); i++) { // L
+                    for (char c : CANDIDATES) { // 26
                         String newWord = word.substring(0, i) + c + word.substring(i + 1);
                         if (endSet.contains(newWord)) {
                             found = true;
@@ -197,6 +202,7 @@ public class WordLadderII {
         }
         for (String parent : parents.getOrDefault(word, new ArrayList<>())) {
             path.add(parent);
+            // ⚠️注意⚠️不用 check visited 了，因为肯定没有 cycle！！！
             recur(parent, beginWord, parents, path, res);
             path.remove(path.size() - 1);
         }
