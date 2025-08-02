@@ -6,12 +6,12 @@ import java.util.Deque;
  */
 public class NumberOfIslands {
 
-    private static final int[][] DIREC = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-
     /***************** Solution 1 ~ 3: Recur DFS + Iter DFS + BFS ****************/
     /**
      * Time: O(R * C) Space: O(R * C)
      */
+    private static final int[][] DIREC = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
     public int numIslands1(char[][] grid) {
         int count = 0;
         for (int i = 0; i < grid.length; i++) {
@@ -78,13 +78,15 @@ public class NumberOfIslands {
     /**
      * Time: O(R * C) Space: O(R * C)
      */
+    private static final int[][] DIREC_2 = new int[][]{{1,0},{0,1}};
+
     public int numIslands(char[][] grid) {
         int r = grid.length, c = grid[0].length;
         UnionFind200 uf = new UnionFind200(grid);
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
                 if (grid[i][j] == '1') {
-                    for (int[] d : DIREC) {
+                    for (int[] d : DIREC_2) {
                         int ni = i + d[0], nj = j + d[1];
                         if (0 <= ni && ni < r && 0 <= nj && nj < c && grid[ni][nj] == '1') {
                             uf.union(i * c + j, ni * c + nj);
@@ -119,9 +121,9 @@ class UnionFind200 {
         sz = new int[r * c];
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
-                int n = i * c + j;
-                id[n] = n;
                 if (grid[i][j] == '1') {
+                    int n = i * c + j;
+                    id[n] = n;
                     sz[n] = 1;
                     root++;
                 }
@@ -131,7 +133,7 @@ class UnionFind200 {
 
     public int find(int p) {
         while (id[p] != p) {
-            id[p] = id[id[p]]; // path compression
+            id[p] = id[id[p]]; // ⚠️注意⚠️ path compression
             p = id[p];
         }
         return p;
@@ -141,7 +143,7 @@ class UnionFind200 {
         int r1 = find(p1);
         int r2 = find(p2);
         if (r1 == r2) return;
-        // weight balance
+        // ⚠️注意⚠️ weight balance - 小的并到大的上面！
         if (sz[r1] > sz[r2]) {
             id[r2] = r1;
             sz[r1] += sz[r2];

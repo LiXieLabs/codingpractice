@@ -55,24 +55,57 @@ public class CloneGraph {
      * Overall, the space complexity would be O(N).
      */
     Map<Integer, Node> map;
-    public Node cloneGraph(Node node) {
+    public Node cloneGraph2(Node node) {
         if (node == null) return null;
         map = new HashMap<>();
         Node newNode = new Node(node.val);
         map.put(node.val, newNode);
-        recur(node);
+        recur2(node);
         return newNode;
     }
 
-    private void recur(Node curr) {
+    private void recur2(Node curr) {
         Node copy = map.get(curr.val);
         for (Node neighbor : curr.neighbors) {
             if (!map.containsKey(neighbor.val)) {
                 map.put(neighbor.val, new Node(neighbor.val));
-                recur(neighbor);
+                recur2(neighbor);
             }
             map.get(neighbor.val).neighbors.add(copy);
         }
+    }
+
+    /**************** Solution 3: Another Recur DFS **********************/
+    /**
+     * 进 recur 再 init node 也可以
+     *
+     * Time: O(V + E) = min O(N) max O(N^2)
+     * Space: O(N).
+     * Space occupied by the map - O(N) and in addition to that
+     * Space occupied by the recur call stack - O(D) where D is the width of the graph.
+     * Overall, the space complexity would be O(N).
+     */
+    Map<Integer, Node> map3;
+    public Node cloneGraph(Node node) {
+        if (node == null) return null;
+        map3 = new HashMap<>();
+        return recur3(node);
+    }
+
+    private Node recur3(Node node) {
+        Node copy = new Node(node.val);
+        map3.put(node.val, copy);
+        for (Node neighbor : node.neighbors) {
+            Node ncopy;
+            // ⚠️注意⚠️ 不能 ncopy = map3.getOrDefault(neighbor.val, recur3(neighbor));
+            // 因为这样无论如何，recur3(neighbor) 都会被执行，陷入死循环！！！
+            if (!map3.containsKey(neighbor.val)) {
+                recur3(neighbor);
+            }
+            ncopy = map.get(neighbor.val);
+            copy.neighbors.add(ncopy);
+        }
+        return copy;
     }
 
     public static void main(String[] args) {
