@@ -34,7 +34,7 @@ public class RegularExpressionMatching {
     private boolean recur(String s, int i, String p, int j) {
         String key = i + "," + j;
         if (memo.contains(key)) return false;
-        boolean match = false;
+        boolean match;
         if (j >= p.length())  {
             match = (i >= s.length());
         } else {
@@ -58,7 +58,7 @@ public class RegularExpressionMatching {
      *
      * Time: O(S X P)   Space: O(S X P)
      */
-    public boolean isMatch(String s, String p) {
+    public boolean isMatch2(String s, String p) {
         s = "#" + s; p = "#" + p;
         int r = s.length(), c = p.length();
         boolean[][] dp = new boolean[r][c];
@@ -77,6 +77,34 @@ public class RegularExpressionMatching {
             }
         }
         return dp[s.length() - 1][p.length() - 1];
+    }
+
+    /******************** Solution 3: 更好理解更简洁的 Solution 2 *******************/
+    /**
+     * Time: O(S X P)   Space: O(S X P)
+     */
+    String s, p;
+    public boolean isMatch(String s, String p) {
+        s = "#" + s;
+        p = "#" + p;
+        this.s = s;
+        this.p = p;
+        boolean[][] dp = new boolean[s.length()][p.length()];
+        dp[0][0] = true;
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = 1; j < p.length(); j++) {
+                if (match(i, j)) {
+                    dp[i][j] = i > 0 && dp[i-1][j-1];
+                } else if (j > 1 && p.charAt(j) == '*') {
+                    dp[i][j] = dp[i][j-2] || match(i,j-1) && dp[i-1][j];
+                }
+            }
+        }
+        return dp[s.length()-1][p.length()-1];
+    }
+
+    private boolean match(int i, int j) {
+        return s.charAt(i) == p.charAt(j) || p.charAt(j) == '.';
     }
 
     private boolean match(String s, int i, String p, int j) {

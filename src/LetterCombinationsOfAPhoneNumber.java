@@ -1,10 +1,12 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 17. Letter Combinations of a Phone Number (https://leetcode.com/problems/letter-combinations-of-a-phone-number/description/)
+ */
 public class LetterCombinationsOfAPhoneNumber {
 
     // can be optimized to
@@ -22,15 +24,15 @@ public class LetterCombinationsOfAPhoneNumber {
         map.put('9', new String[]{"w", "x", "y", "z"});
     }
 
-    /********************* Solution 1: Iterative **********************/
+    /********************* Solution 1: Iterative BFS **********************/
     /**
      * Time: O(4^N X N), N is length of digits, 4^N combinations, and each combination took max N time to build
      * Space: O(4^N) for result
      */
     public List<String> letterCombinations1(String digits) {
         // Note: Edge Case!!!
-        if (digits == null || digits.length() == 0) return new ArrayList<>();
-        List<String> curr = Arrays.asList("");
+        if (digits == null || digits.isEmpty()) return new ArrayList<>();
+        List<String> curr = Collections.singletonList("");
         for (Character d : digits.toCharArray()) {
             List<String> next = new ArrayList<>();
             for (String c : map.get(d)) {
@@ -43,14 +45,14 @@ public class LetterCombinationsOfAPhoneNumber {
         return curr;
     }
 
-    /********************* Solution 2: Recursive *********************/
+    /********************* Solution 2: Recursive BFS *********************/
     /**
      * Time: O(4^N X N), N is length of digits, 4^N combinations, and each combination took max N time to build
      * Space: O(4^N) for result, O(N) for recursive call stack
      */
-    public List<String> letterCombinations(String digits) {
+    public List<String> letterCombinations2(String digits) {
         // Note: Edge Case!!!
-        if (digits == null || digits.length() == 0) return new ArrayList<>();
+        if (digits == null || digits.isEmpty()) return new ArrayList<>();
         return recur(digits, 0);
     }
 
@@ -66,6 +68,39 @@ public class LetterCombinationsOfAPhoneNumber {
         return curr;
     }
 
+    /********************* Solution 3: Recursive Backtracking (Similar to DFS) *********************/
+    /**
+     * Time: O(4^N X N), N is length of digits, 4^N combinations, and each combination took max N time to build
+     * Space: O(4^N) for result, O(N) for recursive call stack
+     */
+    String[][] dic = new String[][]{
+            {"a", "b", "c"}, {"d", "e", "f"},
+            {"g", "h", "i"}, {"j", "k", "l"},
+            {"m", "n", "o"}, {"p", "q", "r", "s"},
+            {"t", "u", "v"}, {"w", "x", "y", "z"}};
+    String digits;
+    List<String> res;
+
+    public List<String> letterCombinations(String digits) {
+        this.digits = digits;
+        res = new ArrayList<>();
+        if (digits.isEmpty()) return res;
+        recur3(0, new ArrayList<>());
+        return res;
+    }
+
+    private void recur3(int i, List<String> cur) {
+        if (i == digits.length()) {
+            res.add(String.join("", cur));
+            return;
+        }
+        for (String c : dic[digits.charAt(i) - '2']) {
+            cur.add(c);
+            recur3(i + 1, cur);
+            cur.remove(cur.size() - 1);
+        }
+    }
+
     public static void print(List<String> lst) {
         System.out.println("[" + String.join(",", lst) + "]");
     }
@@ -76,6 +111,4 @@ public class LetterCombinationsOfAPhoneNumber {
         print(solution.letterCombinations(""));
         print(solution.letterCombinations(null));
     }
-
-
 }

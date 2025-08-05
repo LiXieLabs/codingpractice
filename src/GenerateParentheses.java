@@ -8,9 +8,11 @@ import java.util.List;
  */
 public class GenerateParentheses {
 
-    /********** Solution 1: Recursive Backtracking ****************/
+    /********** Solution 1: 一种 Recursive Backtracking ****************/
     /**
-     * Time/Space: TODO: Catalan Number (1/(n+1)) x C(2n, n) <= 4^n / (n x sqrt(n))
+     * StringBuilder && l starts from n && r starts from 0;
+     *
+     * Time/Space: TODO: Catalan Number (1/(n+1)) x C(2n, n) <= 4^n / (n x sqrt(n)) << 2^(2n) x n
      */
     private List<String> res;
     public List<String> generateParenthesis1(int n) {
@@ -37,11 +39,40 @@ public class GenerateParentheses {
         }
     }
 
-    /********** Solution 2: Iterative DFS by Stack ****************/
+    /********** Solution 2: 另一种 Recursive Backtracking ****************/
+    /**
+     * ArrayList && l starts from n && r starts from n;
+     *
+     * Time/Space: TODO: Catalan Number (1/(n+1)) x C(2n, n) <= 4^n / (n x sqrt(n)) << 2^(2n) x n
+     */
+    public List<String> generateParenthesis(int n) {
+        res = new ArrayList<>();
+        recur2(n, n, new ArrayList<>());
+        return res;
+    }
+
+    private void recur2(int l, int r, List<String> cur) {
+        if (l == 0 && r == 0) {
+            res.add(String.join("", cur));
+            return;
+        }
+        if (l > 0) {
+            cur.add("(");
+            recur2(l - 1, r, cur);
+            cur.remove(cur.size() - 1);
+        }
+        if (l < r) {
+            cur.add(")");
+            recur2(l, r - 1, cur);
+            cur.remove(cur.size() - 1);
+        }
+    }
+
+    /********** Solution 3: Iterative DFS by Stack ****************/
     /**
      * Time/Space: Same as Solution 1
      */
-    public List<String> generateParenthesis(int n) {
+    public List<String> generateParenthesis3(int n) {
         List<String> res = new ArrayList<>();
         Deque<String> strStack = new ArrayDeque<>();
         Deque<int[]> lrStack = new ArrayDeque<>();
@@ -68,9 +99,9 @@ public class GenerateParentheses {
 
     public static void main(String[] args) {
         GenerateParentheses solution = new GenerateParentheses();
-        System.out.println(solution.generateParenthesis(0));
-        System.out.println(solution.generateParenthesis(1));
-        System.out.println(solution.generateParenthesis(2));
-        System.out.println(solution.generateParenthesis(3));
+        System.out.println(solution.generateParenthesis(0)); // []
+        System.out.println(solution.generateParenthesis(1)); // [()]
+        System.out.println(solution.generateParenthesis(2)); // [(()), ()()]
+        System.out.println(solution.generateParenthesis(3)); // [((())), (()()), (())(), ()(()), ()()()]
     }
 }
