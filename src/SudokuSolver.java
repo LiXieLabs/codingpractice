@@ -106,7 +106,7 @@ public class SudokuSolver {
             for (int j = 0; j < N; j++) {
                 if (board[i][j] != '.') {
                     int mask = (1 << (board[i][j] - '0'));
-                    int cubeIdx = (i / 3) * 3 + (j / 3);
+                    int cubeIdx = (i / 3) * 3 + (j / 3); // ⚠️注意⚠️ cubeIdx 怎么求的！！！易错！！！
                     rows[i] |= mask;
                     cols[j] |= mask;
                     cubes[cubeIdx] |= mask;
@@ -137,7 +137,7 @@ public class SudokuSolver {
         rows[i] |= mask;
         cols[j] |= mask;
         cubes[cubeIdx] |= mask;
-        board[i][j] = (char) ('0' + fill);
+        board[i][j] = (char) ('0' + fill); // ⚠️注意⚠️如何赋值！！！易错！！！
     }
 
     private void removeNumber(int i, int j, int cubeIdx, int mask) {
