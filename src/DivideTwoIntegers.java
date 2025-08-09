@@ -75,16 +75,24 @@ public class DivideTwoIntegers {
      * 4 628
      * total times: 596; dividend: 134
      *
+     * 157 x 2^9 + 157 x 2^6 + 157 x 2^4 + 157 x 2^2 = 93572 < 93706
+     *
      * Time: logN
      */
     public int divide(int dividend, int divisor) {
         if (dividend == Integer.MIN_VALUE && divisor == -1) return Integer.MAX_VALUE; // 必须单独处理，不然totalTimes会溢出!!!
-        int a = Math.abs(dividend); // Math.abs(Integer.MIN_VALUE) == Integer.MIN_VALUE
+        // Math.abs(Integer.MIN_VALUE) == Integer.MIN_VALUE
+        // -2^31 可以直接当作 2^31 处理！！！
+//        System.out.println(Integer.MIN_VALUE - 1 == Integer.MAX_VALUE);
+//        System.out.println(Integer.MIN_VALUE - 2 == Integer.MAX_VALUE - 1);
+//        System.out.println(Integer.MIN_VALUE - 3 == Integer.MAX_VALUE - 2);
+//        System.out.println(Integer.MIN_VALUE - 4 == Integer.MAX_VALUE - 3);
+        int a = Math.abs(dividend);
         int b = Math.abs(divisor);
         int totalTimes = 0;
         while (a - b >= 0) { // a >= b 不可以!!! Integer.MIN_VALUE - 1 = Integer.MAX_VALUE
             int times = 1, total = b;
-            System.out.println(times + " " + total);
+//            System.out.println(times + " " + total);
             while (a - (total << 1) >= 0) { // a >= (total << 1) 不可以!!! 要依赖 2147483647 - (-2147483648)
                 total <<= 1;
                 times <<= 1;
@@ -94,7 +102,7 @@ public class DivideTwoIntegers {
             totalTimes += times;
 //            System.out.println("total times: " + totalTimes + "; dividend: " + a);
         }
-        return (dividend > 0) == (divisor > 0) ? totalTimes : -totalTimes;
+        return (dividend > 0) ^ (divisor > 0) ? -totalTimes : totalTimes;
     }
 
     public static void main(String[] args) {
@@ -108,13 +116,14 @@ public class DivideTwoIntegers {
         System.out.println(solution.divide(-2147483648, 1)); // -2147483648
         System.out.println(solution.divide(-2147483648, -1)); // 2147483647
         System.out.println(solution.divide(-2147483648, -2)); // 1073741824
+        System.out.println(solution.divide(-2147483648, 2)); // -1073741824
         System.out.println(solution.divide(1, -1)); // -1
         System.out.println(solution.divide(-1, 1)); // -1
         System.out.println(solution.divide(-1, -1)); // 1
         System.out.println(solution.divide(1, 1)); // 1
 
         System.out.println(Integer.toBinaryString(Integer.MIN_VALUE)); // 10000000000000000000000000000000
-        System.out.println(Integer.toBinaryString(Integer.MAX_VALUE)); //  1111111111111111111111111111111
+        System.out.println(Integer.toBinaryString(Integer.MAX_VALUE)); // 01111111111111111111111111111111
         System.out.println(-Integer.MIN_VALUE); // -2147483648
         System.out.println(Math.abs(Integer.MIN_VALUE)); // -2147483648
         System.out.println(Integer.MIN_VALUE - 1); // 2147483647

@@ -5,7 +5,7 @@ public class MinimumPathSum {
 
     /********************** Solution 1: 1D DP ***********************/
     /**
-     * Transitive function:
+     * Transition function:
      * dp[i][j] denotes the min steps when reach at grid[i][j].
      * dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
      *

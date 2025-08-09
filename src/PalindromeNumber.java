@@ -28,11 +28,10 @@ public class PalindromeNumber {
      */
     public boolean isPalindrome2(int x) {
         if (x < 10) return x >= 0;
-        int cur = x;
         List<Integer> num = new ArrayList<>();
-        while (cur > 0) {
-            num.add(cur % 10);
-            cur /= 10;
+        while (x > 0) {
+            num.add(x % 10);
+            x /= 10;
         }
         int l = 0, r = num.size() - 1;
         while (l < r) {
@@ -50,12 +49,13 @@ public class PalindromeNumber {
      */
     public boolean isPalindrome(int x) {
         if (x < 10) return x >= 0;
-        if (x % 10 == 0) return false; // 必须有这个，不然10会错！！！
+        if (x % 10 == 0) return false; // 必须有这个，不然最后一位是 0 的话（比如：10 或者 110）会错！！！
         int reverted = 0;
         while (reverted < x) {
             reverted = reverted * 10 + x % 10;
             x /= 10;
         }
+        // 偶数位 || 奇数位
         return x == reverted || x == reverted / 10;
     }
 
@@ -71,5 +71,4 @@ public class PalindromeNumber {
         System.out.println(solution.isPalindrome(1));
         System.out.println(solution.isPalindrome(0));
     }
-
 }
