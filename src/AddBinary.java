@@ -1,5 +1,12 @@
+/**
+ * 67. Add Binary (https://leetcode.com/problems/add-binary/description/)
+ */
 public class AddBinary {
 
+    /***************** Solution 1: StringBuilder ******************/
+    /**
+     * Time:O(max(A,B))  Space: O(max(A,B))
+     */
     // NOTE!!! In Java, char和int可以自由cast，char对应的int即为起ASCII序号
     public String addBinary(String a, String b) {
         int ia = a.length() - 1, ib = b.length() - 1, carry = 0;
@@ -15,7 +22,7 @@ public class AddBinary {
 
     public static void main(String[] args) {
         AddBinary solution = new AddBinary();
-        System.out.println(solution.addBinary("11", "1"));
-        System.out.println(solution.addBinary("1010", "1011"));
+        System.out.println(solution.addBinary("11", "1")); // 100
+        System.out.println(solution.addBinary("1010", "1011")); // 10101
     }
 }

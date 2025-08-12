@@ -3,15 +3,13 @@
  */
 public class SingleNumber {
 
-    /******** Solution 1: bit manipulation *************/
+    /******** Solution 1: bit manipulation - XOR as filter *************/
     /**
      * Time: O(N) Space: O(1)
      */
     public int singleNumber(int[] nums) {
         int filter = 0;
-        for (int n : nums) {
-            filter ^= n;
-        }
+        for (int n : nums) filter ^= n;
         return filter;
     }
 

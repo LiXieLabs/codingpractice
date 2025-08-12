@@ -3,7 +3,7 @@
  */
 public class SingleNumberII {
 
-    /*********** Solution 1: bit manipulation *****************/
+    /*********** Solution 1: bit manipulation - Use 1 Int32 as counter *****************/
     /**
      * int32 对于每一位（32位），count 所有 nums 该位有几个 1
      * 对于 target 的该位，count = 3x + 1 (x >= 0)
@@ -28,7 +28,7 @@ public class SingleNumberII {
      * seenOnce = (seenOnce XOR n) AND (NOT seenTwice)
      * seenTwice = (seenTwice XOR n) AND (NOT seenOnce)
      *
-     * If a bit appears the 1st time, add it to seenOnce. It will not be added to seenTwice because of it's presence in seenOnce.
+     * If a bit appears the 1st time, add it to seenOnce. It will not be added to seenTwice because of its presence in seenOnce.
      * If a bit appears the 2nd time, remove it from seenOnce and add it to seenTwice.
      * If a bit appears the 3rd time, it won't be added to seenOnce because it is already present in seenTwice. After that it will be removed from seenTwice.
      *
