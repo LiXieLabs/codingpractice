@@ -11,7 +11,7 @@ public class ReverseWordsInAString {
     /**
      * Time: O(N)     Space: O(N)
      */
-    public String reverseWords(String s) {
+    public String reverseWords1(String s) {
         // Remove all spaces and build list of words
         List<String> words = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
@@ -27,7 +27,6 @@ public class ReverseWordsInAString {
         }
         if (sb.length() > 0) {
             words.add(sb.toString());
-            sb = new StringBuilder();
         }
 //        // 👆🏻can be replaced by
 //        // remove leading spaces
@@ -38,6 +37,27 @@ public class ReverseWordsInAString {
         // Reverse list of words and join with space as delimiter
         Collections.reverse(words);
         return String.join(" ", words);
+    }
+
+    /************ Solution 2: Backward Iterate + s.substring => Join *************/
+    /**
+     * Time: O(N)     Space: O(N)
+     */
+    public String reverseWords(String s) {
+        List<String> lst = new ArrayList<>();
+        int i = s.length() - 1;
+        while (i >= 0) {
+            while (i >= 0 && s.charAt(i) == ' ') {
+                i--;
+            }
+            if (i < 0) continue;
+            int j = i + 1;
+            while (i >= 0 && s.charAt(i) != ' ') {
+                i--;
+            }
+            lst.add(s.substring(i+1, j));
+        }
+        return String.join(" ", lst);
     }
 
     public static void main(String[] args) {

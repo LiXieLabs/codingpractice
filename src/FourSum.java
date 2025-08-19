@@ -100,7 +100,7 @@ public class FourSum {
             if (i != start && nums[i] == nums[i - 1]) continue;
             for (List<Integer> lst : kSum(nums, target - nums[i], k - 1, i + 1)) {
                 // 注意必须 new ArrayList<>() => 不然 abstractList Error when adding all
-                res.add(new ArrayList<>(Arrays.asList(nums[i])));
+                res.add(new ArrayList<>(Collections.singletonList(nums[i])));
                 res.get(res.size() - 1).addAll(lst);
             }
         }
