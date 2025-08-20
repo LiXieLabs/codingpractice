@@ -18,10 +18,9 @@ public class NextGreaterElementIII {
      *
      * Time: O(N)   Space: O(N) where N is number digit in n.
      */
-    public int nextGreaterElement(int n) {
+    public int nextGreaterElement1(int n) {
         // split number into digit list (in reversed order: 12345 => [5,4,3,2,1])
         List<Integer> lst = splitNum(n);
-
 
         // solve with next permutation solution
         int i = 0;
@@ -64,6 +63,52 @@ public class NextGreaterElementIII {
             res = res * 10 + lst.get(i);
         }
         return res > Integer.MAX_VALUE ? -1 : (int) res;
+    }
+
+    /************ Solution 2: Integer split & join 的另一种方法 **************/
+    /**
+     * Time: O(N)   Space: O(N) where N is number digit in n.
+     */
+    public int nextGreaterElement(int n) {
+        // 快速 split integer to digits
+        char[] arr = String.valueOf(n).toCharArray();
+
+        // 解决 next permutation
+        int i = arr.length - 2;
+        while (i >= 0 && arr[i] >= arr[i+1]) {
+            i--;
+        }
+        if (i == -1) return -1;
+
+        int l = i + 1, r = arr.length - 1;
+        while (l < r) {
+            char temp = arr[l];
+            arr[l++] = arr[r];
+            arr[r--] = temp;
+        }
+
+        int j = i + 1;
+        while (arr[j] <= arr[i]) {
+            j++;
+        }
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+
+        // 跟 Integer.MAX_VALUE 逐位比较 并返回结果！！！
+        char[] maxInt = String.valueOf(Integer.MAX_VALUE).toCharArray();
+        return larger(arr, maxInt) ? -1 : Integer.parseInt(new String(arr));
+
+    }
+
+    private boolean larger(char[] num, char[] base) {
+        if (num.length > base.length) return true;
+        if (num.length < base.length) return false;
+        for (int i = 0; i < num.length; i++) {
+            if (num[i] > base[i]) return true;
+            if (num[i] < base[i]) return false;
+        }
+        return false;
     }
 
     public static void main(String[] args) {

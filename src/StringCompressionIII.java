@@ -9,16 +9,15 @@ public class StringCompressionIII {
      */
     public String compressedString(String word) {
         StringBuilder comp = new StringBuilder();
-        int i = 0, cnt = 0;
-        while (i < word.length()) {
-            int j = i;
-            while (j < word.length() && word.charAt(j) == word.charAt(i) && cnt < 9) {
-                j++;
-                cnt++;
+        int start = 0;
+        while (start < word.length()) {
+            int end = start + 1;
+            while (end < word.length() && word.charAt(end) == word.charAt(start) && end - start < 9) {
+                end++;
             }
-            comp.append(cnt).append(word.charAt(i));
-            i = j;
-            cnt = 0;
+            // ⚠️注意⚠️可以直接 append 数字，且可以连续 append ！！！
+            comp.append(end - start).append(word.charAt(start));
+            start = end;
         }
         return comp.toString();
     }

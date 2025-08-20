@@ -96,10 +96,10 @@ public class RotateArray {
      * 从start开始，nums[(i + k) % L] = nums[i]
      * (i + xk) % L = i
      * => x is L / gcd(k, L)
-     * => 如果 gck(k, L) > 1, 则 start == 0，一次无法遍历完所有的点
+     * => 如果 gcd(k, L) > 1, 则 start == 0，一次无法遍历完所有的点
      * => Iterate from 0 to gcd(k, n) - 1, which will make sure every element was moved.
      *
-     * 注意！！！相邻的位置肯定不会再不同loop中被重复遍历到，除非 gcd(k, L) == 1
+     * 注意！！！相邻的位置肯定不会再在不同loop中被重复遍历到，除非 gcd(k, L) == 1
      * (i + xk) % L = i + 1
      *
      * Time: O(N)  Space: (1)

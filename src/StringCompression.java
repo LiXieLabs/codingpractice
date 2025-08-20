@@ -8,7 +8,7 @@ public class StringCompression {
     /********************* Solution 1: Two Pointers *******************/
     /**
      * pre 指向下一个要被写入结果的位置
-     * start 指向当前同一 char 的起始位置
+     * cur 指向当前同一 char 的起始位置
      * end 指向当前同一 char 遍历到的位置
      *
      * Time: O(N)   Space: O(1)
