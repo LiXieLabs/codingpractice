@@ -14,6 +14,7 @@ public class TimeBasedKeyValueStore {
     /********* Solution 1: Binary Search (Bisect Right) **************/
     /**
      * key : List<[timestamp,value]>
+     * 不熟悉 Pair 可以直接分两个 map: times and values
      *
      * M is # of set calls
      * Time: set O(1) if ignore hash key time, get O(logM)
@@ -54,6 +55,8 @@ public class TimeBasedKeyValueStore {
      * (2) support binary search
      * solution is TreeMap<timestamp, value> 👇🏻
      *
+     * 所以 TreeMap = Sorted List + Binary Search，且对 input 顺序不做要求！！！
+     *
      * Time: set O(logM) maintain order in TreeMap, get O(logM)
      * Space: O(M) by store map
      */
@@ -78,19 +81,19 @@ public class TimeBasedKeyValueStore {
         // use ArrayList
         TimeBasedKeyValueStore solution1 = new TimeBasedKeyValueStore();
         solution1.set("foo", "bar", 1);
-        System.out.println(solution1.get("foo", 1));
-        System.out.println(solution1.get("foo", 3));
+        System.out.println(solution1.get("foo", 1)); // bar
+        System.out.println(solution1.get("foo", 3)); // bar
         solution1.set("foo", "bar2", 4);
-        System.out.println(solution1.get("foo", 4));
-        System.out.println(solution1.get("foo", 5));
+        System.out.println(solution1.get("foo", 4)); // bar2
+        System.out.println(solution1.get("foo", 5)); // bar2
 
         // use TreeMap
         TimeBasedKeyValueStore solution2 = new TimeBasedKeyValueStore(true);
         solution2.set2("foo", "bar", 1);
-        System.out.println(solution2.get2("foo", 1));
-        System.out.println(solution2.get2("foo", 3));
+        System.out.println(solution2.get2("foo", 1)); // bar
+        System.out.println(solution2.get2("foo", 3)); // bar
         solution2.set2("foo", "bar2", 4);
-        System.out.println(solution2.get2("foo", 4));
-        System.out.println(solution2.get2("foo", 5));
+        System.out.println(solution2.get2("foo", 4)); // bar2
+        System.out.println(solution2.get2("foo", 5)); // bar2
     }
 }

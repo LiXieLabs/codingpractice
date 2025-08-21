@@ -30,6 +30,7 @@ public class FindKClosestElements {
 
     private int bisectLeft(int[] arr, int target) {
         int lo = 0, hi = arr.length;
+        // ⚠️注意⚠️没有等号！不然可能一直 hi = mid 死循环！
         while (lo < hi) {
             int mid = lo + (hi - lo >> 1);
             if (arr[mid] < target) {

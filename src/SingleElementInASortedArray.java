@@ -45,7 +45,7 @@ public class SingleElementInASortedArray {
      *
      * Time: O(log(N/2)) - O(logN)   Space: O(1)
      */
-    public int singleNonDuplicate(int[] nums) {
+    public int singleNonDuplicate2(int[] nums) {
         int lo = 0, hi = nums.length - 1;
         while (lo < hi) {
             int mid = (lo + hi) >> 1;
@@ -57,6 +57,30 @@ public class SingleElementInASortedArray {
             }
         }
         return nums[lo];
+    }
+
+    /************** Solution 3: Binary Search and move according to pattern 优化 2 ***************/
+    /**
+     * 与 solution 1 一样，优化跳过跟 mid 一样的位置！！！
+     *
+     * Time: O(log(N/2)) - O(logN)   Space: O(1)
+     */
+    public int singleNonDuplicate(int[] nums) {
+        int lo = 0, hi = nums.length - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            int nex = mid == nums.length - 1 ? Integer.MAX_VALUE : nums[mid + 1];
+            int pre = mid == 0 ? Integer.MIN_VALUE : nums[mid - 1];
+            if (nums[mid] != nex && nums[mid] != pre) return nums[mid];
+            if (mid % 2 == 1 && nums[mid] == pre || mid % 2 == 0 && nums[mid] == nex) {
+                // (1 - mid % 2) => 偶数位多往后跳一位！
+                lo = mid + 1 + (1 - mid % 2);
+            } else {
+                // (1 - mid % 2) => 偶数位多往前跳一位！
+                hi = mid - 1 - (1 - mid % 2);
+            }
+        }
+        return -1;
     }
 
     public static void main(String[] args) {
