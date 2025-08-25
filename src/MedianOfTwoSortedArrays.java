@@ -1,3 +1,6 @@
+/**
+ * 4. Median of Two Sorted Arrays (https://leetcode.com/problems/median-of-two-sorted-arrays/description/)
+ */
 public class MedianOfTwoSortedArrays {
 
     /******************* Solution 1: Divide & Conquer *******************/
@@ -28,15 +31,21 @@ public class MedianOfTwoSortedArrays {
         }
     }
 
-    /******************* Solution 1: Ultimate Binary Search by Cut *******************/
+    /******************* Solution 2: Ultimate Binary Search by Cut *******************/
     /**
-     *
+     * 可扩展为 find any kth element in 2 sorted array!
+     * (1) ensure nums1 is the SMALLER array (swap if necessary).
+     * (2) binary search on the nums1's slots
+     * (3) calculate corresponding partition in the larger array nums2 by k
+     * (4) check if partition is valid (all left elements <= right elements)
+     * (5) adjust search range based on comparison
+     * 
      * Space Complexity: O(1)  Time Complexity: O(log(min(M, N))
      */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int l1 = nums1.length, l2 = nums2.length;
-        if (l1 > l2) return findMedianSortedArrays(nums2, nums1);
-        int k = (l1 + l2 + 1) / 2;
+        if (l1 > l2) return findMedianSortedArrays(nums2, nums1); // 一个优化！！！不然 TC4 也会 ArrayIndexOutOfBoundsException！！！
+        int k = (l1 + l2 + 1) / 2; // ⚠️注意⚠️ 必须 +1，不然有 ArrayIndexOutOfBoundsException 风险！！！
         int lo = 0, hi = l1; // 注意！！！标记的是slot，故不是l1-1
         while (lo <= hi) {
             int c1 = (lo + hi) / 2;
@@ -58,8 +67,9 @@ public class MedianOfTwoSortedArrays {
 
     public static void main(String[] args) {
         MedianOfTwoSortedArrays solution = new MedianOfTwoSortedArrays();
-        System.out.println(solution.findMedianSortedArrays(new int[]{1,3,5,7}, new int[]{2,4,6}));
-        System.out.println(solution.findMedianSortedArrays(new int[]{1,2}, new int[]{3,4}));
-        System.out.println(solution.findMedianSortedArrays(new int[]{1,3}, new int[]{2}));
+        System.out.println(solution.findMedianSortedArrays(new int[]{1,3,5,7}, new int[]{2,4,6})); // 4.0
+        System.out.println(solution.findMedianSortedArrays(new int[]{1,2}, new int[]{3,4})); // 2.5
+        System.out.println(solution.findMedianSortedArrays(new int[]{1,3}, new int[]{2})); // 2.0
+        System.out.println(solution.findMedianSortedArrays(new int[]{2}, new int[]{})); // 2.0
     }
 }
