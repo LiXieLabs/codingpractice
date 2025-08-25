@@ -9,6 +9,9 @@ public class ReorderList {
 
     /************** Soluion 1: 3 Passes (找中点, reverse list, merge 2 lists) **************/
     /**
+     * 用这个方法！！！
+     * ⚠️注意⚠️第二步中间 3 连 null 很重要！！！不然死循环！！！
+     *
      * Time: O(3N) = O(N)  Space: O(1)
      */
     public void reorderList1(ListNode head) {
@@ -30,8 +33,7 @@ public class ReorderList {
         //          null
         //           |
         // 1 -> 2 -> 3 <- 4 <- 5
-        ListNode prev = null;
-        ListNode curr = slow;
+        ListNode prev = null, curr = slow;
         while (curr != null) {
             ListNode temp = curr.next;
             curr.next = prev;
@@ -40,19 +42,47 @@ public class ReorderList {
         }
         // Step 3
         // merge 2 lists
-        ListNode tail = new ListNode();;
-        ListNode l = head;
-        ListNode r = prev;
-        // 截止条件 奇数r==null 偶数l==r
-        while (r != null && l != r) {
-            // connect left
-            tail.next = l;
-            l = l.next;
-            tail = tail.next;
-            // connect right
-            tail.next = r;
-            r = r.next;
-            tail = tail.next;
+        //
+        // 偶数case：
+        // loop 1:
+        //          null
+        //           |
+        // 1 -> 2 -> 3 <- 4
+        // l              r
+        //
+        // loop 2:
+        //               null
+        //                |
+        // 1 -> 4 -> 2 -> 3
+        //           l    r
+        //
+        // 奇数 case：
+        // loop 1:
+        //          null
+        //           |
+        // 1 -> 2 -> 3 <- 4 <- 5
+        // l                   r
+        //
+        // loop 2:
+        //               null
+        //                |
+        // 1 -> 5 -> 2 -> 3 <- 4 <- 5
+        //           l         r
+        //
+        // loop 3:
+        //                    null
+        //                     |
+        // 1 -> 5 -> 2 -> 4 -> 3
+        //                    l&r
+        //
+        ListNode l = head, r = prev;
+        // 截止条件 奇数 l == r 偶数 l.next == r
+        while (l != r && l.next != r) {
+            ListNode temp = r.next;
+            r.next = l.next;
+            l.next = r;
+            l = r.next;
+            r = temp;
         }
     }
 

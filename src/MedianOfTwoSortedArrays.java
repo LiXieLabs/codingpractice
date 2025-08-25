@@ -39,7 +39,7 @@ public class MedianOfTwoSortedArrays {
      * (3) calculate corresponding partition in the larger array nums2 by k
      * (4) check if partition is valid (all left elements <= right elements)
      * (5) adjust search range based on comparison
-     * 
+     *
      * Space Complexity: O(1)  Time Complexity: O(log(min(M, N))
      */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
