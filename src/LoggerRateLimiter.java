@@ -1,9 +1,12 @@
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 359. Logger Rate Limiter (https://leetcode.com/problems/logger-rate-limiter/description/)
+ */
 public class LoggerRateLimiter {
 
-    private static int THRESHOLD = 10;
+    private static final int THRESHOLD = 10;
 
     private Map<String, Integer>  msgTimeMap;
 
@@ -21,11 +24,11 @@ public class LoggerRateLimiter {
 
     public static void main(String[] args) {
         LoggerRateLimiter logger = new LoggerRateLimiter();
-        System.out.println(logger.shouldPrintMessage(1, "foo"));
-        System.out.println(logger.shouldPrintMessage(2, "bar"));
-        System.out.println(logger.shouldPrintMessage(3, "foo"));
-        System.out.println(logger.shouldPrintMessage(8, "bar"));
-        System.out.println(logger.shouldPrintMessage(10, "foo"));
-        System.out.println(logger.shouldPrintMessage(11, "foo"));
+        System.out.println(logger.shouldPrintMessage(1, "foo")); // true
+        System.out.println(logger.shouldPrintMessage(2, "bar")); // true
+        System.out.println(logger.shouldPrintMessage(3, "foo")); // false
+        System.out.println(logger.shouldPrintMessage(8, "bar")); // false
+        System.out.println(logger.shouldPrintMessage(10, "foo")); // false
+        System.out.println(logger.shouldPrintMessage(11, "foo")); // true
     }
 }
