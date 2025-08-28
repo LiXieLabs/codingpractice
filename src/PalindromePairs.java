@@ -20,10 +20,10 @@ public class PalindromePairs {
      *     case#2. A 结束了，B 还没结束 (e.g. A="a", B="aa")
      *     case#3. A 还没结束，B 结束了 (e.g. A="a", B="")
      *
-     * K is length of longest word in words
+     * L is length of longest word in words
      * N is number of words
-     * Time: O(NK + N*K*K) = O(NK^2)
-     * Space: O(NK letter X each node has max N children) = O(KN^2)
+     * Time: O(NL + N*L*L) = O(NL^2)
+     * Space: O(N * L letters in total) = O(NL)
      */
     public List<List<Integer>> palindromePairs(String[] words) {
         // iterate over list and build TRIE
@@ -49,12 +49,14 @@ public class PalindromePairs {
             int j = word.length() - 1;
             while (j >= 0 && curr.children[word.charAt(j) - 'a'] != null) {
                 // handle case#3
+                // 实际在 match word[j+1:]，而非 word[j:]，主要是为了包含 ["", "a"] 的情况！
                 if (curr.wordEnd != -1 && isPalindrome(word, 0, j)) {
                     res.add(Arrays.asList(curr.wordEnd, i));
                 }
                 curr = curr.children[word.charAt(j--) - 'a'];
             }
-            // handle case3
+            // handle case#3
+            // 在 match word[j+1:]，而非 word[j:]，所以出循环后可能还有一次 match！
             if (j >= 0 && curr.wordEnd != -1 && isPalindrome(word, 0, j)) {
                 res.add(Arrays.asList(curr.wordEnd, i));
             }
@@ -94,8 +96,8 @@ public class PalindromePairs {
 class TrieNode336 {
 
     TrieNode336[] children;
-    List<Integer> wordsPass;
-    int wordEnd;
+    List<Integer> wordsPass; // 多个 string 可能有一样的 prefix，所以是 list
+    int wordEnd; // 因为 unique string list, 所以 single value
 
     public TrieNode336() {
         this.children = new TrieNode336[26];

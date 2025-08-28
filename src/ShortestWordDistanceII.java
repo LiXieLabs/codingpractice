@@ -41,13 +41,12 @@ public class ShortestWordDistanceII {
     }
 
     public static void main(String[] args) {
+        ShortestWordDistanceII dict1 = new ShortestWordDistanceII(new String[]{"practice", "makes", "perfect", "coding", "makes"});
+        System.out.println(dict1.shortest("coding", "practice")); // 3
+        System.out.println(dict1.shortest("makes", "coding")); // 1
 
-        ShortestWordDistanceII solution1 = new ShortestWordDistanceII(new String[]{"practice", "makes", "perfect", "coding", "makes"});
-        System.out.println(solution1.shortest("coding", "practice")); // 3
-        System.out.println(solution1.shortest("makes", "coding")); // 1
-
-        ShortestWordDistanceII solution2 = new ShortestWordDistanceII(new String[]{"a", "c", "b", "a"});
-        System.out.println(solution2.shortest("a", "b")); // 1
-        System.out.println(solution2.shortest("b", "a")); // 1
+        ShortestWordDistanceII dict2 = new ShortestWordDistanceII(new String[]{"a", "c", "b", "a"});
+        System.out.println(dict2.shortest("a", "b")); // 1
+        System.out.println(dict2.shortest("b", "a")); // 1
     }
 }
