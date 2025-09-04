@@ -87,6 +87,5 @@ public class DesignTicTacToe {
         System.out.println(solution2.move2(2, 0, 1)); // 0
         System.out.println(solution2.move2(1, 0, 2)); // 0
         System.out.println(solution2.move2(2, 1, 1)); // 1
-
     }
 }
