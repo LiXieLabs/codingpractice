@@ -3,14 +3,31 @@
  */
 public class FirstUniqueCharacterInAString {
 
-    /************ Solution 1: Counter by 26 字母 Array ****************/
+    /************ Solution 1: 正序遍历 input string + Counter by 26 字母 Array **************/
     /**
      * Intuitive solution is 2 loops on s
-     * 第一遍count，第二遍count==1则返回i => O(2N)
+     * 第一遍 正序遍历 input string 更新 counter，
+     * 第二遍 正序遍历 input string，count == 1 则返回
      *
+     * Time: O(2N)   Space: O(26) = O(1)
+     */
+    public int firstUniqChar1(String s) {
+        int[] counter = new int[26];
+        for (char c : s.toCharArray()) {
+            counter[c - 'a']++;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            if (counter[s.charAt(i) - 'a'] == 1) return i;
+        }
+        return -1;
+    }
+
+    /************ Solution 2: 倒序遍历 input string + Counter by 26 字母 Array ****************/
+    /**
      * 该方法
-     * 第一遍倒着更新1st occur index和count，
-     * 第二遍只遍历int[26]，在count==1的char中，找最小的1st occur index
+     * 第一遍倒着更新 1st occur index 和 count，（倒序为了更新 1st occur idx）
+     * 第二遍只遍历 int[26]，在count == 1 的 char 中，找最小的 1st occur index！！！
+     * 时间更优化了！！！尤其 input string 很大的情况！！！
      *
      * Time: O(N)   Space: O(26) = O(1)
      */
