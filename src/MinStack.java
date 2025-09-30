@@ -56,23 +56,57 @@ public class MinStack {
         stack = new ArrayDeque<>();
         minStack = new ArrayDeque<>();
     }
+//
+//    public void push(int val) {
+//        stack.push(val);
+//        if (minStack.isEmpty() || minStack.peek()[0] > val) {
+//            minStack.push(new int[]{val, 1});
+//        } else if (minStack.peek()[0] == val) {
+//            minStack.peek()[1]++;
+//        }
+//    }
+//
+//    public void pop() {
+//        int val = stack.pop();
+//        if (val == minStack.peek()[0]) {
+//            minStack.peek()[1]--;
+//            if (minStack.peek()[1] == 0) {
+//                minStack.pop();
+//            }
+//        }
+//    }
+//
+//    public int top() {
+//        return stack.peek();
+//    }
+//
+//    public int getMin() {
+//        return minStack.peek()[0];
+//    }
 
+    /************* Solution 3: Solution 2 优化 ********************/
+    /**
+     * Time: O(1) for all operations
+     * Space: O(N)
+     *
+     * 优化：
+     * （1）不记录最小值出现次数，只记录其第一次出现时 regular stack 的 size，即相当于它的 index
+     *     因为它从 regular stack 出去之前，它前面的所有数字不会发生变化，可以认为这个 index 是固定的
+     *     只有当 pop 出来的 val 和 index 都 match minStack's top，minStack 才 pop！！！
+     *
+     * 数据结构 + init 和 solution 2 一样，此处省略
+     */
     public void push(int val) {
         stack.push(val);
-        if (minStack.isEmpty() || minStack.peek()[0] > val) {
-            minStack.push(new int[]{val, 1});
-        } else if (minStack.peek()[0] == val) {
-            minStack.peek()[1]++;
+        if (minStack.isEmpty() || val < minStack.peek()[1]) {
+            minStack.push(new int[]{stack.size() - 1, val});
         }
     }
 
     public void pop() {
         int val = stack.pop();
-        if (val == minStack.peek()[0]) {
-            minStack.peek()[1]--;
-            if (minStack.peek()[1] == 0) {
-                minStack.pop();
-            }
+        if (minStack.peek()[0] == stack.size() && minStack.peek()[1] == val) {
+            minStack.pop();
         }
     }
 
@@ -81,7 +115,7 @@ public class MinStack {
     }
 
     public int getMin() {
-        return minStack.peek()[0];
+        return minStack.peek()[1];
     }
 
     public static void main(String[] args) {

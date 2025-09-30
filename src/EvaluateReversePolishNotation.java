@@ -16,10 +16,13 @@ public class EvaluateReversePolishNotation {
         for (String token : tokens) {
             if ("+".equals(token) || "-".equals(token) || "*".equals(token) || "/".equals(token)) {
                 int n2 = stack.pop(), n1 = stack.pop();
-                if ("+".equals(token)) stack.push(n1 + n2);
-                if ("-".equals(token)) stack.push(n1 - n2);
-                if ("*".equals(token)) stack.push(n1 * n2);
-                if ("/".equals(token)) stack.push(n1 / n2);
+                // try with new switch syntax (JDK14+) instead of using if conditions
+                switch (token) {
+                    case "+" -> stack.push(n1 + n2);
+                    case "-" -> stack.push(n1 - n2);
+                    case "*" -> stack.push(n1 * n2);
+                    case "/" -> stack.push(n1 / n2);
+                }
             } else {
                 stack.push(Integer.valueOf(token));
             }
