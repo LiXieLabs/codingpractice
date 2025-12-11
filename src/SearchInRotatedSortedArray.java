@@ -6,28 +6,34 @@ public class SearchInRotatedSortedArray {
     /************* Solution 1: Binary Search and Move based on Pattern ***************/
     /**
      * 比 Solution 2 更好理解
+     *    mid < target
+     *      start             pivot mid target end -> move to right
+     *      start  target     pivot mid        end -> move to left -> condition: mid <= end && target > end
+     *      start  mid target pivot            end -> move to right
+     *    mid > target
+     *      start             pivot target mid end -> move to left
+     *      start   mid       pivot target     end -> move to right -> condition: mid > end && target <= end
+     *      start target mid  pivot            end -> move to left
+     *
+     * 注意 condition 里面要有等号！不然 mid 或 target 正好是 end 情况会 fail！
      *
      * Time: O(logN)   Space: O(1)
      */
     public int search1(int[] nums, int target) {
-        int lo = 0, hi = nums.length - 1;
+        int lo = 0, hi = nums.length - 1, end = nums[nums.length - 1];
         while (lo <= hi) {
             int mid = lo + (hi - lo) / 2;
             if (nums[mid] == target) return mid;
             if (nums[mid] < target) {
-                if (nums[0] <= nums[mid]) { // mid 处于第一个递增区间，一定向右移动
-                    lo = mid + 1;
-                } else if (nums[0] <= target) { // mid 处于第二个递增区间，target 处于第一个递增区间，向左移动
+                if (nums[mid] <= end && target > end) {
                     hi = mid - 1;
-                } else { // mid 处于第二个递增区间，target 也处于第二个递增区间，向右移动
+                } else {
                     lo = mid + 1;
                 }
             } else {
-                if (nums[mid] <= nums[nums.length - 1]) { // mid 处于第二个递增区间，target 也处于第二个递增区间，向左移动
-                    hi = mid - 1;
-                } else if (target <= nums[nums.length - 1]) { // mid 处于第一个递增区间，target 处于第二个递增区间，向右移动
+                if (nums[mid] > end && target <= end) {
                     lo = mid + 1;
-                } else { // mid 处于第一个递增区间，target 也处于第一个递增区间，向左移动
+                } else {
                     hi = mid - 1;
                 }
             }
