@@ -12,6 +12,8 @@ public class    FindFirstAndLastPositionOfElementInSortedArray {
      * Time: O(logN)   Space: O(1)
      */
     public int[] searchRange1(int[] nums, int target) {
+        // bisect left: find the 1st position index l, where all nums[i] >= target, i >= l;
+        // bisect right: find the 1st position index r, where all nums[i] <= target, i < r;
         int l = bisectLeft(nums, target), r = bisectRight(nums, target);
         return l == r ? new int[]{-1, -1} : new int[]{l, r - 1};
     }
