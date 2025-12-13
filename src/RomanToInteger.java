@@ -21,7 +21,7 @@ public class RomanToInteger {
     /**
      * Time: O(N) Space: O(1)
      */
-    public int romanToInt(String s) {
+    public int romanToInt1(String s) {
         int res = 0, i = s.length() - 1;
         while (i >= 0) {
             if (i + 1 < s.length() && map.get(s.charAt(i)) < map.get(s.charAt(i+1))) {
@@ -31,6 +31,19 @@ public class RomanToInteger {
             }
         }
         return res;
+    }
+
+    /************ Solution 2: Greedy - Left to Right ****************/
+    /**
+     * Time: O(N) Space: O(1)
+     */
+    public int romanToInt(String s) {
+        int result = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int sign = i + 1 < s.length() && map.get(s.charAt(i)) < map.get(s.charAt(i + 1)) ? -1 : 1;
+            result += sign * map.get(s.charAt(i));
+        }
+        return result;
     }
 
     public static void main(String[] args) {
