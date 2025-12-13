@@ -60,12 +60,14 @@ public class IntegerToRoman {
      */
     public String intToRoman(int num) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < values.length && num > 0; i++) {
-            int n = values[i];
-            for (int j = num / n; j > 0; j--) {
-                sb.append(symbols[i]);
-            }
-            num %= n;
+        int i = 0;
+        while (num > 0) {
+            sb.append(symbols[i].repeat(num / values[i]));
+            // 👆 相当于 👇
+//            for (int j = 0; j < num / values[i]; j++) {
+//                sb.append(symbols[i]);
+//            }
+            num %= values[i++];
         }
         return sb.toString();
     }
