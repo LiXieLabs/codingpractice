@@ -29,8 +29,10 @@ class ValidParentheses {
         Deque<Character> stack = new ArrayDeque<>();
         for (char c : s.toCharArray()) {
             if (dict.containsKey(c)) {
-                if (stack.peek() != dict.get(c)) return false;
-                stack.pop();
+                // stack.pop() 不是 null safe，stack.peek()是的！！！
+                if (stack.isEmpty() || stack.pop() != dict.get(c)) return false;
+//                if (stack.peek() != dict.get(c)) return false;
+//                stack.pop();
             } else {
                 stack.push(c);
             }
