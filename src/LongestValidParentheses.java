@@ -89,7 +89,7 @@ public class LongestValidParentheses {
                 } else {
                     stack.push(i);
                 }
-            } else {
+            } else { // c == '('
                 stack.push(i);
             }
         }
@@ -108,7 +108,7 @@ public class LongestValidParentheses {
         for (int i = 0; i < l; i++) {
             if (s.charAt(i) == '(') {
                 left++;
-            } else {
+            } else { // s.charAt(i) == ')'
                 right++;
             }
             if (left == right) {
@@ -123,7 +123,7 @@ public class LongestValidParentheses {
         for (int i = l - 1; i >= 0; i--) {
             if (s.charAt(i) == '(') {
                 left++;
-            } else {
+            } else { // s.charAt(i) == ')'
                 right++;
             }
             if (left == right) {
