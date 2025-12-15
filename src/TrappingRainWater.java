@@ -6,6 +6,13 @@ import java.util.Deque;
  */
 public class TrappingRainWater {
 
+    /**
+     * 类似的问题
+     * 11. Container With Most Water (https://leetcode.com/problems/container-with-most-water/description/)
+     * 42. Trapping Rain Water (https://leetcode.com/problems/trapping-rain-water/description/)
+     * 84. Largest Rectangle in Histogram (https://leetcode.com/problems/largest-rectangle-in-histogram/description/)
+     */
+
     /****************** Solution 1: Descending Monotonic Stack **********************/
     /**
      * Time: O(N)   Space: O(N)
