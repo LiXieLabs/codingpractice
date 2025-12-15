@@ -18,21 +18,20 @@ public class ContainerWithMostWater {
      * Time: O(N)   Space: O(1)
      */
     public int maxArea(int[] height) {
-        int l = 0, r = height.length - 1, res = 0;
+        // 2 walls distance -> horizontal longer vs. the lower wall -> vertical higher
+        int l = 0, r = height.length - 1, max = 0;
         while (l < r) {
-            int lh = height[l], rh = height[r];
-            if (lh < rh) {
-                res = Math.max(res, lh * (r - l++));
-            } else {
-                res = Math.max(res, rh * (r-- - l));
-            }
+            int cur = Math.min(height[l], height[r]) * (r - l);
+            max = Math.max(cur, max);
+            if (height[l] < height[r]) l++;
+            else r--;
         }
-        return res;
+        return max;
     }
 
     public static void main(String[] args) {
         ContainerWithMostWater solution = new ContainerWithMostWater();
-        System.out.println(solution.maxArea(new int[]{1,8,6,2,5,4,8,3,7}));
-        System.out.println(solution.maxArea(new int[]{1,1}));
+        System.out.println(solution.maxArea(new int[]{1,8,6,2,5,4,8,3,7})); // 49
+        System.out.println(solution.maxArea(new int[]{1,1})); // 1
     }
 }

@@ -1,5 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class SimplifyPath {
      * sb.isEmpty() 需要 >= Java 17
      * Deque 作为 stack 和 queue，都是从头出
      */
-    public String simplifyPath(String path) {
+    public String simplifyPath2(String path) {
         path = path + "/";
         Deque<String> stack = new ArrayDeque<>();
         StringBuilder sb = new StringBuilder();
@@ -74,6 +75,38 @@ public class SimplifyPath {
             sb.append(stack.pollLast());
         }
         return sb.length() == 0 ? "/" : sb.toString();
+    }
+
+    /****************** Solution 3: Solution 1 的又一种写法 ********************/
+    /**
+     * 更清晰，容易理解
+     *
+     * Deque<String> deque = new ArrayDeque<>();
+     * List<String> list = new ArrayList<>(deque);
+     *
+     * Time: O(N) Space: O(N) where there are N characters in the original path.
+     */
+    public String simplifyPath(String path) {
+        Deque<String> stack = new ArrayDeque<>();
+        int i = 0;
+        while (i < path.length()) {
+            if (path.charAt(i) == '/') {
+                while (i < path.length() && path.charAt(i) == '/') i++;
+            } else {
+                int start = i;
+                while (i < path.length() && path.charAt(i) != '/') i++;
+                String curr = path.substring(start, i);
+                if (curr.equals(".")) {
+                } else if (curr.equals("..")) {
+                    if (!stack.isEmpty()) stack.pop();
+                } else {
+                    stack.push(curr);
+                }
+            }
+        }
+        List<String> nodes = new ArrayList<>(stack);
+        Collections.reverse(nodes);
+        return "/" + String.join("/", nodes);
     }
 
     public static void main(String[] args) {
