@@ -34,6 +34,7 @@ public class BinaryTreePostorderTraversal {
      * Postorder:              [4,5,2,6,7,3,1]
      * Reverse of Postorder:   [1,3,7,6,2,5,4]
      * Preorder (right=>left): [1,3,7,6,2,5,4]
+     * 按照 preorder，但是先右后左！
      */
 
     /******************** Solution 2: DFS by Stack *************************/
