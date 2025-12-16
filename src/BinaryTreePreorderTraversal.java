@@ -89,7 +89,7 @@ public class BinaryTreePreorderTraversal {
                 root = root.right;
             } else {
                 TreeNode predecessor = root.left;
-                while (predecessor.right != null && predecessor.right != root) {
+                while (predecessor.right != null && predecessor.right != root) { // 小心！！！此处易错！！！
                     predecessor = predecessor.right;
                 }
                 if (predecessor.right == null) {
