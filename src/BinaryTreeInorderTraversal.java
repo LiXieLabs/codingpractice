@@ -31,6 +31,8 @@ public class BinaryTreeInorderTraversal {
 
     /******************* Solution 2: Iterative *************************/
     /**
+     * 注意！！！inorder 不能用传统的 DFS 了，只有 preorder 和 postorder 可以，因为 DFS 追踪不到第二次遍历
+     *
      * Time: O(N) Each node is traversed twice, first time put in stack & second time take from stack and put into res
      * Space: Average O(logN) Worst O(N) by recur call stack
      */
