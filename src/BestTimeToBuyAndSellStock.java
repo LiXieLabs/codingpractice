@@ -3,6 +3,11 @@
  */
 public class BestTimeToBuyAndSellStock {
 
+    /**
+     * 53. Maximum Subarray (https://leetcode.com/problems/maximum-subarray/description/)
+     * 121. Best Time to Buy and Sell Stock (https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+     */
+
     /********** Solution 1: Intuitive ***************/
     /**
      * 不断刷新最低点，当前值跟之前最低点求 curProfit，刷新 maxProfit.
@@ -10,10 +15,10 @@ public class BestTimeToBuyAndSellStock {
      * Time: O(N)  Space: O(1)
      */
     public int maxProfit1(int[] prices) {
-        int maxProfit = 0, minPrice = Integer.MAX_VALUE;
+        int maxProfit = 0, minPrice = prices[0];
         for (int price : prices) {
-            maxProfit = Math.max(maxProfit, price - minPrice);
             minPrice = Math.min(minPrice, price);
+            maxProfit = Math.max(maxProfit, price - minPrice);
         }
         return maxProfit;
     }
@@ -28,13 +33,27 @@ public class BestTimeToBuyAndSellStock {
      * Calculate the difference maxCur += prices[i] - prices[i-1] of the original array,
      * and find a continuous subarray giving maximum profit. If the difference falls below 0, reset it to zero.
      */
-    public int maxProfit(int[] prices){
+    public int maxProfit2(int[] prices){
         int maxProfit = 0, curMax = 0;
         for (int i = 1; i < prices.length; i++) {
             // 有负数，且允许子数列长度为0，则可以直接和0比较
 //            curMax = Math.max(curMax + prices[i] - prices[i-1], 0);
             curMax = Math.max(curMax + prices[i] - prices[i-1], prices[i] - prices[i-1]);
             maxProfit = Math.max(maxProfit, curMax);
+        }
+        return maxProfit;
+    }
+
+    /********** Solution 3: Solution 2 另一种写法，更清晰 ***************/
+    /**
+     * Time: O(N)  Space: O(1)
+     */
+    public int maxProfit(int[] prices) {
+        int maxProfit = 0, curProfit = 0;
+        for (int i = 0; i < prices.length - 1; i++) {
+            int diff = prices[i + 1] - prices[i];
+            curProfit = Math.max(curProfit + diff, 0);
+            maxProfit = Math.max(maxProfit, curProfit);
         }
         return maxProfit;
     }
