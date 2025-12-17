@@ -3,6 +3,11 @@
  */
 public class MaximumSubarray {
 
+    /**
+     * 53. Maximum Subarray (https://leetcode.com/problems/maximum-subarray/description/)
+     * 121. Best Time to Buy and Sell Stock (https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+     */
+
     /********** Solution 1: Kadane's Algo - DP  ***************/
     /**
      * https://zh.wikipedia.org/wiki/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E5%88%97%E9%97%AE%E9%A2%98
