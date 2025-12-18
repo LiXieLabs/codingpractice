@@ -22,7 +22,7 @@ public class WordLadder {
      */
     public int ladderLength1(String beginWord, String endWord, List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList); // or else TLE!!!
-        if (!wordSet.contains(endWord) || beginWord.length() != endWord.length()) return 0;
+        if (!wordSet.remove(endWord) || beginWord.length() != endWord.length()) return 0;
         List<String> currLevel = new ArrayList<>();
         currLevel.add(beginWord);
         int length = 1;
@@ -52,7 +52,7 @@ public class WordLadder {
      */
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList); // or else TLE!!!
-        if (!wordSet.contains(endWord)) return 0;
+        if (!wordSet.remove(endWord)) return 0;
         Set<String> beginSet = new HashSet<>(), endSet = new HashSet<>();
         beginSet.add(beginWord);
         endSet.add(endWord);
