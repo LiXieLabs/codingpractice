@@ -85,7 +85,7 @@ public class WordLadderII {
         Set<String> wordSet = new HashSet<>(wordList);
         if (!wordSet.contains(endWord)) return res;
 
-        // BFS build adjacency list - parents
+        // BFS build adjacency list - parents 必须用 parents 倒着 build，不然 TLE!!!
         List<String> currLevel = new ArrayList<>();
         currLevel.add(beginWord);
         Map<String, List<String>> parents = new HashMap<>();
