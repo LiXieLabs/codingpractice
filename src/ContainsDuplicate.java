@@ -20,7 +20,7 @@ public class ContainsDuplicate {
         return false;
     }
 
-    /*********** Solution 2: Arrays.sort in place ****************/
+    /*********** Solution 2: Arrays.sort(arr) in place ****************/
     /**
      * Sort 时间换空间
      * Time: O(NlogN)   Space: O(1)
