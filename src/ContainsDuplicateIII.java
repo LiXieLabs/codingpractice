@@ -23,7 +23,7 @@ public class ContainsDuplicateIII {
         // k-size sliding window, has [nums[i-k], nums[i-1]] at i, where k == indexDiff.
         TreeSet<Integer> window = new TreeSet<>();
         for (int i = 0; i < nums.length; i++) {
-            // Option 1: 先更新边界！
+            // Option 1: 先更新左边界！
             if (i - indexDiff - 1 >= 0) window.remove(nums[i - indexDiff - 1]);
 
             // 求解对当前 nums[i]，window 内 (满足 indexDiff)，
@@ -37,7 +37,7 @@ public class ContainsDuplicateIII {
             // 更新 nums[i] 入 window
             window.add(nums[i]);
 
-            // Option 2: 后更新边界！
+            // Option 2: 后更新左边界！
             // 维护 window，使得其再次满足 window size <= k
             // ！！！！！！注意！！！！！！！
             // 不必担心 window 内有多个 nums[i - indexDiff]，
@@ -61,18 +61,23 @@ public class ContainsDuplicateIII {
         Map<Long, Long> buckets = new HashMap<>();
         long t = valueDiff + 1; // +1 为了避免 0 的情况除不了
         for (int i = 0; i < nums.length; i++) {
+            // Option 1: 先更新左边界！
+            if (i - indexDiff - 1 >= 0) buckets.remove(getId(nums[i - indexDiff - 1], t));
+
+            // 求解
             long b = getId(nums[i], t);
             if (buckets.containsKey(b)
                     || buckets.containsKey(b + 1) && Math.abs(buckets.get(b + 1) - nums[i]) <= valueDiff
                     || buckets.containsKey(b - 1) && Math.abs(buckets.get(b - 1) - nums[i]) <= valueDiff) {
                 return true;
             }
+            // 更新 nums[i] 入 bucket
             buckets.put(b, (long) nums[i]);
+
+            // Option 2: 后更新左边界！
             // ⚠️注意！！！可以安心删除 nums[i - indexDiff] 的整个 bucket，
             // 因为这个 bucket 里面还有其他数字的话，刚才遇到这个数字已经返回 true 了！！！
-            if (buckets.size() > indexDiff) {
-                buckets.remove(getId(nums[i - indexDiff], t));
-            }
+            if (buckets.size() > indexDiff) buckets.remove(getId(nums[i - indexDiff], t));
         }
         return false;
     }
