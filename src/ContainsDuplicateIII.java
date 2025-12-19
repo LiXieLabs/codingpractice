@@ -11,6 +11,7 @@ public class ContainsDuplicateIII {
      * 这道题本质是要在一个 sliding window k == indexDiff 里维护一个数据结构，可以
      * （1）排序，随时知道最大最小值，或者比当前值大和小的值
      * （2）索引，随时找到 i - k 那个值的位置，并且安全删除
+     * 满足条件的就是 TreeSet!
      */
 
     /***************** Solution 1: Sliding Window + TreeSet (BST) ********************/
@@ -22,24 +23,26 @@ public class ContainsDuplicateIII {
         // k-size sliding window, has [nums[i-k], nums[i-1]] at i, where k == indexDiff.
         TreeSet<Integer> window = new TreeSet<>();
         for (int i = 0; i < nums.length; i++) {
+            // Option 1: 先更新边界！
+            if (i - indexDiff - 1 >= 0) window.remove(nums[i - indexDiff - 1]);
+
             // 求解对当前 nums[i]，window 内 (满足 indexDiff)，
             // 有没有满足 [nums[i] - t, nums[i] + t] 的值，where t == valueDiff.
             Integer minVal = window.ceiling(nums[i] - valueDiff);
             Integer maxVal = window.floor(nums[i] + valueDiff);
-            if (window.contains(nums[i])
-                    || minVal != null && minVal <= nums[i]
+            if (minVal != null && minVal <= nums[i]
                     || maxVal != null && nums[i] <= maxVal) {
                 return true;
             }
             // 更新 nums[i] 入 window
             window.add(nums[i]);
+
+            // Option 2: 后更新边界！
             // 维护 window，使得其再次满足 window size <= k
             // ！！！！！！注意！！！！！！！
             // 不必担心 window 内有多个 nums[i - indexDiff]，
             // 那样的话，在遍历到同一值第二次出现时，diff == 0，早已返回 true！！！
-            if (window.size() > indexDiff) {
-                window.remove(nums[i - indexDiff]);
-            }
+            // if (window.size() > indexDiff) window.remove(nums[i - indexDiff]);
         }
         return false;
     }
