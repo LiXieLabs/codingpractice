@@ -26,7 +26,7 @@ public class MinimumPathSum {
         return dp[c - 1];
     }
 
-    /********************** Solution 2: Optimized Solution 1 ***********************/
+    /********************** Solution 2: Space Complexity Optimized Solution 1 ***********************/
     /**
      * In-place keep record of dp matrix.
      *

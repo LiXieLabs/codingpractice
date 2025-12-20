@@ -36,10 +36,13 @@ public class HappyNumber {
      */
     public boolean isHappy(int n) {
         int slow = n, fast = n;
+        // ⚠️注意⚠️ do while，不然上来就 fail 掉了！！！
         do {
             slow = getNext(slow);
             fast = getNext(getNext(fast));
         } while (slow != fast && fast != 1);
+        // ⚠️注意⚠️ 只 check fast 就行！！！因为 next(next()) 一定已经走过，并且永远是 1 了！
+        // 跟链表不同！！！
         return fast == 1;
     }
 

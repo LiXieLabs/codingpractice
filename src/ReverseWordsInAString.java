@@ -39,7 +39,24 @@ public class ReverseWordsInAString {
         return String.join(" ", words);
     }
 
-    /************ Solution 2: Backward Iterate + s.substring => Join *************/
+    /************ Solution 2: Forward Iterate + s.substring => Reverse => Join *************/
+    /**
+     * Time: O(N)     Space: O(N)
+     */
+    public String reverseWords2(String s) {
+        List<String> words = new ArrayList<>();
+        int i = 0;
+        while (i < s.length()) {
+            while (i < s.length() && s.charAt(i) == ' ') i++;
+            int j = i;
+            while (i < s.length() && s.charAt(i) != ' ') i++;
+            if (i > j) words.add(s.substring(j, i));
+        }
+        Collections.reverse(words);
+        return String.join(" ", words);
+    }
+
+    /************ Solution 3: Backward Iterate + s.substring => Join *************/
     /**
      * Time: O(N)     Space: O(N)
      */
@@ -47,14 +64,10 @@ public class ReverseWordsInAString {
         List<String> lst = new ArrayList<>();
         int i = s.length() - 1;
         while (i >= 0) {
-            while (i >= 0 && s.charAt(i) == ' ') {
-                i--;
-            }
+            while (i >= 0 && s.charAt(i) == ' ') i--;
             if (i < 0) continue;
             int j = i + 1;
-            while (i >= 0 && s.charAt(i) != ' ') {
-                i--;
-            }
+            while (i >= 0 && s.charAt(i) != ' ') i--;
             lst.add(s.substring(i+1, j));
         }
         return String.join(" ", lst);
