@@ -38,12 +38,12 @@ public class BinaryTreeLevelOrderTraversal {
         return res;
     }
 
-    private void recur(TreeNode curr, int l) {
+    private void recur(TreeNode curr, int depth) {
         if (curr == null) return;
-        if (l == res.size()) res.add(new ArrayList<>());
-        res.get(l).add(curr.val);
-        recur(curr.left, l + 1);
-        recur(curr.right, l + 1);
+        if (depth == res.size()) res.add(new ArrayList<>());
+        res.get(depth).add(curr.val);
+        recur(curr.left, depth + 1);
+        recur(curr.right, depth + 1);
     }
 
     public static void print(List<List<Integer>> input) {

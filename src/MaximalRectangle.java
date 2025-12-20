@@ -3,6 +3,17 @@
  */
 public class MaximalRectangle {
 
+    /**
+     * 类似的问题
+     * 11. Container With Most Water (https://leetcode.com/problems/container-with-most-water/description/)
+     * 42. Trapping Rain Water (https://leetcode.com/problems/trapping-rain-water/description/)
+     * 84. Largest Rectangle in Histogram (https://leetcode.com/problems/largest-rectangle-in-histogram/description/)
+     */
+
+    // Same as 84. Largest Rectangle in Histogram => https://leetcode.com/problems/largest-rectangle-in-histogram/
+    // Same as 907. Sum of Subarray Minimums => https://leetcode.com/problems/sum-of-subarray-minimums/
+    // Same as 2104. Sum of Subarray Ranges => https://leetcode.com/problems/sum-of-subarray-ranges/
+
     /************** Solution 1: DP + LC84 (Monostack) *****************/
     /**
      * 每行看作一排 histogram，转化为 leetcode 84

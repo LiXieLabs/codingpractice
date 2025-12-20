@@ -75,7 +75,7 @@ class BinaryTreeZigzagLevelOrderTraversal {
     /**
      * Time: O(N)  Space: O(N)
      */
-    public List<List<Integer>> binaryTreeZigzagLevelOrderTraversal(TreeNode root) {
+    public List<List<Integer>> binaryTreeZigzagLevelOrderTraversal3(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;
         Deque<Pair<TreeNode, Integer>> currStack = new ArrayDeque<>();
@@ -86,16 +86,38 @@ class BinaryTreeZigzagLevelOrderTraversal {
             int level = p.getValue();
             if (res.size() - 1 < level) res.add(new LinkedList<>());
             if (level % 2 == 0) {
-                // 注意!!! 必须 cast 成 LinkedList
-                ((LinkedList<Integer>) res.get(level)).addLast(n.val);
+                res.get(level).addLast(n.val);
             } else {
-                // 注意!!! 必须 cast 成 LinkedList
-                ((LinkedList<Integer>) res.get(level)).addFirst(n.val);
+                res.get(level).addFirst(n.val);
             }
             if (n.right != null) currStack.push(new Pair(n.right, level + 1));
             if (n.left != null) currStack.push(new Pair(n.left, level + 1));
         }
         return res;
+    }
+
+    /******************** Solution 4: recur DFS  + LinkedList ********************/
+    /**
+     * Time: O(N)  Space: O(N)
+     */
+    List<List<Integer>> res;
+
+    public List<List<Integer>> binaryTreeZigzagLevelOrderTraversal(TreeNode root) {
+        res = new ArrayList<>();
+        recur(root, 1);
+        return res;
+    }
+
+    private void recur(TreeNode curr, int level) {
+        if (curr == null) return;
+        if (res.size() < level) res.add(new LinkedList<>());
+        if (level % 2 == 1) {
+            res.get(level - 1).addLast(curr.val);
+        } else {
+            res.get(level - 1).addFirst(curr.val);
+        }
+        recur(curr.left, level + 1);
+        recur(curr.right, level + 1);
     }
 
     private static void print(List<List<Integer>> input) {
