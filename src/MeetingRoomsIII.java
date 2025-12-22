@@ -7,94 +7,72 @@ import java.util.PriorityQueue;
  */
 public class MeetingRoomsIII {
 
-    /********** Solution 1: Sort Meeting + 2 Min-heap to keep free & busy rooms **********/
+    /********** Solution 1: Sort Meeting + 2 Min-heap to keep idle & busy rooms **********/
     /**
-     * rooms[i] 用来记录当前 room i 的会议结束时间，如果 free 则为 0
-     * 小心！！！rooms[i] 可能超出 int 范围，必须用 long！！！
+     * busy = PQ[rmIdx, rmEnd]
+     * 也可以 rmEnd 单独记录在一个 rmToEnd 的 array 里面！！！
+     * 小心！！！因为 delay，rmEnd 可能超出 int 范围，必须用 long！！！
+     *
+     * ⚠️注意⚠️
+     * index 必须是 int
+     * PQ with array, 类型必须一致
+     * int -> long => long myLong = myInt;
+     * long -> int => int myInt = (int) long;
      *
      * meeting rooms = N, meetings = M
      * Sort meetings = MlogM
-     * Init free rooms = NlogN
+     * Init idle rooms = NlogN
      * For loop M x heap operation logN = MlogN
      * Time Complexity: O(MlogM + NlogN + MlogN) --- assume M >> N ----> O(MlogM)
      * Space Complexity: O(N)
      */
-    public int mostBooked1(int n, int[][] meetings) {
-        Arrays.sort(meetings, Comparator.comparingInt(i -> i[0]));
-        long[] rooms = new long[n]; // long处理！！！
-        int[] counts = new int[n];
-        int maxIdx = 0;
-        PriorityQueue<Integer> free = new PriorityQueue<>();
-        Comparator<Long> first = Comparator.comparingLong(i -> rooms[i.intValue()]); // long处理！！！
-        Comparator<Long> second = Comparator.comparingLong(i -> i); // long！！！
-        PriorityQueue<Long> busy = new PriorityQueue<>(first.thenComparing(second)); // long处理！！！
-        for (int i = 0; i < n; i++) {
-            free.offer(i);
-        }
-        for (int[] meeting : meetings) {
-            // 先把 busy 中所有已经结束的变成 free
-            while (!busy.isEmpty() && rooms[busy.peek().intValue()] <= meeting[0]) { // long处理！！！
-                int i = busy.poll().intValue(); // long处理！！！
-                rooms[i] = 0;
-                free.offer(i);
-            }
-            int i;
-            if (!free.isEmpty()) {
-                // 先试图从 free 中分配 meeting room
-                i = free.poll();
-                rooms[i] = meeting[1];
-            } else {
-                // 没有则 delay 并从 busy 中分配 meeting room
-                i = busy.poll().intValue(); // long处理！！！
-                rooms[i] = meeting[1] - meeting[0] + rooms[i];
-            }
-            busy.offer((long) i); // long处理！！！
-            counts[i]++;
-            if (counts[i] > counts[maxIdx] || counts[i] == counts[maxIdx] && i < maxIdx) {
-                maxIdx = i;
-            }
-        }
-        return maxIdx;
-    }
-
-
-    /********** Solution 2: Another version of Solution 1 **********/
-    /**
-     * Same as Solution 1, just merged long[rooms] for tracking end time to the busy Heap.
-     *
-     * Time Complexity: O(MlogM + NlogN + MlogN) --- assume M >> N ----> O(MlogM)
-     * Space Complexity: O(N)
-     */
     public int mostBooked(int n, int[][] meetings) {
-        PriorityQueue<Integer> idle = new PriorityQueue<>();
-        for (int i = 0; i < n; i++) {
-            idle.offer(i);
-        }
-        Comparator<long[]> comp1 = Comparator.comparingLong(i -> i[0]);
-        Comparator<long[]> comp2 = Comparator.comparingLong(i -> i[1]);
-        PriorityQueue<long[]> busy = new PriorityQueue<>(comp1.thenComparing(comp2));
+        // 1 int
+        // res: room index with max count
+
+        // 1 map -> 1 array i = room index, arr[i] = meeting count
+        // map: room -> count
+
+        // 1 heap with secondary sort - busy
+        // map: room -> cur_end
+        // sort: room -> sort by cur_end
+        //       same cur_end -> sort by room index
+
+        // 1 heap - idle
+        // sort: room index
+
+        long rmMaxCnt = 0;
+        long[] cnt = new long[n];
+        Comparator<long[]> first = Comparator.comparingLong(i -> i[1]);
+        Comparator<long[]> second = Comparator.comparingLong(i -> i[0]);
+        PriorityQueue<long[]> busy = new PriorityQueue<>(first.thenComparing(second));
+        PriorityQueue<Long> idle = new PriorityQueue<>();
+
         Arrays.sort(meetings, Comparator.comparingInt(i -> i[0]));
-        int resRm = 0;
-        long[] count = new long[n];
+        for (long i = 0; i < n; i++) idle.offer(i);
+
         for (int[] meeting : meetings) {
-            while (!busy.isEmpty() && busy.peek()[0] <= (long) meeting[0]) {
-                idle.offer((int) busy.poll()[1]);
+            // ⚠️注意⚠️！！！必须先把 idle 的全 poll 出来，并且 offer 进 idle，
+            // 不然不知道哪个 idle 的 room index 最小，当前 heap 顶的 end 最早，但是不一定 room index 最小！！！
+            while (!busy.isEmpty() && busy.peek()[1] <= meeting[0]) {
+                idle.offer(busy.poll()[0]);
             }
-            int curRm;
+            long rmTaken, rmEnd;
             if (!idle.isEmpty()) {
-                curRm = idle.poll();
-                busy.offer(new long[]{(long) meeting[1], curRm});
+                rmTaken = idle.poll();
+                rmEnd = meeting[1];
             } else {
-                long[] next = busy.poll();
-                curRm = (int) next[1];
-                busy.offer(new long[]{next[0] + (long) meeting[1] - meeting[0], curRm});
+                long[] earliestEnd = busy.poll();
+                rmTaken = earliestEnd[0];
+                rmEnd = earliestEnd[1] + meeting[1] - meeting[0];
             }
-            count[curRm]++;
-            if (count[curRm] > count[resRm] || count[curRm] == count[resRm] && curRm < resRm) {
-                resRm = curRm;
+            busy.offer(new long[]{rmTaken, rmEnd});
+            cnt[(int) rmTaken]++;
+            if (cnt[(int) rmTaken] > cnt[(int) rmMaxCnt] || cnt[(int) rmTaken] == cnt[(int) rmMaxCnt] && rmTaken < rmMaxCnt) {
+                rmMaxCnt = rmTaken;
             }
         }
-        return resRm;
+        return (int) rmMaxCnt;
     }
 
     public static void main(String[] args) {

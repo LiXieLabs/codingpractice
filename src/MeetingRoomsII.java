@@ -23,12 +23,26 @@ public class MeetingRoomsII {
         Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
         PriorityQueue<Integer> rooms = new PriorityQueue<>();
         for (int[] i : intervals) {
+            // ⚠️注意⚠️！！！如果用 while 的话，就是一直在监测实时 meeting room 情况，
+            // 这样的话，需要维护一个全局最大值 max，作为最后结果！！！参考下面 comment 里面的实现！！！
+            // 此处，用 if 实际就是让出一间 meeting room，放新的 end time，最后 rooms.size() 就是全局最大值，即一共需要多少 room！！！
             if (!rooms.isEmpty() && i[0] >= rooms.peek()) {
                 rooms.poll();
             }
             rooms.offer(i[1]);
         }
         return rooms.size();
+
+//        Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
+//        int max = 0;
+//        PriorityQueue<Integer> ends = new PriorityQueue<>();
+//        for (int[] interval : intervals) {
+//            while (!ends.isEmpty() && ends.peek() <= interval[0]) {
+//                ends.poll();
+//            }
+//            ends.offer(interval[1]);
+//        }
+//        return ends.size();
     }
 
     /********************* Solution 2: Chronological ordering ******************/
@@ -50,6 +64,9 @@ public class MeetingRoomsII {
         Arrays.sort(starts);
         Arrays.sort(ends);
 
+        // ⚠️注意⚠️从 intervals.length 开始往下减比较好！
+        // 不然从 0 开始往上累加，需要每次先移动 ends 指针找到第一个 还没结束的 room，并将 rooms--
+        // 参考 comment 里面的实现！！！
         int ei = 0, rooms = intervals.length;
         for (int si = 0; si < intervals.length; si++) {
             if (starts[si] >= ends[ei]) {
@@ -58,6 +75,26 @@ public class MeetingRoomsII {
             }
         }
         return rooms;
+
+//        int n = intervals.length;
+//        int[] starts = new int[n], ends = new int[n];
+//        for (int i = 0; i < n; i++) {
+//            starts[i] = intervals[i][0];
+//            ends[i] = intervals[i][1];
+//        }
+//        Arrays.sort(starts);
+//        Arrays.sort(ends);
+//
+//        int j = 0, cur = 0, max  = 0;
+//        for (int i = 0; i < n; i++) {
+//            while (starts[i] >= ends[j]) {
+//                j++;
+//                cur--;
+//            }
+//            cur++;
+//            max = Math.max(max, cur);
+//        }
+//        return max;
     }
 
     /********************* Solution 3: 类似skyline，分开s,e按时间扫描 ******************/
