@@ -35,8 +35,7 @@ public class ShortestWordDistance {
             if (word1.equals(wordsDict[i])) {
                 res = Math.min(res, i - p2);
                 p1 = i;
-            }
-            if (word2.equals(wordsDict[i])) {
+            } else if (word2.equals(wordsDict[i])) {
                 res = Math.min(res, i - p1);
                 p2 = i;
             }
