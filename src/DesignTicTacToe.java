@@ -62,6 +62,7 @@ public class DesignTicTacToe {
         cols2[col] += score;
         if (row == col) diagonals2[0] += score;
         if (row + col == size - 1) diagonals2[1] += score;
+        // 不用 Math.abs，直接 x score 也行！！！
         if (Math.abs(rows2[row]) == size
                 || Math.abs(cols2[col]) == size
                 || Math.abs(diagonals2[0]) == size
