@@ -16,8 +16,8 @@ public class MaximumDepthOfBinaryTree {
      * Space: O(leaves) = O((N+1)/2) = O(N)
      */
     public int maxDepth1(TreeNode root) {
-        if (root == null) return 0;
         int depth = 0;
+        if (root == null) return depth;
         List<TreeNode> currLevel = new ArrayList<>();
         currLevel.add(root);
         while (!currLevel.isEmpty()) {
