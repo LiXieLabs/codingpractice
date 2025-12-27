@@ -8,6 +8,8 @@ public class AddTwoNumbers {
 
     /***************** Solution 1: Simulate *******************/
     /**
+     * use dummy node!!!
+     *
      * Time: O(max(M,N))   Space: O(max(M,N))
      */
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {

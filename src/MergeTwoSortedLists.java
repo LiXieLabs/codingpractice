@@ -9,6 +9,8 @@ public class MergeTwoSortedLists {
 
     /***************** Solution 1: Two Pointers *********************/
     /**
+     * use dummy node!!!
+     *
      * Time: O(M + N)  Space: O(1)
      */
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {

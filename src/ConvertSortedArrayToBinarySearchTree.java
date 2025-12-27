@@ -24,7 +24,7 @@ public class ConvertSortedArrayToBinarySearchTree {
         if (left > right) return null;
         if (left == right) return new TreeNode(nums[left]);
         int mid = (left + right) / 2;
-        // Optional logic: for even number of node, randomly pick left or right middle as root.
+        // Optional & Optimize: for even number of node, randomly pick left or right middle as root.
         if ((left + right) % 2 == 1) mid += rand.nextInt(2);
         TreeNode root = new TreeNode(nums[mid]);
         root.left = build(left, mid - 1);

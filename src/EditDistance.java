@@ -45,13 +45,13 @@ public class EditDistance {
      * Time: O(L1 X L2)   Space: O(min(L1,L2))
      */
     public int minDistance(String word1, String word2) {
-        // Edge cases: Optional
+        // Edge cases: Optional & Optimize
         if (word1 == null || word1.isEmpty()) return word2 == null ? 0 : word2.length();
         if (word2 == null || word2.isEmpty()) return word1.length();
         word1 = "#" + word1;
         word2 = "#" + word2;
         // for Space Complexity = min(L1, L2)
-        if (word2.length() < word1.length()) {
+        if (word2.length() > word1.length()) {
             String temp = word1;
             word1 = word2;
             word2 = temp;

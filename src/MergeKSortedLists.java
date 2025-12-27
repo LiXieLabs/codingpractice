@@ -11,6 +11,9 @@ public class MergeKSortedLists {
 
     /********** Solution 1: K pointers + Min Heap *************/
     /**
+     * a data structure to dynamically track the smallest number among k current elements.
+     * -> k size min heap
+     *
      * Time: O(NlogK)   Space: O(K)
      */
     public ListNode mergeKLists1(ListNode[] lists) {
@@ -26,6 +29,7 @@ public class MergeKSortedLists {
             ListNode minNode = minHeap.poll();
             curr.next = minNode;
             curr = curr.next;
+            // 此处也要 null check！！！
             if (minNode.next != null) minHeap.offer(minNode.next);
         }
         return dummy.next;
@@ -38,32 +42,34 @@ public class MergeKSortedLists {
      *
      * Space: O(logK) by recur stack
      */
+    ListNode[] lists;
+
     public ListNode mergeKLists(ListNode[] lists) {
-        return merge(lists, 0, lists.length);
+        this.lists = lists;
+        return merge(0, lists.length - 1);
     }
 
-    private ListNode merge(ListNode[] lists, int i, int j) {
+    private ListNode merge(int l, int r) {
         // Handle base cases
-        if (i == j) return null;
-        if (i + 1 == j) return lists[i];
+        if (l > r) return null;
+        if (l == r) return lists[l];
         // Divide
-        int mid = i + (j - i) / 2;
-        ListNode l = merge(lists, i, mid);
-        ListNode r = merge(lists, mid, j);
-        // Conquer
+        int mid = l + (r - l) / 2;
+        ListNode l1 = merge(l, mid), l2 = merge(mid, r);
+        // Conquer (Same as 21. Merge Two Sorted Lists (https://leetcode.com/problems/merge-two-sorted-lists/description/))
         ListNode dummy = new ListNode();
         ListNode curr = dummy;
-        while (l != null && r != null ) {
-            if (l.val <= r.val) {
-                curr.next = l;
-                l = l.next;
+        while (l1 != null && l2 != null ) {
+            if (l1.val <= l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
             } else {
-                curr.next = r;
-                r = r.next;
+                curr.next = l2;
+                l2 = l2.next;
             }
             curr = curr.next;
         }
-        curr.next = l != null ? l : r;
+        curr.next = l1 != null ? l1 : l2;
         return dummy.next;
     }
 
