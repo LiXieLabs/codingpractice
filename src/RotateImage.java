@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
  */
 public class RotateImage {
 
+    int[][] matrix;
+
     /****** Solution 1: 对角线交换 + 每行左右two pointers交换 **************/
     /**
      * 先以 i=j 对角线交换对称元素 => 转置(transpose)
@@ -14,20 +16,17 @@ public class RotateImage {
      * Time: O(N)   Space: O(1)
      */
     public void rotate1(int[][] matrix) {
+        this.matrix = matrix;
         int n = matrix.length;
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
-                int tmp = matrix[i][j];
-                matrix[i][j] = matrix[j][i];
-                matrix[j][i] = tmp;
+                swap(i, j, j, i);
             }
         }
         for (int i = 0; i < n; i++) {
             int left = 0, right = n - 1;
             while (left < right) {
-                int tmp = matrix[i][left];
-                matrix[i][left++] = matrix[i][right];
-                matrix[i][right--] = tmp;
+                swap(i, left++, i, right--);
             }
         }
     }
@@ -40,21 +39,25 @@ public class RotateImage {
      * Time: O(N)   Space: O(1)
      */
     public void rotate2(int[][] matrix) {
-        int r = matrix.length, c = matrix[0].length;
-        for (int i = 0; i < r / 2; i++) {
-            for (int j = 0; j < c; j++) {
-                int tmp = matrix[i][j];
-                matrix[i][j] = matrix[r - i - 1][j];
-                matrix[r - i - 1][j] = tmp;
+        this. matrix = matrix;
+        int n = matrix.length;
+        if (n == 1) return;
+        for (int i = 0; i < n / 2; i++) {
+            for (int j = 0; j < n; j++) {
+                swap(i, j, n - i - 1, j);
             }
         }
-        for (int i = 0; i < r - 1; i++) {
-            for (int j = i + 1; j < c; j++) {
-                int tmp = matrix[i][j];
-                matrix[i][j] = matrix[j][i];
-                matrix[j][i] = tmp;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                swap(i, j, j, i);
             }
         }
+    }
+
+    private void swap(int i1, int j1, int i2, int j2) {
+        int tmp = matrix[i1][j1];
+        matrix[i1][j1] = matrix[i2][j2];
+        matrix[i2][j2] = tmp;
     }
 
     /****** Solution 3: 分为四个象限 + 遍历左上角第一象限 + 一次交换中心对称的四个元素 **************/
@@ -80,9 +83,12 @@ public class RotateImage {
      */
     public void rotate(int[][] matrix) {
         int n = matrix.length;
+        // 注意象限划分方法！！！
+        // 反过来 i < n / 2 && j < (n + 1) / 2 也行！
         for (int i = 0; i < (n + 1) / 2; i++) {
             for (int j = 0; j < n / 2; j++) {
                 int tmp = matrix[i][j];
+                // 逆时针赋值！
                 matrix[i][j] = matrix[n - 1 - j][i];
                 matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j];
                 matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i];

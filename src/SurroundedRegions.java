@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,33 +23,31 @@ public class SurroundedRegions {
         this.board = board;
         r = board.length;
         c = board[0].length;
-        connectedToEdge = new HashSet<>();
+
         for (int i = 0; i < r; i++) {
-            for (int j = 0; j < c; j++) {
-                if (i == 0 || i == r - 1 || j == 0 || j == c - 1) {
-                    int cur = i * c + j;
-                    if (board[i][j] == 'O' && connectedToEdge.add(cur)) {
-                        recur(i, j);
-                    }
+            for (int j = 0; j < c; j += i == 0 || i == r - 1 ? 1 : c - 1) {
+                if (board[i][j] == 'O') {
+                    recur(i, j);
                 }
             }
         }
-        for (int i = 1; i < r - 1; i++) {
-            for (int j = 1; j < c - 1; j++) {
-                if (board[i][j] == 'O' && !connectedToEdge.contains(i * c + j)) {
+
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (board[i][j] == 'O') {
                     board[i][j] = 'X';
+                } else if (board[i][j] == 'E') {
+                    board[i][j] = 'O';
                 }
             }
         }
     }
 
     private void recur(int i, int j) {
-        for (int[] d : DIREC) {
-            int ni = i + d[0], nj = j + d[1];
-            int nex = ni * c + nj;
-            if (0 <= ni && ni < r && 0 <= nj && nj < c
-                    && board[ni][nj] == 'O' && connectedToEdge.add(nex)) {
-                recur(ni, nj);
+        if (0 <= i && i < r && 0 <= j && j < c && board[i][j] == 'O') {
+            board[i][j] = 'E';
+            for (int[] d : DIREC) {
+                recur(i + d[0], j + d[1]);
             }
         }
     }

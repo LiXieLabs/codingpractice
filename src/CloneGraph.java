@@ -96,14 +96,12 @@ public class CloneGraph {
         Node copy = new Node(node.val);
         map3.put(node.val, copy);
         for (Node neighbor : node.neighbors) {
-            Node ncopy;
             // ⚠️注意⚠️ 不能 ncopy = map3.getOrDefault(neighbor.val, recur3(neighbor));
             // 因为这样无论如何，recur3(neighbor) 都会被执行，陷入死循环！！！
             if (!map3.containsKey(neighbor.val)) {
                 recur3(neighbor);
             }
-            ncopy = map.get(neighbor.val);
-            copy.neighbors.add(ncopy);
+            copy.neighbors.add(map.get(neighbor.val));
         }
         return copy;
     }
