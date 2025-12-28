@@ -19,19 +19,21 @@ public class SubsetsII {
      * Space: O(Sort + Recur Call Stack) = O(Java QuickSort logN + N) = O(N)
      */
     List<List<Integer>> res;
+    int[] nums;
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         res = new ArrayList<>();
         Arrays.sort(nums); // Necessary for TC#3!!!!!
-        recur(nums, 0, new ArrayList<>());
+        this.nums = nums;
+        recur(0, new ArrayList<>());
         return res;
     }
 
-    private void recur(int[] nums, int start, List<Integer> subset) {
+    private void recur(int start, List<Integer> subset) {
         res.add(new ArrayList<>(subset));
         for (int i = start; i < nums.length; i++) {
             if (i == start || nums[i] != nums[i - 1]) {
                 subset.add(nums[i]);
-                recur(nums, i + 1, subset);
+                recur(i + 1, subset);
                 subset.remove(subset.size() - 1);
             }
         }

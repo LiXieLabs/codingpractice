@@ -60,24 +60,57 @@ public class Subsets {
         }
     }
 
-    /************* Solution 3: Iterative Solution - 类似 BFS / Binary Tree Level Order Traversal ****************/
+    /****** Solution 3: Similar as Solution 2 but add at the end of nums, not beginning  ********/
+    /**
+     * Time: O(N X 2^N)   Space: O(N) by call stack
+     */
+    int[] nums;
+
+    public List<List<Integer>> subsets3(int[] nums) {
+        this.nums = nums;
+        res = new ArrayList<>();
+        recur(new ArrayList<>(), 0);
+        return res;
+    }
+
+    private void recur(List<Integer> path, int start) {
+        // base case -> deep copy + add to res
+        if (start >= nums.length) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        // ⚠️注意⚠️必须包含 i == nums.length ！！！
+        // 不然只有 nums[-1] 包含情况才能被写入 res！！！
+        for (int i = start; i <= nums.length; i++) {
+            if (i < nums.length) path.add(nums[i]);
+            recur(path, i + 1);
+            if (i < nums.length) path.remove(path.size() - 1);
+        }
+    }
+
+    /************* Solution 4: Iterative Solution - 类似 BFS / Binary Tree Level Order Traversal ****************/
     /**
      * 每个数字存在两种情况，在 or 不在 subset 里面
      * Iterative version of Solution 1
+     *
+     * initial: []
+     * nums[0]: [] [1]
+     * nums[1]: [] [1] [2] [1,2]
+     * nums[2]: [] [1] [2] [1,2] [3] [1,3] [2,3] [1,2,3]
      *
      * Time: O(N X 2^N)   Space: O(1) without excluding result
      */
     public List<List<Integer>> subsets(int[] nums) {
         res = new ArrayList<>();
         res.add(new ArrayList<>());
-        for (int num : nums) {
-            List<List<Integer>> nextLevel = new ArrayList<>();
-            for (List<Integer> cur : res) {
-                List<Integer> nex = new ArrayList<>(cur);
-                nex.add(num);
-                nextLevel.add(nex);
+        for (int n : nums) {
+            int size = res.size();
+            for (int i = 0; i < size; i++) {
+                List<Integer> path = res.get(i);
+                path.add(n);
+                res.add(new ArrayList<>(path));
+                path.remove(path.size() - 1);
             }
-            res.addAll(nextLevel);
         }
         return res;
     }

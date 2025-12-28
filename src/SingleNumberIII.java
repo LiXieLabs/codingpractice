@@ -10,6 +10,7 @@ public class SingleNumberIII {
     /**
      * (1) XOR 保留所有 odd time elements
      * (2) a AND (-a) 提取 a 的第一个为 1 的 bit
+     * (3) x ^ y 是 x 和 y 所有不一样的 bit 的位置为 1
      *
      * Time: O(2N) = O(N)  Space: O(N)
      */
@@ -26,6 +27,8 @@ public class SingleNumberIII {
         // 这样其中一个就单独留下来了
         int x = 0;
         for (int n : nums) {
+            // (n & firstDiffBit) != 0 也可以，相当于找另一个，
+            // 但是不能是 > 0，因为可能 < 0!!!
             if ((n & firstDiffBit) == 0) {
                 x ^= n;
             }
