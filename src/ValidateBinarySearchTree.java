@@ -52,6 +52,7 @@ public class ValidateBinarySearchTree {
                 root = root.left;
             }
             root = stack.pop();
+            // 在这里更新比较！
             if (prev != null && prev >= root.val) return false;
             prev = root.val;
             root = root.right;

@@ -78,6 +78,17 @@ public class UniqueBinarySearchTrees {
             if (c % 2 == 1) dp[c] += Math.pow(dp[c / 2], 2);
         }
         return dp[n];
+
+        // 更 concise 一些的解法 👇
+//        int[] dp = new int[n + 1];
+//        dp[0] = dp[1] = 1;
+//        for (int i = 2; i <= n; i++) {
+//            for (int root = 0; root <= (i - 1) / 2; root++) {
+//                int times = i % 2 == 1 && root == i / 2 ? 1 : 2;
+//                dp[i] += times * dp[root] * dp[i - root - 1];
+//            }
+//        }
+//        return dp[n];
     }
 
     /*************** TODO: Solution 3: Catalan Number 递推公式 O(N) ***************/
