@@ -27,11 +27,13 @@ public class ProductOfArrayExceptSelf {
         return answer;
     }
 
-    /************* Solution 2:  ***************/
+    /************* Solution 2: calculate prefix product as array X carry suffix product as integer ***************/
     /**
      * 第一遍从左到右，answer[i] 表示 nums[0:i] exclusive 乘积, = answer[i-1] x nums[i-1]
      * 第二遍从右到左，answer[i] 为最终解，= answer[i] * suffixProduct
      * suffixProduct[i] 表示 nums[i:] exclusive 乘积，suffixProduct[i] = suffixProduct[i-1] x nums[i-1]
+     *
+     * suffixProduct 没必要 array 表示了，carry 着走，并直接计算进结果即可！！！
      *
      * Time: O(N)  Space: O(1)
      */
