@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+/**
+ * 642. Design Search Autocomplete System
+ * (https://leetcode.com/problems/design-search-autocomplete-system/description/)
+ */
 /*********** Solution: Trie ****************/
 /**
  * Solution 1:
@@ -67,6 +71,9 @@ public class DesignSearchAutocompleteSystem {
         } else {
             prefix.append(c);
             if (curr.children[indexOf(c)] == null) {
+                // 必须往下面走!
+                // 不然初始值如果有 ”ia" 但是 input 是 “i a” 也会跳过空格，
+                // 在 “a“ 哪里被认为 match 到了！！！
                 curr.children[indexOf(c)] = new SearchAutocompleteSystemNode();
                 curr = curr.children[indexOf(c)];
                 return new ArrayList<>();
@@ -121,17 +128,20 @@ public class DesignSearchAutocompleteSystem {
     }
 
     private List<String> search2(int k) {
-        PriorityQueue<String> heap = new PriorityQueue<>((s1, s2) ->
-                !curr.map.get(s1).equals(curr.map.get(s2)) ?
-                        curr.map.get(s1) - curr.map.get(s2) :
-                        s2.compareTo(s1));
+//        PriorityQueue<String> heap = new PriorityQueue<>((s1, s2) ->
+//                !curr.map.get(s1).equals(curr.map.get(s2)) ?
+//                        curr.map.get(s1) - curr.map.get(s2) :
+//                        s2.compareTo(s1));
+        Comparator<String> first = Comparator.comparingInt(s -> curr.map.get(s));
+        Comparator<String> second = Collections.reverseOrder(String.CASE_INSENSITIVE_ORDER);
+        PriorityQueue<String> minHeap = new PriorityQueue<>(first.thenComparing(second));
         for (String s : curr.map.keySet()) {
-            heap.offer(s);
-            if (heap.size() > k) heap.poll();
+            minHeap.offer(s);
+            if (minHeap.size() > k) minHeap.poll();
         }
         List<String> result = new ArrayList<>();
-        while (!heap.isEmpty()) {
-            result.add(heap.poll());
+        while (!minHeap.isEmpty()) {
+            result.add(minHeap.poll());
         }
         Collections.reverse(result);
         return result;
