@@ -122,8 +122,9 @@ public class SudokuSolver {
         int i = n / N, j = n % N;
         if (board[i][j] != '.') return recurResolve(n + 1);
         for (int fill = 1; fill <= 9; fill++) {
-            int mask = (1 << fill);
-            int cubeIdx = (i / 3) * 3 + (j / 3);
+            int mask = 1 << fill;
+            int cubeIdx = i / 3 * 3 + j / 3;
+            // ⚠️注意⚠️ 必须有括号！！！
             if ((rows[i] & mask) == 0 && (cols[j] & mask) == 0 && (cubes[cubeIdx] & mask) == 0) {
                 fillNumber(i, j, cubeIdx, mask, fill);
                 if (recurResolve(n + 1)) return true;

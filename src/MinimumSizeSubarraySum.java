@@ -22,7 +22,7 @@ public class MinimumSizeSubarraySum {
                 minLen = r - l + 1;
             }
         }
-        return minLen == nums.length + 1 ? 0 : minLen;
+        return minLen % (nums.length + 1);
     }
 
     public static void main(String[] args) {

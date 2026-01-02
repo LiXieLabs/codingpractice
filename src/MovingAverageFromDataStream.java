@@ -31,6 +31,9 @@ public class MovingAverageFromDataStream {
 
     /************************* Solution 2: Array + Mod Rotating Index **************************/
     /**
+     * int[size] + i mod size 作为 queue！
+     * n 标记当前 queue 的 size，填满之前是 < size 的，后面一直 = size！
+     *
      * Time: O(1) Space: O(N)
      */
     int[] queue;
@@ -51,7 +54,7 @@ public class MovingAverageFromDataStream {
         this.queue[this.i] = val;
         this.sum += this.queue[this.i++];
         this.i %= this.queue.length;
-        return (double) this.sum / n;
+        return 1.0 * this.sum / n;
     }
 
     public static void main(String[] args) {

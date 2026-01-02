@@ -16,7 +16,7 @@ public class ValidSudoku {
      * or int[][]
      * All works
      *
-     * Time: O(N^2)   Space: O(N^2) worst case
+     * Time: O(N^2)   Space: O(N^2) worst case = O(27^2) = O(1)
      */
     public boolean isValidSudoku1(char[][] board) {
         Map<Integer, Set<Integer>> rows = new HashMap<>();
@@ -49,7 +49,7 @@ public class ValidSudoku {
      * and 1st 9 bits of the number stands for a number in the row/col/cube
      * 1 means it presents, or else 0 means it doesn't present.
      *
-     * Time: O(N^2)   Space: O(1)
+     * Time: O(N^2)   Space: O(N) = O(27) = O(1)
      */
     public boolean isValidSudoku(char[][] board) {
         int N = 9;
@@ -60,6 +60,7 @@ public class ValidSudoku {
             for (int c = 0; c < N; c++) {
                 if (board[r][c] == '.') continue;
 
+                // 比 board[r][c] - '0' - 1 好！
                 int n = board[r][c] - '1';
                 int mask = (1 << n);
 
