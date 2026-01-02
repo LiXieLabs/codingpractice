@@ -6,6 +6,28 @@ import java.util.Deque;
  */
 public class MaxAreaOfIsland {
 
+    /**
+     * UNION FIND
+     * | Technique                         | What it prevents                  |
+     * | --------------------------------- | --------------------------------- |
+     * | Path compression                  | Expensive repeated `find()`       |
+     * | Union by size/rank (small->large) | Bad tree shape in the first place |
+     *
+     * | Find strategy    | Worst-case (single) | Amortized |
+     * | ---------------- | ------------------- | --------- |
+     * | No compression   | `O(n)`              | `O(n)`    |
+     * | Path halving     | `O(log n)`          | `O(α(n))` |
+     * | Full compression | `O(n)`              | `O(α(n))` |
+     *
+     * α(n) = inverse Ackermann function = O(1)
+     *
+     * | Strategy                | Amortized find |
+     * | ----------------------- | -------------- |
+     * | Compression + balancing | `O(α(n))`      |
+     * | Compression only        | Can degrade    |
+     * | Balancing only          | `O(log n)`     |
+     */
+
     /***************** Solution 1: Iterative DFS by Stack **************************/
     /**
      * 直接变成 BFS (queue) 也可以
@@ -85,6 +107,7 @@ public class MaxAreaOfIsland {
             for (int j = 0; j < c; j++) {
                 if (grid[i][j] == 1) {
                     int cur = i * c + j;
+                    // ⚠️注意⚠️ 两个都要！不然上面和左边如果只靠 cur 连接，则 union 不起来了！
                     for (int[] d : DIREC2) {
                         int ni = i + d[0], nj = j + d[1];
                         if (0 <= ni && ni < r && 0 <= nj && nj < c && grid[ni][nj] == 1) {
@@ -155,16 +178,22 @@ class UnionFind695 {
     }
 
     public int find(int p) {
-        while (id[p] != p) {
-            id[p] = id[id[p]];
-            p = id[p];
-        }
-        return p;
+        // Path halving
+//        while (id[p] != p) {
+//            id[p] = id[id[p]];
+//            p = id[p];
+//        }
+//        return p;
+
+        // Full compression
+        if (id[p] != p) id[p] = find(id[p]);
+        return id[p];
     }
 
     public void union(int p1, int p2) {
         int r1 = find(p1);
         int r2 = find(p2);
+        // ⚠️注意⚠️ 容易忽略导致错误！
         if (r1 == r2) return;
         if (sz[r1] > sz[r2]) {
             id[r2] = r1;

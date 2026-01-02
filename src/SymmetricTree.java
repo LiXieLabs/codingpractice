@@ -7,6 +7,9 @@ import java.util.List;
 public class SymmetricTree {
 
     /**************** Solution 1: Iterative - Level Order Traversal ********************/
+    /**
+     * 有 null 的 BFS
+     */
     public boolean isSymmetric1(TreeNode root) {
         List<TreeNode> currLevel = new ArrayList<>();
         currLevel.add(root);

@@ -8,6 +8,9 @@ public class UniquePaths {
     /*********** Solution 1: 2D DP + 1D 空间优化 ****************/
     /**
      * dp[i][j] = dp[i-1][j] + dp[i][j-1]
+     * initial values: dp[i][0] == 1 && dp[0][j] == 1;
+     *
+     * dp[n] += dp[n-1];
      *
      * Time: O(R X C)   Space: O(C)
      */

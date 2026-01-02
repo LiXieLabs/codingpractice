@@ -3,6 +3,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 207. Course Schedule (https://leetcode.com/problems/course-schedule/description/)
+ */
 public class CourseSchedule {
 
     /*********** Solution 1: Topological Sort by Kahn's Algo ************/
@@ -18,7 +21,7 @@ public class CourseSchedule {
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> out = new HashMap<>();
-        int[] in = new int[numCourses];
+        int[] in = new int[numCourses]; // 入度不用 Map，因为不关心是哪些，只关心还剩几个 prerequisite！
         for (int[] c : prerequisites) {
             out.putIfAbsent(c[1], new ArrayList<>());
             out.get(c[1]).add(c[0]);
@@ -33,6 +36,7 @@ public class CourseSchedule {
             List<Integer> nextZeroIn = new ArrayList<>();
             for (int cur : zeroIn) {
                 complete++;
+                // ⚠️注意⚠️有空的情况！cur 不是任何 course 的 prerequisite 了，到达该路径终点了！
                 for (int nex : out.getOrDefault(cur, new ArrayList<>())) {
                     in[nex]--;
                     if (in[nex] == 0) nextZeroIn.add(nex);
