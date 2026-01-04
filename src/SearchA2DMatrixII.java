@@ -81,6 +81,7 @@ public class SearchA2DMatrixII {
     /************* Solution 3: Greedy Algo 最优解 *****************/
     /**
      * 左下角向右上角移动，大则减行，小则加列
+     * 也可以右上角向左下角移动！
      *
      * Time: O(R + C)     Space: O(1)
      */
