@@ -39,6 +39,7 @@ public class CombinationSum {
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         res = new ArrayList<>();
+        // ⚠️注意⚠️ sort is not required, but highly recommended!!!
         Arrays.sort(candidates);
         this.candidates = candidates;
         recur(0, target, new ArrayList<>());
@@ -50,6 +51,7 @@ public class CombinationSum {
             res.add(new ArrayList<>(curPath));
             return;
         }
+        // ⚠️注意⚠️ with sort, we can do early pruning by candidates[i] <= remain!!!
         for (int i = start; i < candidates.length && candidates[i] <= remain; i++) {
             curPath.add(candidates[i]);
             recur(i, remain - candidates[i], curPath);
