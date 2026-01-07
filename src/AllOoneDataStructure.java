@@ -18,55 +18,53 @@ public class AllOoneDataStructure {
      *                => double linked list of count & its keys
      */
     Node432 head, tail;
-    Map<String, Node432> counter;
+    Map<String, Node432> map;
 
     public AllOoneDataStructure() {
-        // head and tail are sentinels!!! don't make them the same node!!!
-        head = new Node432(-1, "");
-        tail = new Node432(-1, "");
+        head = new Node432(0, "");
+        tail = new Node432(0, "");
         head.next = tail;
         tail.prev = head;
-        counter = new HashMap<>();
+        map = new HashMap<>();
     }
 
     public void inc(String key) {
-        if (counter.containsKey(key)) {
-            Node432 node = counter.get(key);
-            if (node.next.count != node.count + 1) {
-                insertNode(node.count + 1, key, node);
-            } else {
-                node.next.keys.add(key);
+        Node432 curr = map.getOrDefault(key, head);
+        if (curr.next.count != curr.count + 1) {
+            Node432 incr = new Node432(curr.count + 1);
+            curr.next.prev = incr;
+            incr.next = curr.next;
+            incr.prev = curr;
+            curr.next = incr;
+        }
+        curr.next.keys.add(key);
+        map.put(key, curr.next);
+        if (curr.keys.contains(key)) {
+            curr.keys.remove(key);
+            if (curr.keys.isEmpty()) {
+                curr.prev.next = curr.next;
+                curr.next.prev = curr.prev;
             }
-            counter.put(key, node.next);
-            node.keys.remove(key);
-            if (node.keys.isEmpty()) {
-                removeNode(node);
-            }
-        } else {
-            if (head.next != null && head.next.count == 1) {
-                head.next.keys.add(key);
-            } else {
-                insertNode(1, key, head);
-            }
-            counter.put(key, head.next);
         }
     }
 
     public void dec(String key) {
-        Node432 node = counter.get(key);
-        if (node.count != 1) {
-            if (node.prev.count != node.count - 1) {
-                insertNode(node.count - 1, key, node.prev);
-            } else {
-                node.prev.keys.add(key);
-            }
-            counter.put(key, node.prev);
-        } else {
-            counter.remove(key);
+        Node432 curr = map.get(key);
+        if (curr.prev.count != curr.count - 1) {
+            Node432 decr = new Node432(curr.count - 1);
+            curr.prev.next = decr;
+            decr.prev = curr.prev;
+            curr.prev = decr;
+            decr.next = curr;
         }
-        node.keys.remove(key);
-        if (node.keys.isEmpty()) {
-            removeNode(node);
+        curr.prev.keys.add(key);
+        map.put(key, curr.prev);
+        if (curr.keys.contains(key)) {
+            curr.keys.remove(key);
+            if (curr.keys.isEmpty()) {
+                curr.prev.next = curr.next;
+                curr.next.prev = curr.prev;
+            }
         }
     }
 
@@ -76,19 +74,6 @@ public class AllOoneDataStructure {
 
     public String getMinKey() {
         return head.next.keys.iterator().next();
-    }
-
-    private void insertNode(int cnt, String key, Node432 pre) {
-        Node432 cur = new Node432(cnt, key);
-        cur.next = pre.next;
-        pre.next = cur;
-        cur.prev = pre;
-        if (cur.next != null) cur.next.prev = cur;
-    }
-
-    private void removeNode(Node432 node) {
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
     }
 
     public static void main(String[] args) {
@@ -111,6 +96,13 @@ class Node432 {
     int count;
     Node432 prev, next;
     Set<String> keys;
+
+    public Node432(int cnt) {
+        count = cnt;
+        prev = null;
+        next = null;
+        keys = new HashSet<>();
+    }
 
     public Node432(int cnt, String key) {
         count = cnt;

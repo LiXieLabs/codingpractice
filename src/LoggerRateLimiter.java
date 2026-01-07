@@ -6,6 +6,10 @@ import java.util.Map;
  */
 public class LoggerRateLimiter {
 
+    /********** Solution 1: Msg to Last Print Timestamp HashMap *********************/
+    /**
+     * Time: O(1)   Space: O(N)
+     */
     private static final int THRESHOLD = 10;
 
     private Map<String, Integer>  msgTimeMap;
