@@ -19,7 +19,7 @@ public class PascalsTriangle {
                 if (i == 0 || i == r - 1) {
                     cur.add(1);
                 } else {
-                    // ⚠️⚠️⚠️注意⚠️⚠️⚠️ res.get(res.size() - 1) 不能提到前面！因为有 res.size() == 0 的情况！！！
+                    // ⚠️注意⚠️ res.get(res.size() - 1) 不能提到前面！因为有 res.size() == 0 的情况！！！
                     cur.add(res.get(res.size() - 1).get(i - 1) + res.get(res.size() - 1).get(i));
                 }
             }
