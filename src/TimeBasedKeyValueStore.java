@@ -73,7 +73,7 @@ public class TimeBasedKeyValueStore {
 
     public String get2(String key, int timestamp) {
         if (!advancedStore.containsKey(key)) return "";
-        Integer ts = advancedStore.get(key).floorKey(timestamp);
+        Integer ts = advancedStore.get(key).floorKey(timestamp); // 小于等于 timestamp 的最大值！
         return ts == null ? "" : advancedStore.get(key).get(ts);
     }
 
