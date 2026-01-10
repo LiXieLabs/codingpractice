@@ -3,6 +3,10 @@
  */
 public class MaxConsecutiveOnes {
 
+    /********** Solution 1: Count on the go and updating the global max ************/
+    /**
+     * Time: O(N)   Space: O(1)
+     */
     public int findMaxConsecutiveOnes(int[] nums) {
         int res = 0, cur = 0;
         for (int n : nums) {

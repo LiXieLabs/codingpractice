@@ -8,18 +8,22 @@ public class MaxConsecutiveOnesIII {
      * flipped标记flip了几个0，r尽可能向右移动，遇到0则flip
      * l向右移动维护，当前flip的0不超过k个
      * 更新最大值，并继续右移r
+     *
+     * 最优解 same as
+     * 487. Max Consecutive Ones II (https://leetcode.com/problems/max-consecutive-ones-ii/description/)
      */
     public int longestOnes(int[] nums, int k) {
-        int l = 0, flipped = 0, maxSum = 0;
+        int flipped = 0, l = 0, maxLen = 0;
         for (int r = 0; r < nums.length; r++) {
-            if (nums[r] == 0) flipped++;
-            while (flipped > k) {
-                if (nums[l] == 0) flipped--;
-                l++;
+            if (nums[r] == 0) {
+                flipped++;
+                while (flipped > k) {
+                    if (nums[l++] == 0) flipped--;
+                }
             }
-            maxSum = Math.max(maxSum, r - l + 1);
+            maxLen = Math.max(maxLen, r - l + 1);
         }
-        return maxSum;
+        return maxLen;
     }
 
     public static void main(String[] args) {
