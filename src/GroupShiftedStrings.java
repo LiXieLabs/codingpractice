@@ -12,28 +12,33 @@ public class GroupShiftedStrings {
     /**
      * 所有同一group的string必须经过某种hashing algo指向同一哈希值
      * hashing algo is:
-     * 对于任一string，将第一个字母shift为'a'，求得offset，后面char都按照这个offset shift
+     * 对于任一string，将第一个字母shift为'z'，求得offset，后面char都按照这个offset shift
      * 最后的哈希值即为该string在同group中以'a'开始的那个string，设为originalString
+     *
+     * ⚠️注意⚠️ s.charAt(0) 如果是左移到 'a', 则 offset 有可能负数，有点麻烦，需要：
+     * int offset = s.charAt(0) - 'a';
+     * for (char c : s.toCharArray()) {
+     *   sb.append((char) ('a' + (c - 'a' - offset + 26) % 26));
      *
      * Time: O(N X K)   Space: O(N X K)
      * where N is string.length(), K is max length of a string
      */
     public List<List<String>> groupStrings(String[] strings) {
-        Map<String, List<String>> map = new HashMap<>();
+        Map<String, List<String>> idToStr = new HashMap<>();
         for (String s : strings) {
-            String originalStr = getOriginalStr(s);
-            map.putIfAbsent(originalStr, new ArrayList<>());
-            map.get(originalStr).add(s);
+            String id = getId(s);
+            idToStr.putIfAbsent(id, new ArrayList<>());
+            idToStr.get(id).add(s);
         }
-        return new ArrayList<>(map.values());
+        return new ArrayList<>(idToStr.values());
     }
 
-    private String getOriginalStr(String s) {
-        if (s.isEmpty() || s.charAt(0) == 'a') return s;
-        int offset = s.charAt(0) - 'a';
+    private String getId(String s) {
         StringBuilder sb = new StringBuilder();
-        for (char c : s.toCharArray()) {
-            sb.append((char) ('a' + (c - 'a' - offset + 26) % 26));
+        sb.append('z');
+        int diff = 'z' - s.charAt(0);
+        for (int i = 1; i < s.length(); i++) {
+            sb.append((char) ('a' + (s.charAt(i) - 'a' + diff) % 26));
         }
         return sb.toString();
     }

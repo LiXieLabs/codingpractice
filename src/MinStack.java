@@ -105,6 +105,8 @@ public class MinStack {
 
     public void pop() {
         int val = stack.pop();
+        // ⚠️注意⚠️如果想免去 val，需要用 equals 而非 ==，因为 pop 出来的是 Integer, 而非 int
+        // stack.pop().equals(minStack.peek()[1])
         if (minStack.peek()[0] == stack.size() && minStack.peek()[1] == val) {
             minStack.pop();
         }

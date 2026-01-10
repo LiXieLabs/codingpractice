@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -11,10 +14,13 @@ public class EvaluateReversePolishNotation {
      *
      * Time: O(N)   Space: O(N)
      */
+    private static final Set<String> OPERATORS = new HashSet<>(Arrays.asList("+", "-", "*", "/"));
+
     public int evalRPN(String[] tokens) {
         Stack<Integer> stack = new Stack<>();
         for (String token : tokens) {
-            if ("+".equals(token) || "-".equals(token) || "*".equals(token) || "/".equals(token)) {
+//            if ("+".equals(token) || "-".equals(token) || "*".equals(token) || "/".equals(token)) {
+            if (OPERATORS.contains(token)) {
                 int n2 = stack.pop(), n1 = stack.pop();
                 // try with new switch syntax (JDK14+) instead of using if conditions
                 switch (token) {

@@ -18,6 +18,10 @@ public class RecoverBinarySearchTree {
      *   n1 n2
      * 1，7，3，4，5，6，2 两次下降
      *   n1           n2
+     *
+     * ⚠️注意⚠️
+     * （1）第一次下降(即 n1 == null)，需要 n1 = pre && n2 = cur，防止相邻两个需要 swap！
+     * （2）第二次下降(即 n1 != null)，需要 n2 = cur，不是 pre，因为小的那个才是错位的！！！
      */
     public void recoverTree1(TreeNode root) {
         TreeNode n1 = null, n2 = null, prev = null;
