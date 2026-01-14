@@ -5,6 +5,8 @@ import java.util.Arrays;
  */
 public class FrequencyOfTheMostFrequentElement {
 
+    // input size n <= 10^5, 则 TC = O(N) or O(NlogN) !!!
+
     /************* Solution 1: Sliding Window in Sorted Array ****************/
     /**
      * 在 sorted array 中，如果 nums[r] 是最终的 target，则它左边紧挨着的元素都是 candidates

@@ -62,7 +62,49 @@ public class AccountsMerge {
         return res;
     }
 
-    /*********************** Solution 2: Union Find ***********************/
+    /*********************** Solution 2: Similar but BFS *********************/
+    public List<List<String>> accountsMerge2(List<List<String>> accounts) {
+        Map<String, String> emailToName = new HashMap<>();
+        Map<String, Set<String>> adjList = new HashMap<>();
+        for (List<String> account : accounts) {
+            for (int i = 1; i < account.size(); i++) {
+                emailToName.put(account.get(i), account.get(0));
+                adjList.putIfAbsent(account.get(i), new HashSet<>());
+                if (i == 1) continue;
+                adjList.get(account.get(i)).add(account.get(1));
+                adjList.get(account.get(1)).add(account.get(i));
+            }
+        }
+        List<List<String>> res = new ArrayList<>();
+        Set<String> visited = new HashSet<>();
+        for (String email : emailToName.keySet()) {
+            // ⚠️注意⚠️ 必加！！！
+            if (!visited.add(email)) continue;
+            res.add(new ArrayList<>());
+            List<String> groupedEmail = new ArrayList<>();
+            List<String> currLevel = new ArrayList<>();
+            currLevel.add(email);
+            while (!currLevel.isEmpty()) {
+                List<String> nextLevel = new ArrayList<>();
+                for (String curr : currLevel) {
+                    groupedEmail.add(curr);
+                    for (String next : adjList.get(curr)) {
+                        // ⚠️注意⚠️ 必加！！！
+                        if (!visited.add(next)) continue;
+                        nextLevel.add(next);
+                    }
+                }
+                currLevel = nextLevel;
+            }
+            res.get(res.size() - 1).add(emailToName.get(email));
+            Collections.sort(groupedEmail);
+            res.get(res.size() - 1).addAll(groupedEmail);
+        }
+        return res;
+
+    }
+
+    /*********************** Solution 3: Union Find ***********************/
     /**
      * Time: O(Sort + Union&Find w/ path compression) = O(Sum(NiKlogNiK) + N X alpha(N))
      * alpha(N) is inverse-ackermann function, Ni is length of accounts[i], K is avg length of an account
@@ -73,36 +115,39 @@ public class AccountsMerge {
      *
      */
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
-        // init Union Find
-        Map<String, String> emailToName = new HashMap<>();
+        // init union find
         UnionFind721 uf = new UnionFind721();
+        Map<String, String> emailToName = new HashMap<>();
         for (List<String> account : accounts) {
             String name = account.get(0);
+            String firstEmail = account.get(1);
             for (int i = 1; i < account.size(); i++) {
                 String email = account.get(i);
                 emailToName.put(email, name);
-                // if 1st time encountered, init root of email to itself
-                uf.roots.putIfAbsent(email, email);
-                // union email with the first email in the list
-                // the 1st email also needs to be union-ed => TC2
-                uf.union(email, account.get(1));
+                uf.add(email);
+                // 把每一个跟第一个 union 起来！不同 account 里面的，会自动通过 root union 起来！！！
+                uf.union(email, firstEmail);
             }
         }
 
-        // group all connected email into 1 list
-        Map<String, List<String>> group = new HashMap<>();
-        for (String email : uf.roots.keySet()) {
-            // 注意！！！必须再压缩一次，不然同一个group可能有多个root，如TC3
-            String root = uf.find(uf.roots.get(email));
-            group.putIfAbsent(root, new ArrayList<>());
-            group.get(root).add(email);
+        Map<String, List<String>> groupedEmail = new HashMap<>();
+        for (String email : emailToName.keySet()) {
+            // 注意！如果不是 full compression，就需要在压缩一次！！！
+            String root = uf.find(email);
+            groupedEmail.putIfAbsent(root, new ArrayList<>());
+            groupedEmail.get(root).add(email);
         }
+
         List<List<String>> res = new ArrayList<>();
-        for (String email : group.keySet()) {
-            Collections.sort(group.get(email));
-            res.add(new ArrayList<>());
-            res.get(res.size() - 1).add(emailToName.get(email));
-            res.get(res.size() - 1).addAll(group.get(email));
+        for (String key : groupedEmail.keySet()) {
+            List<String> merged = new ArrayList<>();
+            merged.add(emailToName.get(key));
+
+            List<String> emails = groupedEmail.get(key);
+            Collections.sort(emails);
+            merged.addAll(emails);
+
+            res.add(merged);
         }
         return res;
     }
@@ -154,15 +199,22 @@ class UnionFind721 {
         roots = new HashMap<>();
     }
 
-    public String find(String p) {
-        while (!p.equals(roots.get(p))) {
-            roots.put(p, roots.get(roots.get(p)));
-            p = roots.get(p);
-        }
-        return p;
+    public void add(String s) {
+        // ⚠️注意⚠️ 有可能添加过了！！！
+        roots.putIfAbsent(s, s);
     }
 
-    public void union(String p1, String p2) {
-        roots.put(find(p1), find(p2));
+    public String find(String s) {
+        if (!s.equals(roots.get(s))) {
+            roots.put(s, find(roots.get(s)));
+        }
+        return roots.get(s);
     }
+
+    public void union(String s1, String s2) {
+        String s1Root = find(s1), s2Root = find(s2);
+        if (s1Root.equals(s2Root)) return;
+        roots.put(s1Root, s2Root);
+    }
+
 }

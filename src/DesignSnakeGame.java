@@ -102,12 +102,56 @@ public class DesignSnakeGame {
             snake.offer(next);
             fp++;
         } else { // 该 move 没吃到 food，不得分。
+            // 先 remove 再做 collision check!!!
             body.remove(snake.poll());
             if (!body.add(next)) return -1;
             snake.offer(next);
         }
         return fp;
     }
+
+    /********** Another Solution 2 Impl *****************/
+//    int r, c, fi;
+//    int[][] food;
+//    Deque<Integer> snake;
+//    Set<Integer> set;
+//
+//
+//    public SnakeGame(int width, int height, int[][] food) {
+//        r = height;
+//        c = width;
+//        this.food = food;
+//        fi = 0;
+//        snake = new ArrayDeque<>();
+//        snake.add(0);
+//        set = new HashSet<>();
+//        set.add(0);
+//    }
+//
+//    public int move(String direction) {
+//        int head = snake.peekLast();
+//        int[] d = DIREC.get(direction);
+//        int i = head / c, j = head % c;
+//
+//        int ni = i + d[0], nj = j + d[1];
+//        if (ni < 0 || ni >= r || nj < 0 || nj >= c) return -1;
+//
+//        boolean eat = fi < food.length && food[fi][0] == ni && food[fi][1] == nj;
+//        int newHead = ni * c + nj;
+//
+//        // If not eating, tail moves away, so remove it before collision check
+//        if (!eat) set.remove(snake.poll());
+//        else fi++;
+//
+//        // Now any overlap is a real collision
+//        if (set.contains(newHead)) return -1;
+//
+//        // Add new head
+//        snake.offer(newHead);
+//        set.add(newHead);
+//
+//        return snake.size() - 1;
+//    }
 
     public static void main(String[] args) {
         DesignSnakeGame solution = new DesignSnakeGame(3, 2, new int[][]{{1, 2}, {0, 1}});

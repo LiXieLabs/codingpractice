@@ -9,18 +9,36 @@ public class RemoveNthNodeFromEndOfList {
 
     /************ Solution 1: One Pass by Two Pointers (slow & fast) ***************/
     /**
+     * slow 实际是要移除的 node 的前一个 node，有可能是 dummy！
+     *
      * Time: O(L)   Space: O(1)
      */
-    public ListNode removeNthFromEnd(ListNode head, int n) {
+    public ListNode removeNthFromEnd1(ListNode head, int n) {
         ListNode dummy = new ListNode(0, head);
-        ListNode p1 = dummy;
-        for (int i = 0; i < n; i++) p1 = p1.next;
-        ListNode p2 = dummy;
-        while (p1.next != null) {
-            p1 = p1.next;
-            p2 = p2.next;
+        ListNode fast = dummy;
+        for (int i = 0; i < n; i++) fast = fast.next;
+        ListNode slow = dummy;
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
         }
-        p2.next = p2.next.next;
+        slow.next = slow.next.next;
+        return dummy.next;
+    }
+
+    /************ Similar 的另一种：fast更往后一个！***************/
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode slow = dummy, fast = head;
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
+        }
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
         return dummy.next;
     }
 
