@@ -50,7 +50,9 @@ public class PopulatingNextRightPointersInEachNode {
 
     /************* Solution 3: Optimized Iterative Level-order BFS with O(1) Space **************/
     /**
-     * 本质和 Solution 2 一样
+     * 本质和 Solution 1 & Solution 2 一样
+     * Solution 1 按 level 连接，但是只能通过 list 连接 curr level 的，此处巧妙运用 curr level 关系，连接下一层的！
+     * Solution 2 是 DFS，此处每层负责连接下一层，连接完了，找到原来的 head，用 head.left 走到下一层开头开始连接！
      *
      * Time: O(N)   Space: O(1)
      */

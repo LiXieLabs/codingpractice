@@ -1,8 +1,12 @@
 public class HouseRobber {
 
-    /******* Solution 1: 1D DP *************/
+    /******* Solution 1: 1D DP -> 2 Pointers *************/
     /**
-     * dp[i] = max(dp[i-1], dp[i-2] + house[i]
+     * dp[i] = max money you can rob from houses [0..i]
+     * dp[i] = max(
+     *              dp[i-1],             // skip house i
+     *              dp[i-2] + house[i]   // rob house i
+     *            )
      *
      * Time: O(N)   Space: O(1)
      */

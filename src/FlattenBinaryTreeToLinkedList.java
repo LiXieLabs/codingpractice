@@ -3,7 +3,7 @@ import java.util.Deque;
 
 public class FlattenBinaryTreeToLinkedList {
 
-    /*********** Solution 1: Iterative DFS by stack *************/
+    /*********** Solution 1: Preorder by Iterative DFS by stack *************/
     /**
      * Time: O(N) visit each node once
      * Space: O(logN) by stack
@@ -48,7 +48,26 @@ public class FlattenBinaryTreeToLinkedList {
         return rightTail == null ? leftTail : rightTail;
     }
 
-    /*********** Solution 3: Morris Traversal 的变种 *************/
+    // 另一种 recursion
+    public void flatten3(TreeNode root) { recur(root); }
+
+    private TreeNode recur(TreeNode curr) {
+        if (curr == null) return null;
+        TreeNode currTail = curr;
+        if (curr.left != null) {
+            currTail = recur(curr.left);
+            currTail.right = curr.right;
+            curr.right = curr.left;
+            curr.left = null;
+
+        }
+        if (currTail.right != null) {
+            currTail = recur(curr.right);
+        }
+        return currTail;
+    }
+
+    /*********** Solution 3: Morris Traversal 的变种!!! 很适用!!! *************/
     /**
      * 经典的 Morris Traversal 会在第一次经过 curr 时，把 curr 的 left subtree 的 rightMost 连接到 curr 上.
      * 这里，我们直接把 rightMost 连接到 curr.right, 同时把 curr.left 挪至 curr.right, 且 curr.left 变 null，完成变形.
