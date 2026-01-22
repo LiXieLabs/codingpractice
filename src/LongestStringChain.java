@@ -9,33 +9,52 @@ import java.util.Set;
 public class LongestStringChain {
 
     /******************** Solution 1: Top-Down DFS + Memoization *******************/
+    /**
+     * Total N words, avg length is L
+     *
+     * Time: O(NL^2)
+     * Each word is visited once - N
+     * Each word, iterate over word - L && each substring concatenation - L = L^2
+     *
+     * Space: O(NL)
+     * memo - O(N)
+     * wordSet - O(NL)
+     * recur stack - O(L)
+     */
+    Map<String, Integer> memo;
+    Set<String> wordSet;
 
     public int longestStrChain1(String[] words) {
-        if (words == null || words.length == 0) return 0;
-        int maxLen = 1;
-        Set<String> wordSet = new HashSet<>();
-        Map<String, Integer> visited = new HashMap<>();
+        memo = new HashMap<>();
+        int res = 0;
+        wordSet = new HashSet<>();
         Collections.addAll(wordSet, words);
-        for (String word : words) maxLen = Math.max(maxLen, dfs(wordSet, visited, word));
-        return maxLen;
+        for (String w : words) {
+            res = Math.max(res, recur(w));
+        }
+        return res;
     }
 
-    public int dfs(Set<String> wordSet, Map<String, Integer> visited, String curWord) {
-        if (!wordSet.contains(curWord)) return 0;
-        if (visited.containsKey(curWord)) return visited.get(curWord);
-        int maxLen = 0;
-        for (int i = 0; i < curWord.length(); i++) {
-            String nexWord = curWord.substring(0, i) + curWord.substring(i + 1);
-            maxLen = Math.max(maxLen, dfs(wordSet, visited, nexWord));
+    private int recur(String w) {
+        if (!memo.containsKey(w)) {
+            int res = 1;
+            for (int i = 0; i < w.length(); i++) {
+                String sub = w.substring(0, i) + w.substring(i + 1);
+                if (wordSet.contains(sub)) {
+                    res = Math.max(res, recur(sub) + 1);
+                }
+            }
+            memo.put(w, res);
         }
-        visited.put(curWord, maxLen + 1);
-        return maxLen + 1;
+        return memo.get(w);
     }
 
     /******************** Solution 2: Sort + Bottom DP *******************/
-    // Time O(NlogN) for sorting,
-    // Time O(NSS) for the for loop, where the second S refers to the string generation and S <= 16.
-    // Space O(NS)
+    /**
+     * Time O(NlogN) for sorting,
+     * Time O(NL^2) for the for loop, where the second L refers to the string generation and L <= 16.
+     * Space O(NL)
+     */
     public int longestStrChain2(String[] words) {
         // Arrays.sort(words, (a, b)->a.length() - b.length());
         // Arrays.sort(words, Comparator.comparingInt(w -> w.length()));
@@ -45,6 +64,7 @@ public class LongestStringChain {
         int maxLen = 0;
         for (String curWord : words) {
             int curMax = 0;
+            // 也可以 if (curWord.length() > words[0].length()) {
             for (int i = 0; i < curWord.length(); i++) {
                 String nexWord = curWord.substring(0, i) + curWord.substring(i + 1);
                 curMax = Math.max(curMax, dp.getOrDefault(nexWord, 0) + 1);

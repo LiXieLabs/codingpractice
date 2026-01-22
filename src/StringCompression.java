@@ -17,9 +17,7 @@ public class StringCompression {
         int pre = 0, cur = 0;
         while (cur < chars.length) {
             int end = cur + 1;
-            while (end < chars.length && chars[end] == chars[cur]) {
-                end++;
-            }
+            while (end < chars.length && chars[end] == chars[cur]) end++;
             chars[pre++] = chars[cur];
             if (end - cur > 1) {
 //                for (Character c : intToCharArray(end - cur)) {
