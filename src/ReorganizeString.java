@@ -50,9 +50,11 @@ public class ReorganizeString {
         int[] counter = new int[26];
         int max = 0;
         for (char c : s.toCharArray()) {
-            counter[c - 'a']++;
-            if (counter[c - 'a'] > (s.length() + 1) / 2) return "";
-            if (counter[c - 'a'] > counter[max]) max = c - 'a';
+            int i = c - 'a';
+            counter[i]++;
+            // ⚠️注意⚠️ 可以提早结束！！！
+            if (counter[i] > (s.length() + 1) / 2) return "";
+            if (counter[i] > counter[max]) max = i;
         }
         char[] res = new char[s.length()];
         int i = 0;
@@ -67,6 +69,7 @@ public class ReorganizeString {
                 i += 2;
             }
         }
+        // ⚠️注意⚠️ char[] -> String!!!
         return String.valueOf(res);
     }
 
