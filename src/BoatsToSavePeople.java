@@ -1,5 +1,8 @@
 import java.util.Arrays;
 
+/**
+ * 881. Boats to Save People (https://leetcode.com/problems/boats-to-save-people/description/)
+ */
 public class BoatsToSavePeople {
 
     /*************** Solution 1: Greedy Algo by Two Pointers ****************/

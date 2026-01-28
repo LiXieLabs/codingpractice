@@ -29,6 +29,7 @@ public class SumOfSubarrayMinimums {
                 int middle = ascendStack.pop();
                 int prevLess = ascendStack.isEmpty() ? -1 : ascendStack.peek();
                 // i is nextLess of middle
+                // ⚠️注意⚠️long 一定要加在这里，把第一个数变成 long！不要乘完再变 long！数值很大会错！
                 res += ((long) arr[middle] * (middle - prevLess) * (i - middle)) % mod;
                 res %= mod;
             }

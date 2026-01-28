@@ -1,6 +1,10 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * 316. Remove Duplicate Letters (https://leetcode.com/problems/remove-duplicate-letters/description/)
+ * 1081. Smallest Subsequence of Distinct Characters (https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/description/)
+ */
 public class RemoveDuplicateLetters {
 
     /************** Solution 1: Ascending Monotonic Stack **************/
@@ -12,10 +16,12 @@ public class RemoveDuplicateLetters {
      *     直到栈为空，或者栈顶char不满足pop条件
      *
      * (2) 如果遇到一个char，且它已经在当前stack里面，
-     *     则它一定是一个单调递增序列中非末尾的一个(不然它不是最后一次出现，会被后面一个比它小的char移出栈顶),
-     *     因此移除前面出现那一个，加入现在这一个，不会降低当前结果字符串字典序
+     *     （1）则它如果是一个单调递增序列中非末尾的一个，则它后面一定有比他大的了，
+     *     移除前面出现那一个，加入现在这一个，不会降低当前结果字符串字典序。
+     *     （2）它如果是一个单调递增序列末尾的一个，则替换也没有帮助
      *     因此，这种情况可以直接跳过
      *
+     *  ⚠️注意⚠️ 任意时刻，stack 中每个 char 都是 distinct 的！！！
      */
     public String removeDuplicateLetters(String s) {
         Deque<Character> stack = new ArrayDeque<>();
@@ -27,6 +33,7 @@ public class RemoveDuplicateLetters {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (!inStack[c - 'a']) {
+                // ⚠️注意⚠️ lastIndex[stack.peek() - 'a'] 一定要跟 i 比较！万一出现在自己跟 i 之间，则会误判！！！
                 while (!stack.isEmpty() && stack.peek() > c && lastIndex[stack.peek() - 'a'] > i) {
                     inStack[stack.pop() - 'a'] = false;
                 }

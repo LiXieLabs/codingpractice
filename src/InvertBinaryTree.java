@@ -8,11 +8,13 @@ public class InvertBinaryTree {
      * Time: O(N)   Space: O(logN)
      */
     public TreeNode invertTree1(TreeNode root) {
-        if (root == null || root.left == null && root.right == null) return root;
-        TreeNode newLeft = invertTree(root.left);
-        TreeNode newRight = invertTree(root.right);
-        root.left = newRight;
-        root.right = newLeft;
+        if (root != null) {
+            invertTree(root.left);
+            invertTree(root.right);
+            TreeNode tmp = root.left;
+            root.left = root.right;
+            root.right = tmp;
+        }
         return root;
     }
 

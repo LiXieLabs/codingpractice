@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -28,11 +30,13 @@ public class BinaryTreeRightSideView {
 
     /************ Solution 2: 先遍历右侧的 Recursive DFS **************/
     /**
+     * Recursive Preorder Traversal - right first
+     *
      * Time: O(N)  Space: O(height) = O(logN)
      */
     List<Integer> res;
 
-    public List<Integer> rightSideView(TreeNode root) {
+    public List<Integer> rightSideView2(TreeNode root) {
         res = new ArrayList<>();
         dfs(root, 0);
         return res;
@@ -43,6 +47,29 @@ public class BinaryTreeRightSideView {
         if (level == res.size()) res.add(curr.val);
         if (curr.right != null) dfs(curr.right, level + 1);
         if (curr.left != null) dfs(curr.left, level + 1);
+    }
+
+    /************ Solution 3: 先遍历右侧的 Iterative DFS **************/
+    /**
+     * Iterative Preorder Traversal - right first
+     *
+     * Time: O(N)  Space: O(height) = O(logN)
+     */
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Deque<Pair<TreeNode, Integer>> stack = new ArrayDeque<>();
+        int depth = 0;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                if (depth == res.size()) res.add(root.val);
+                stack.push(new Pair<>(root, depth++));
+                root = root.right;
+            }
+            Pair<TreeNode, Integer> pair = stack.pop();
+            root = pair.getKey().left;
+            depth = pair.getValue() + 1;
+        }
+        return res;
     }
 
     public static void main(String[] args) {

@@ -4,6 +4,8 @@ public class BinaryTreeMaximumPathSum {
 
     /******************** Solution 1: Recur DFS 携带可继续经过当前点的路径最大值，同时更新全局最大值 *********************/
     /**
+     * Postorder Traversal
+     *
      * Time: O(N)   Space: O(logN) by call stack
      */
     public int maxPathSum(TreeNode root) {
@@ -29,6 +31,26 @@ public class BinaryTreeMaximumPathSum {
         int right = Math.max(recurCalcAlternative(root.right), 0); // 如果右侧最大路径<=0，则只要root更优
         maxSum = Math.max(maxSum, root.val + left + right); // 包含root的三种情况 + 跨过root的情况，更新全局最大值
         return Math.max(root.val + left, root.val + right); // 包含root的三种情况的最大值，向下传递
+    }
+
+    // recur写法三：base case 返回 Integer.MIN_VALUE 也可以！但是不能无脑加了！！！
+    private int recur(TreeNode curr) {
+        if (curr == null) return Integer.MIN_VALUE;
+        int left = recur(curr.left);
+        int right = recur(curr.right);
+        if (left > 0 && right > 0) {
+            maxSum = Math.max(maxSum, left + curr.val + right);
+            return Math.max(left, right) + curr.val;
+        } else if (left > 0) {
+            maxSum = Math.max(maxSum, left + curr.val);
+            return left + curr.val;
+        } else if (right > 0) {
+            maxSum = Math.max(maxSum, right + curr.val);
+            return right + curr.val;
+        } else {
+            maxSum = Math.max(maxSum, curr.val);
+            return curr.val;
+        }
     }
 
     public static void main(String[] args) {

@@ -8,10 +8,8 @@ import java.util.Set;
 
 public class KdiffPairsInAnArray {
 
-    /*************** Solution 1: Two Pointers ******************/
+    /*************** Solution 1: Sort Array + Two Pointers ******************/
     /**
-     *
-     *
      * Time: Sort + While Loop = O(NlogN) + O(N) = O(NlogN)
      * Space: O(1)
      */
@@ -51,13 +49,16 @@ public class KdiffPairsInAnArray {
         Set<Integer> pre = new HashSet<>();
         for (int n : nums) {
             if (pre.contains(n + k)) res.add(new Pair<>(n + k, n));
+            // ⚠️注意⚠️
+            // k != 0 is optional
+            // res.add(new Pair<>(n, n - k)) 是手动规范小的数字在前面，防止重复, (3,5) (5,3) 会被认为不一样！！！
             if (k != 0 && pre.contains(n - k)) res.add(new Pair<>(n, n - k));
             pre.add(n);
         }
         return res.size();
     }
 
-    /***************** Solution 3: HashMap 优化 *********************/
+    /***************** Solution 3: HashMap 优化 => Frequency Map *********************/
     /**
      * 先 build counter
      * 遍历 counter 中的 n

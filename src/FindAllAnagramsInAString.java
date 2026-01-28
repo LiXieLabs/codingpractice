@@ -37,38 +37,25 @@ public class FindAllAnagramsInAString {
      * Time: O(S)   Space: O(1) max 26 character
      */
     public List<Integer> findAnagrams1(String s, String p) {
-        // init result
-        List<Integer> res = new ArrayList<>();
-        // handle special case for better performance
-        if (s.length() < p.length()) return res;
-        // iterate over p, build target dictionary
-        Map<Character, Integer> dict = new HashMap<>(); // count of each char that mismatch between current window of s & p, init with count of each char in p
+        Map<Character, Integer> counter = new HashMap<>();
         for (char c : p.toCharArray()) {
-            dict.put(c, dict.getOrDefault(c, 0) + 1);
+            counter.put(c, counter.getOrDefault(c, 0) + 1);
         }
-        // iterate over s, update dictionary and statistics
-        int debt = dict.size(); // count of distinct char that are still not matching between current window of s & p
+        int missing = counter.size();
+        List<Integer> res = new ArrayList<>();
         for (int i = 0; i < s.length(); i++) {
-            // update right side of sliding window
-            char in = s.charAt(i);
-            dict.put(in, dict.getOrDefault(in, 0) - 1); //注意右侧=in=-
-            if (dict.get(in) == 0) {
-                debt -= 1;
-            } else if (dict.get(in) == -1) {
-                debt += 1;
-            }
-            // update left side of sliding window
+            char r = s.charAt(i);
+            counter.put(r, counter.getOrDefault(r, 0) - 1);
+            if (counter.get(r) == 0) missing--;
+
             if (i - p.length() >= 0) {
-                char out = s.charAt(i - p.length());
-                dict.put(out, dict.getOrDefault(out, 0) + 1); //注意左侧=out=+
-                if (dict.get(out) == 0) {
-                    debt -= 1;
-                } else if (dict.get(out) == 1){
-                    debt += 1;
-                }
+                char l = s.charAt(i - p.length());
+                counter.put(l, counter.getOrDefault(l, 0) + 1);
+                // ⚠️注意⚠️ 必须 == 1，> 0 不行，不然会加好几次！！！
+                if (counter.get(l) == 1) missing++;
             }
-            // update result
-            if (debt == 0) res.add(i - p.length() + 1);
+
+            if (missing == 0) res.add(i - p.length() + 1);
         }
         return res;
     }
