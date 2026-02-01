@@ -3,7 +3,7 @@
  */
 public class MaximumLengthOfRepeatedSubarray {
 
-    /************** Solution 1: 2D DP *****************/
+    /************** Solution 1: 1D DP *****************/
     /**
      * dp[i][j] 表示 nums[:i+1] 和 nums[:j+1] 包含 nums1[i] 和 nums2[j] 最长的 common subarray
      * dp[i][j] =
@@ -19,6 +19,7 @@ public class MaximumLengthOfRepeatedSubarray {
             int pre = 0;
             for (int j = 0; j < c; j++) {
                 int tmp = dp[j];
+                // ⚠️注意⚠️ 因为用了 1D DP，不相等必须归零！！！不然被之前结果污染了！！！
                 dp[j] = nums1[i] != nums2[j] ? 0 : pre + 1;
                 res = Math.max(res, dp[j]);
                 pre = tmp;

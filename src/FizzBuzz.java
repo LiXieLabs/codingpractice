@@ -20,7 +20,8 @@ public class FizzBuzz {
             sb = new StringBuilder();
             if (i % 3 == 0) sb.append("Fizz");
             if (i % 5 == 0) sb.append("Buzz");
-            res.add(sb.length() == 0 ? String.valueOf(i) : sb.toString());
+            if (sb.isEmpty()) sb.append(i);
+            res.add(sb.toString());
         }
         return res;
     }

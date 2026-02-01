@@ -1,6 +1,4 @@
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class OutOfBoundaryPaths {
 
@@ -38,46 +36,43 @@ public class OutOfBoundaryPaths {
         return memo[i][j][remainMove];
     }
 
-    /******************* Solution 2: DP *********************/
+    /******************* Solution 2: 3D DP *********************/
     /**
-     * dp[x][y][z] 标记从(x,y)出发，恰好用z次move，可以出界的路线个数
-     * z == 1 时，所有corner是2，所有edge是1
-     * z > 1 时，d[x][y][z] = d[x+1][y][z-1] if(x+1,y)未出界
-     *                      +d[x-1][y][z-1] if(x-1,y)未出界
-     *                      +d[x][y+1][z-1] if(x,y+1)未出界
-     *                      +d[x][y-1][z-1] if(x,y-1)未出界
-     * 随着x,y平面沿着z轴推进，不断累加d[startRow][startColumn]，
-     * 即为用<=maxMove步，走出边界的路线个数总和
+     * dp[x][y][z] 标记 z moves 时，到达 x, y 坐标有几种路径
+     * 初始状态 dp[startRow][startCol][0] = 1
+     * 随着x,y平面沿着z轴推进, 相当于一个 2D 平面的 BFS
+     * 每走一步 (z+=1)，遍历 x, y 平面，对于每个位置，只要 > 0 (说明上一层已经可以到达该位置), 则向四周推进一步
+     * 如果出界了，累计入结果；如果没出界，更新入下一层路径数。
      *
      * Time: O(m*n*maxMove)
      * Space: O(m*n*maxMove)
      */
+    private static final int[][] DIREC = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    private static final int MOD = 1_000_000_007;
+
     public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
-        int total = 0;
-        int[][] prev = new int[m][n];
-        for (int move = 1; move <= maxMove; move++) {
-            int[][] curr = new int[m][n];
+        int[][] curr = new int[m][n];
+        curr[startRow][startColumn] = 1;
+        int res = 0;
+        for (int move = 0; move < maxMove; move++) {
+            int[][] next = new int[m][n];
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j < n; j++) {
-                    // init dp
-                    if (move == 1) {
-                        if (i == 0) curr[i][j]++;
-                        if (i == m - 1) curr[i][j]++;
-                        if (j == 0) curr[i][j]++;
-                        if (j == n - 1) curr[i][j]++;
-                    }
-                    for (int[] d : direc) {
-                        int ni = i + d[0], nj = j + d[1];
-                        if (0 <= ni && ni < m && 0 <= nj && nj < n) {
-                            curr[i][j] = (curr[i][j] + prev[ni][nj]) % mod;
+                    if (curr[i][j] > 0) {
+                        for (int[] d : DIREC) {
+                            int ni = i + d[0], nj = j + d[1];
+                            if (0 <= ni && ni < m && 0 <= nj && nj < n) {
+                                next[ni][nj] = (next[ni][nj] + curr[i][j]) % MOD;
+                            } else {
+                                res = (res + curr[i][j]) % MOD;
+                            }
                         }
                     }
                 }
             }
-            total = (total + curr[startRow][startColumn]) % mod;
-            prev = curr;
+            curr = next;
         }
-        return total;
+        return res;
     }
 
 

@@ -5,6 +5,10 @@ public class ValidPalindrome {
 
     /****************** Solution 1: Two Pointers **********************/
     /**
+     * ⚠️注意⚠️
+     * char is primitive, we can't call c.isLetter() or c.toLowerCase()
+     * we have to call Character.isLetter(c) and Character.toLowerCase(c)
+     *
      * Time: O(N)   Space: O(1)
      */
     public boolean isPalindrome(String s) {

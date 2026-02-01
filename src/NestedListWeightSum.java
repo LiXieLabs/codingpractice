@@ -10,7 +10,7 @@ public class NestedListWeightSum {
 
     /****************** Solution 1: Level order BFS ******************/
     /**
-     * Time: O(N) each int goes into&outof queue once
+     * Time: O(N) each int goes in & out of queue once
      * Space: O(N) worst case, each int are on the same level
      */
     public int depthSum1(List<NestedInteger> nestedList) {
@@ -30,29 +30,7 @@ public class NestedListWeightSum {
         return res;
     }
 
-    /****************** Solution 2: recur DFS *********************/
-    /**
-     * Time: O(# of recur call + # of loop in each recur call) < O(2N) = O(N)
-     * Space: O(N) for max call stack in worst case (all int are nested into depth N)
-     */
-    public int depthSum2(List<NestedInteger> nestedList) {
-        int res = 0;
-        for (NestedInteger ni : nestedList) {
-            res += recur(ni, 1);
-        }
-        return res;
-    }
-
-    private int recur(NestedInteger curr, int depth) {
-        if (curr.isInteger()) return curr.getInteger() * depth;
-        int res = 0;
-        for (NestedInteger ni : curr.getList()) {
-            res += recur(ni, depth + 1);
-        }
-        return res;
-    }
-
-    /****************** Solution 3: optimized recur DFS *********************/
+    /****************** Solution 2: optimized recur DFS *********************/
     /**
      * Time: O(# of recur call + # of loop in each recur call) < O(2N) = O(N)
      * Space: O(N) for max call stack in worst case (all int are nested into depth N)
