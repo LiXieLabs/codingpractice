@@ -19,38 +19,35 @@ public class MinimumWindowSubstring {
         if (s.length() < t.length()) return "";
 
         // build initial counter from t
-        // remains denotes 哪些字母还没有被完全包含进 window，起始值为全部 t 中的字母
+        // missing denotes 哪些字母还没有被完全包含进 window，起始值为全部 t 中的字母
         Map<Character, Integer> counter = new HashMap<>();
         for (char c : t.toCharArray()) {
             counter.put(c, counter.getOrDefault(c, 0) + 1);
         }
-        int remains = counter.size();
+        int missing = counter.size();
 
         // l 指向当前 window 左边界 (inclusive), r 指向当前 window 右边界 (inclusive)
-        String res = s + t;
-        int l = 0;
+        int resIdx = -1, resLen = s.length() + 1, l = 0;
         for (int r = 0; r < s.length(); r++) {
-            // 更新右边界
-            char right = s.charAt(r);
-            if (!counter.containsKey(right)) continue;
-            counter.put(right, counter.get(right) - 1); // 将其 counter 对应值递减
-            if (counter.get(right) == 0) remains -= 1; // 一旦到达 0，说明 window 第一次包含了 t 中全部的该字母，remain递减
-            // 更新左边界
-            char left = s.charAt(l);
-            while (l < r && (!counter.containsKey(left) || counter.get(left) < 0)) {
-                // 左边界不在 t 中，或者在，但是数量 < 0, 说明当前 window 有相比 t 多余的该字母，可以向右移动
-                if (counter.getOrDefault(left, 0) < 0) {
-                    counter.put(left, counter.get(left) + 1);
+            char c = s.charAt(r);
+            if (counter.containsKey(c)) {
+                counter.put(c, counter.get(c) - 1);
+                if (counter.get(c) == 0) {
+                    missing--;
                 }
-                left = s.charAt(++l);
             }
-            // 根据当前 window 情况，更新最优解
-            if (remains == 0 && r - l + 1 < res.length()) {
-                res = s.substring(l, r + 1);
+            while (l <= r && (!counter.containsKey(s.charAt(l)) || counter.get(s.charAt(l)) < 0)) {
+                if (counter.containsKey(s.charAt(l))) {
+                    counter.put(s.charAt(l), counter.get(s.charAt(l)) + 1);
+                }
+                l++;
             }
-
+            if (missing == 0 && r - l + 1 < resLen) {
+                resIdx = l;
+                resLen = r - l + 1;
+            }
         }
-        return res.length() > s.length() ? "" : res;
+        return resLen <= s.length() ? s.substring(resIdx, resIdx + resLen) : "";
     }
 
     public static void main(String[] args) {

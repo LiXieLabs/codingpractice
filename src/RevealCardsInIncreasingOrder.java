@@ -32,11 +32,41 @@ public class RevealCardsInIncreasingOrder {
             queue.offer(deck[i]);
         }
         int[] res = new int[l];
-        int i = l - 1;
-        while (!queue.isEmpty()) {
-            res[i--] = queue.poll();
+        for (int i = l - 1; i >= 0; i--) {
+            res[i] = queue.poll();
         }
         return res;
+    }
+
+    /********** Solution 2: Recursive version of Solution 1 *************/
+    int[] deck;
+    int l;
+    Deque<Integer> queue;
+
+    public int[] deckRevealedIncreasing2(int[] deck) {
+        Arrays.sort(deck);
+        this.deck = deck;
+        l = deck.length;
+        queue = new ArrayDeque<>();
+        recur(l - 1);
+
+        int[] res = new int[l];
+        for (int i = l - 1; i >= 0; i--) {
+            res[i] = queue.poll();
+        }
+        return res;
+    }
+
+    private void recur(int i) {
+        if (i < 0) return;
+
+        if (queue.size() >= 2) {
+            queue.offer(queue.poll());
+        }
+
+        queue.offer(deck[i]);
+
+        recur(i - 1);
     }
 
     private static void print(int[] input) {

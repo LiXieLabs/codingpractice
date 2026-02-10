@@ -15,7 +15,7 @@ public class AlertUsingSameKeyCardThreeOrMoreTimesInAOneHourPeriod {
     /**
      * Time: O(N + NlogN) = O(NlogN)   Space: O(N)
      */
-    public List<String> alertNames(String[] keyName, String[] keyTime) {
+    public List<String> alertNames1(String[] keyName, String[] keyTime) {
         // group times by name
         Map<String, List<Integer>> nameToTime = new HashMap<>();
         for (int i = 0; i < keyName.length; i++) {
@@ -39,6 +39,45 @@ public class AlertUsingSameKeyCardThreeOrMoreTimesInAOneHourPeriod {
         String hour = time.substring(0, 2);
         String minute = time.substring(3, 5);
         return Integer.parseInt(hour) * 60 + Integer.parseInt(minute);
+    }
+
+    // Solution 1 的另一种写法！
+    public List<String> alertNames(String[] keyName, String[] keyTime) {
+        List<String> res = new ArrayList<>();
+        Map<String, List<Integer>> records = new HashMap<>();
+        for (int i = 0; i < keyName.length; i++) {
+            String name = keyName[i], time = keyTime[i];
+//            records.putIfAbsent(name, new ArrayList<>());
+//            records.get(name).add(getTimeInt(time));
+            records.computeIfAbsent(name, k -> new ArrayList<>())
+                    .add(toMinutes(keyTime[i]));
+        }
+        for (String name : records.keySet()) {
+            List<Integer> times = records.get(name);
+            Collections.sort(times);
+            if (triggerAlert(times)) res.add(name);
+        }
+        Collections.sort(res);
+        return res;
+    }
+
+//    private int getTimeInt(String time) {
+//        String[] t = time.split(":");
+//        return Integer.valueOf(t[0]) * 60 + Integer.valueOf(t[1]);
+//    }
+
+    // Optimal "HH:MM" -> minutes since 00:00 (no split, no Integer.valueOf, no substring)
+    private int toMinutes(String time) {
+        int h = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
+        int m = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+        return h * 60 + m;
+    }
+
+    private boolean triggerAlert(List<Integer> times) {
+        for (int i = 2; i < times.size(); i++) {
+            if (times.get(i) - times.get(i - 2) <= 60) return true;
+        }
+        return false;
     }
 
     public static void main(String[] args) {

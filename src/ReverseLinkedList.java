@@ -9,8 +9,7 @@ public class ReverseLinkedList {
      * Time: O(N)  Space: O(1)
      */
     public ListNode reverseList1(ListNode head) {
-        ListNode prev = null;
-        ListNode curr = head;
+        ListNode prev = null, curr = head;
         while (curr != null) {
             ListNode temp = curr.next;
             curr.next = prev;
@@ -23,13 +22,12 @@ public class ReverseLinkedList {
     /********* Solution 2: Recursive ************/
     /**
      * Time: O(N)  Space: O(N) by recur stack
-     *
-     *
      */
     public ListNode reverseList(ListNode head) {
+        // ⚠️注意⚠️ 先 check head == null，不然 head.next 会 NPE!!!
         if (head == null || head.next == null) return head;
         ListNode newHead = reverseList(head.next);
-        // head.next 是 newTail！！！
+        // ⚠️关键点⚠️ head.next 是 newTail！！！
         head.next.next = head;
         head.next = null;
         return newHead;

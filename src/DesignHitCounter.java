@@ -77,6 +77,20 @@ public class DesignHitCounter {
      * 注意！！！timestamp在两个call之间都是单调递增的！！！
      * 因此，可以用queue维护timestamps，超过300s窗口的可以完全舍弃！！！
      *
+     * Follow up: What if the number of hits per second could be huge? Does your design scale?
+     * 1. Yes, it scales well.
+     * Instead of storing every hit, I aggregate all hits within the same second into a single (timestamp, count) entry.
+     * so the memory is bounded by time window size (300), and time of both operations are amortized to O(1)
+     * 2. Potential optimization:
+     * - Use long total and long count to avoid overflow if hits are huge.
+     * - Replace deque with a fixed-size ring buffer of length 300:
+     *    times[300], counts[300]
+     *    index = timestamp % 300
+     *    overwrite if time differs
+     *
+     * ⚠️注意⚠️ This assumes timestamps are monotonic increasing (as in the original problem).
+     *         If not, you’d need a different structure (refers to Solution 1！！！)
+     *
      * hit
      * Time: O(1)
      *

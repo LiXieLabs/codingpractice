@@ -6,18 +6,24 @@ public class RandomPickWithWeight {
     /**
      * bisect left: https://github.com/python/cpython/blob/2.7/Lib/bisect.py#L67
      * bisect right: https://github.com/python/cpython/blob/2.7/Lib/bisect.py#L24
+     *
+     * original w:                2,         3
+     * prefix sum:                2,         5
+     * indices with weight: 0,  0,  1,  1,  1
+     * possible sums:       1,  2,  3,  4,  5
+     *                     1&2 <= 2   3&4&5<=5
      */
 
-    Random rand = new Random();
+    Random rand;
     int[] w;
 
     public RandomPickWithWeight(int[] w) {
-        int i = 0;
-        // add weights as prefix sum for binary search
-        while (++i < w.length) {
+        this.w = w;
+        // calculate w as prefix sum array
+        for (int i = 1; i < w.length; i++) {
             w[i] += w[i-1];
         }
-        this.w = w;
+        rand = new Random();
     }
 
     public int pickIndex() {

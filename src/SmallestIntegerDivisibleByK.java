@@ -31,6 +31,19 @@ public class SmallestIntegerDivisibleByK {
         }
     }
 
+    // Solution 1 的另一种写法！
+    public int smallestRepunitDivByK2(int k) {
+        if (k % 2 == 0 || k % 5 == 0) return -1;
+        Set<Integer> seenRemainder = new HashSet<>();
+        int remainder = 0, length = 0;
+        do {
+            remainder = (remainder * 10 + 1) % k;
+            if (!seenRemainder.add(remainder)) return -1;
+            length++;
+        } while (remainder != 0);
+        return length;
+    }
+
     /************ Solution 2: Check remainder loop 空间优化 O(1) Space *************/
     /**
      * K 的 remainder 的范围是 [0,K-1]，根据 pigeonhole principle，遍历 K 次，一定至少有两个余数是重复的，

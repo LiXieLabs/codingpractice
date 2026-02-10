@@ -18,22 +18,22 @@ public class SingleElementInASortedArray {
         while (lo <= hi) {
             int mid = (lo + hi) >> 1;
             // 如果nums[mid]和前后数字都不相等，找到结果了，返回
-            if ((mid == 0 || nums[mid - 1] != nums[mid]) && (mid == nums.length - 1 || nums[mid + 1] != nums[mid])) {
-                return nums[mid];
-            } else if (mid != 0 && nums[mid - 1] == nums[mid]) {
+            if (mid - 1 >= 0 && nums[mid - 1] == nums[mid]) {
                 // 如果跟前一个相等，根据pattern移动
                 if (mid % 2 == 1) {
                     lo = mid + 1;
                 } else {
                     hi = mid - 2;
                 }
-            } else {
+            } else if (mid + 1 < nums.length && nums[mid + 1] == nums[mid]) {
                 // 如果跟后一个相等，根据pattern移动
                 if (mid % 2 == 1) {
                     hi = mid - 1;
                 } else {
                     lo = mid + 2;
                 }
+            } else {
+                return nums[mid];
             }
         }
         return -1;

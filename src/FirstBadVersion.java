@@ -5,8 +5,11 @@ public class FirstBadVersion {
 
     private int[] versions;
 
-    /************* Solution 1: Binary Search - First Occurrence *************/
+    /************* Solution 1: Binary Search - Bisect Left *************/
     /**
+     * Bisect Left with initial hi = n, instead of n + 1,
+     * as it's guaranteed there is bad version, and n + 1 will int overflow!
+     *
      * Time: O(logN)   Space: O(1)
      */
     public int firstBadVersion(int n) {

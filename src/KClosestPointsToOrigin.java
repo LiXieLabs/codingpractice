@@ -1,45 +1,86 @@
 import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class KClosestPointsToOrigin {
 
-    /*************************** K size Max-Heap ********************************/
-    public int[][] kClosest(int[][] points, int k) {
-//        PriorityQueue<int[]> heap = new PriorityQueue<>((p1, p2) -> p2[0] - p1[0]);
-//        for (int i = 0; i < points.length; i++) {
-//            int dist = getDist(points[i]);
-//            if (heap.size() == k && dist < heap.peek()[0]) {
-//                heap.poll();
-//                heap.offer(new int[]{dist, i});
-//            } else if (heap.size() < k) {
-//                heap.offer(new int[]{dist, i});
-//            }
-//        }
-//        int[][] res = new int[k][2];
-//        int i = 0;
-//        while (!heap.isEmpty()) {
-//            res[i++] = points[heap.poll()[1]];
-//        }
-//        return res;
-        PriorityQueue<int[]> heap = new PriorityQueue<>((p1, p2) -> getDist(p2) - getDist(p1));
-        for (int[] p : points) {
-            heap.offer(p);
-            if (heap.size() > k) {
-                heap.poll();
-            }
+    /*************************** Solution 1: K size Max-Heap ********************************/
+    /**
+     * Time: O(NlogK)   Space: O(K)
+     */
+    public int[][] kClosest1(int[][] points, int k) {
+        // use lambda + Long.compare to avoid overflow
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(
+                (i, j) -> Long.compare(dist(points[j]), dist(points[i])) // max-heap by distance
+        );
+
+        for (int i = 0; i < points.length; i++) {
+            maxHeap.offer(i);
+            if (maxHeap.size() > k) maxHeap.poll();
         }
+
         int[][] res = new int[k][2];
-        while (!heap.isEmpty()) {
-            res[--k] = heap.poll();
+        for (int i = 0; i < k; i++) {
+            res[i] = points[maxHeap.poll()];
         }
         return res;
     }
 
-    public int getDist(int[] point) {
-        // sqrt((x - 0)^2 + (y - 0)^2) => 到原点距离
-        // 省略sqrt，否则有小数点，不好比较
-        return (int) Math.pow(point[0], 2) + (int) Math.pow(point[1], 2);
+    // use long to avoid overflow
+    // use x * x, instead of (long) Math.pow(x, 2)
+    private long dist(int[] p) {
+        long x = p[0], y = p[1];
+        return x * x + y * y;
+    }
+
+    /*************************** Solution 2: K smallest by QuickSelect ********************************/
+    /**
+     * Time: O(N) average O(N^2) worst  Space: O(1)
+     */
+    public int[][] kClosest(int[][] points, int k) {
+        if (k >= points.length) return points;
+        quickSelect(points, 0, points.length - 1, k);
+        int[][] res = new int[k][2];
+        System.arraycopy(points, 0, res, 0, k);
+        return res;
+    }
+
+    private void quickSelect(int[][] arr, int lo, int hi, int k) {
+        while (lo <= hi) {
+            int p = partition(arr, lo, hi);
+            int leftSize = p - lo + 1;
+            if (leftSize == k) {
+                return;
+            } else if (leftSize > k) {
+                hi = p - 1;
+            } else {
+                lo = p + 1;
+                k -= leftSize;
+            }
+        }
+    }
+
+    private int partition(int[][] arr, int lo, int hi) {
+        int pivot = ThreadLocalRandom.current().nextInt(hi - lo + 1) + lo;
+        swap(arr, pivot, hi);
+
+        long pivotDist = dist(arr[hi]);
+        int store = lo;
+
+        for (int i = lo; i < hi; i++) {
+            if (dist(arr[i]) <= pivotDist) {
+                swap(arr, store++, i);
+            }
+        }
+        swap(arr, store, hi);
+        return store;
+    }
+
+    private void swap(int[][] arr, int i, int j) {
+        int[] tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
 
     public static String print(int[][] input) {

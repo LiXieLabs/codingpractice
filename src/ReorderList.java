@@ -9,7 +9,6 @@ public class ReorderList {
 
     /************** Soluion 1: 3 Passes (找中点, reverse list, merge 2 lists) **************/
     /**
-     * 用这个方法！！！
      * ⚠️注意⚠️第二步中间 3 连 null 很重要！！！不然死循环！！！
      *
      * Time: O(3N) = O(N)  Space: O(1)
@@ -19,8 +18,7 @@ public class ReorderList {
         // 找到中点
         // 1 -> 2 -> 3 -> 4 is 3
         // 1 -> 2 -> 3 -> 4 -> 5 is 3
-        ListNode slow = head;
-        ListNode fast = head;
+        ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
@@ -88,6 +86,7 @@ public class ReorderList {
 
     /************** Soluion 2: 另一种 3 Passes (找中点, reverse list, merge 2 lists) **************/
     /**
+     * 用这个方法！！！
      * Time: O(3N) = O(N)  Space: O(1)
      */
     public void reorderList(ListNode head) {
