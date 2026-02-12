@@ -19,7 +19,10 @@ public class FindAllAnagramsInAString {
      *
      * 该法更优美！！！
      *
-     * 类似 567. Permutation in String (https://leetcode.com/problems/permutation-in-string/)
+     * 类似
+     * 76. Minimum Window Substring (https://leetcode.com/problems/minimum-window-substring/description/)
+     * 438. Find All Anagrams in a String (https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
+     * 567. Permutation in String (https://leetcode.com/problems/permutation-in-string/)
      *
      * Solution 1 & 2
      * 相同点：initial dict/counter 和 debt/missing 是一样的，都只统计 p 中的 char

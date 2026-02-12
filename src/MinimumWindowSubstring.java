@@ -8,6 +8,10 @@ public class MinimumWindowSubstring {
 
     /****************** Solution 1: Sliding Window *********************/
     /**
+     * 76. Minimum Window Substring (https://leetcode.com/problems/minimum-window-substring/description/)
+     * 438. Find All Anagrams in a String (https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
+     * 567. Permutation in String (https://leetcode.com/problems/permutation-in-string/)
+     *
      * 可以优化: 遍历s，只将t中有的字母及其对应index存储，并且遍历
      * e.g. S = "ABCDDDDDDEEAFFBC" T = "ABC"
      * filtered_S = [(0, 'A'), (1, 'B'), (2, 'C'), (11, 'A'), (14, 'B'), (15, 'C')]

@@ -12,7 +12,7 @@ public class BoundaryOfBinaryTree {
      * find left boundary & leaves by recur pre-order traversal
      * find right boundary by recur post-order traversal
      *
-     * Time: O(2N)     Space: O(H) by recur stack
+     * Time: O(2H + N) = O(N)    Space: O(H) by recur stack
      */
     List<Integer> res;
     public List<Integer> boundaryOfBinaryTree1(TreeNode root) {
@@ -26,32 +26,24 @@ public class BoundaryOfBinaryTree {
         return res;
     }
 
-    private void findBoundary(TreeNode curr, boolean isLeftBondary) {
+    private void findBoundary(TreeNode curr, boolean isLeft) {
         if (curr == null || curr.left == null && curr.right == null) return;
-        if (isLeftBondary) {
+        if (isLeft) {
             res.add(curr.val);
-            if (curr.left != null) {
-                findBoundary(curr.left, isLeftBondary);
-            } else {
-                findBoundary(curr.right, isLeftBondary);
-            }
+            findBoundary(curr.left != null ? curr.left : curr.right, isLeft);
         } else {
-            if (curr.right != null) {
-                findBoundary(curr.right, isLeftBondary);
-            } else {
-                findBoundary(curr.left, isLeftBondary);
-            }
+            findBoundary(curr.right != null ? curr.right : curr.left, isLeft);
             res.add(curr.val);
         }
     }
 
     private void findLeaves(TreeNode curr) {
-        if (curr.left == null & curr.right == null) res.add(curr.val);
+        if (curr.left == null && curr.right == null) res.add(curr.val);
         if (curr.left != null) findLeaves(curr.left);
         if (curr.right != null) findLeaves(curr.right);
     }
 
-    /**************** Solution 2: Pre-order Traversal + Status Flag ****************/
+    /**************** Solution 2: Pre-order Traversal + Status Flag (状态机) ****************/
     /**
      * status:
      * 0 - root
@@ -109,6 +101,58 @@ public class BoundaryOfBinaryTree {
                 find(curr.right, status);
                 find(curr.left, status);
             }
+        }
+    }
+
+    // find() can be turned into switch-cases, instead of if-else
+    private void recur(TreeNode curr, int state) {
+        if (curr == null) return;
+
+        switch (state) {
+            case 0: // root
+                left.add(curr.val);
+                if (curr.left != null) recur(curr.left, 1);
+                if (curr.right != null) recur(curr.right, 2);
+                break;
+
+            case 1: // left boundary
+                left.add(curr.val);
+                if (curr.left != null) {
+                    recur(curr.left, 1);
+                    recur(curr.right, 3);
+                } else {
+                    recur(curr.right, 1);
+                }
+                break;
+
+            case 2: // right boundary
+                right.add(curr.val);
+                if (curr.right != null) {
+                    recur(curr.right, 2);
+                    recur(curr.left, 4);
+                } else {
+                    recur(curr.left, 2);
+                }
+                break;
+
+            case 3: // left subtree interior
+            case 4: // right subtree interior
+                if (curr.left == null && curr.right == null) { // leaf
+                    if (state == 3) {
+                        left.add(curr.val);
+                    } else {
+                        right.add(curr.val);
+                    }
+                } else {
+                    if (state == 3) {
+                        recur(curr.left, 3);
+                        recur(curr.right, 3);
+                    } else { // state == 4
+                        recur(curr.right, 4);
+                        recur(curr.left, 4);
+                    }
+                }
+                break;
         }
     }
 

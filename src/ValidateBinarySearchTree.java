@@ -8,6 +8,9 @@ public class ValidateBinarySearchTree {
 
     /************* Solution 1: Recursive Post-order Traversal **************/
     /**
+     * 该解法可用于
+     * 333. Largest BST Subtree (https://leetcode.com/problems/largest-bst-subtree/description/)
+     *
      * 返回值 {subtree最小值，subtree最大值，该subtree是否是valid BST}
      * base case 不能是 root == null, return {MAX_INT, MIN_INT, 1}, 因为有等于最大最小值情况！！！
      *

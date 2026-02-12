@@ -20,31 +20,30 @@ public class FindLeavesOfBinaryTree {
      * Time: O(N) as post-order traversal
      * Space: O(H) avg O(logN) worst O(N)
      */
+    List<List<Integer>> res;
+
     public List<List<Integer>> findLeaves(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
-        find(root, res);
-        this.print(res);
+        res = new ArrayList<>();
+        recur(root);
         return res;
     }
 
-    private int find(TreeNode node, List<List<Integer>> res) {
-        if (node == null) return -1;
-        int currHeight = Math.max(this.find(node.left, res), this.find(node.right, res)) + 1;
-        if (res.size() < currHeight + 1) res.add(new ArrayList<>());
-        res.get(currHeight).add(node.val);
-        return currHeight;
+    private int recur(TreeNode curr) {
+        if (curr == null) return 0;
+        int h = Math.max(recur(curr.left), recur(curr.right));
+        if (h > res.size() - 1) res.add(new ArrayList<>());
+        res.get(h).add(curr.val);
+        return h + 1;
     }
 
     /************* Solution 2: Topological Sort *****************/
     /**
-     *
-     *
      * Time: O(2N) = O(N)   Space: O(2N) = O(N)
      */
     public List<List<Integer>> findLeaves1(TreeNode root) {
         // build adj list  & find initial 0 in-degree nodes
-        Map<TreeNode, Integer> out = new HashMap<>();
-        Map<TreeNode, TreeNode> parents = new HashMap<>();
+        Map<TreeNode, Integer> in = new HashMap<>();
+        Map<TreeNode, TreeNode> out = new HashMap<>();
         List<TreeNode> zeroIn = new ArrayList<>();
         Deque<TreeNode> queue = new ArrayDeque<>();
         if (root != null) queue.offer(root);
@@ -54,13 +53,13 @@ public class FindLeavesOfBinaryTree {
                 zeroIn.add(curr);
             } else {
                 if (curr.left != null) {
-                    out.put(curr, out.getOrDefault(curr, 0) + 1);
-                    parents.put(curr.left, curr);
+                    in.put(curr, in.getOrDefault(curr, 0) + 1);
+                    out.put(curr.left, curr);
                     queue.offer(curr.left);
                 }
                 if (curr.right != null) {
-                    out.put(curr, out.getOrDefault(curr, 0) + 1);
-                    parents.put(curr.right, curr);
+                    in.put(curr, in.getOrDefault(curr, 0) + 1);
+                    out.put(curr.right, curr);
                     queue.offer(curr.right);
                 }
             }
@@ -73,10 +72,10 @@ public class FindLeavesOfBinaryTree {
             List<TreeNode> nextZeroIn = new ArrayList<>();
             for (TreeNode curr : zeroIn) {
                 res.get(res.size() - 1).add(curr.val);
-                TreeNode parent = parents.get(curr);
+                TreeNode parent = out.get(curr);
                 if (parent == null) continue;
-                out.put(parent, out.get(parent) - 1);
-                if (out.get(parent) == 0) nextZeroIn.add(parent);
+                in.put(parent, in.get(parent) - 1);
+                if (in.get(parent) == 0) nextZeroIn.add(parent);
             }
             zeroIn = nextZeroIn;
         }
