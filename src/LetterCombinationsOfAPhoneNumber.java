@@ -91,9 +91,11 @@ public class LetterCombinationsOfAPhoneNumber {
 
     private void recur3(int i, List<String> cur) {
         if (i == digits.length()) {
+            // ⚠️注意⚠️ no need to copy!!!
             res.add(String.join("", cur));
             return;
         }
+        // ⚠️注意⚠️ - ‘2‘ 避免了 dic 前两个是空 array！！！
         for (String c : dic[digits.charAt(i) - '2']) {
             cur.add(c);
             recur3(i + 1, cur);

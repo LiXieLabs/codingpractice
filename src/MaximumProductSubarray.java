@@ -38,6 +38,7 @@ public class MaximumProductSubarray {
     public int maxProduct(int[] nums) {
         int res = nums[0], curMin = nums[0], curMax = nums[0];
         for (int i = 1; i < nums.length; i++) {
+            // ⚠️注意⚠️ 先提取出来，不然算 curMax 时候，curMin 已经变了！！！
             int n1 = nums[i] * curMin, n2 = nums[i] * curMax;
             curMin = Math.min(nums[i], Math.min(n1, n2));
             curMax = Math.max(nums[i], Math.max(n1, n2));

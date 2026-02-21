@@ -35,7 +35,40 @@ public class BattleshipsInABoard {
         }
     }
 
-    /*************** Solution 2: One-pass without extra-space ************/
+    /******************* Solution 1: Iterative BFS *********************/
+    /***
+     * Time: O(M X N) Space: O(1)
+     */
+
+    public int countBattleships2(char[][] board) {
+        this.board = board;
+        r = board.length;
+        c = board[0].length;
+        int count = 0;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (board[i][j] == 'X') {
+                    count++;
+                    if (i + 1 < r && board[i + 1][j] == 'X') {
+                        sink(i + 1, j, 1, 0);
+                    } else if (j + 1 < c && board[i][j + 1] == 'X') {
+                        sink(i, j + 1, 0, 1);
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    private void sink(int i, int j, int di, int dj) {
+        do {
+            board[i][j] = '.';
+            i += di;
+            j += dj;
+        } while (i < r && j < c && board[i][j] == 'X');
+    }
+
+    /*************** Solution 3: One-pass without extra-space ************/
     /**
      * Time: O(M X N) Space: O(1)
      */

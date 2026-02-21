@@ -43,24 +43,29 @@ public class LongestPalindromicSubstring {
      * Time: O(N^2) Space: O(N)
      */
     public String longestPalindrome(String s) {
-        String res = "";
+        int resi = 0, resj = 0;
         boolean[] dp = new boolean[s.length()];
         for (int i = s.length() - 1; i >= 0; i--) {
-            boolean pre = dp[i];
+            boolean pre = false;
             for (int j = i; j < s.length(); j++) {
                 boolean tmp = dp[j];
-                if (i == j) {
-                    dp[j] = true;
-                } else if (i + 1 == j) {
-                    dp[j] = s.charAt(i) == s.charAt(j);
-                } else {
-                    dp[j] = pre && s.charAt(i) == s.charAt(j);
+                // ⚠️注意⚠️必须赋值！！！不能只赋 true 的情况，因为是 1d dp，需要覆盖，无论 true or false！！！
+                dp[j] = (j == i) || ((j == i + 1 || pre) && s.charAt(i) == s.charAt(j));
+//                if (i == j) { // 'a'
+//                    dp[j] = true;
+//                } else if (i + 1 == j) { // 'aa'
+//                    dp[j] = s.charAt(i) == s.charAt(j);
+//                } else { // 'aba' or 'abba'
+//                    dp[j] = pre && s.charAt(i) == s.charAt(j);
+//                }
+                if (dp[j] && j - i + 1 > resj - resi + 1) {
+                    resi = i;
+                    resj = j;
                 }
-                if (dp[j] && j - i + 1 > res.length()) res = s.substring(i, j + 1);
                 pre = tmp;
             }
         }
-        return res;
+        return s.substring(resi, resj + 1);
     }
 
     public static void main(String[] args) {

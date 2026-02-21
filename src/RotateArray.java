@@ -106,6 +106,8 @@ public class RotateArray {
      */
     public void rotate(int[] nums, int k) {
         int l = nums.length, updated = 0;
+        k %= l;
+        if (k == 0) return;
         for (int start = 0; updated < nums.length; start++) {
             int i = (start + k) % l, pre = nums[start];
             boolean end = false;

@@ -8,7 +8,8 @@ import java.util.stream.Collectors;
 public class WallsAndGates {
 
     private static final int[][] DIREC = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    private static final int R = Integer.MAX_VALUE;
+
+    // 多源 BFS (multi-source BFS)
 
     /******************* Solution 1: BFS initial queue is all the GATEs **************/
     /**
@@ -18,7 +19,7 @@ public class WallsAndGates {
      * 1. 省略了visited，不为R的已经visited过了
      * 2. GATE下一步是GATE，可以忽略，因为一个点通过GateB到GateA，则到GateB距离一定更小
      */
-    public void wallsAndGates(int[][] rooms) {
+    public void wallsAndGates1(int[][] rooms) {
         int row = rooms.length, col = rooms[0].length;
         List<Integer> queue = new ArrayList<>();
         for (int i = 0; i < row; i++) {
@@ -39,7 +40,7 @@ public class WallsAndGates {
                 for (int[] d : DIREC) {
                     int nr = r + d[0], nc = c + d[1];
                     // 不用visited标记，不为R的已经加入过queue了！！！
-                    if (0 <= nr && nr < row && 0 <= nc && nc < col && rooms[nr][nc] == R) {
+                    if (0 <= nr && nr < row && 0 <= nc && nc < col && rooms[nr][nc] > distance) {
                         rooms[nr][nc] = distance;
                         nextQueue.add(nr * col + nc);
                     }
@@ -47,6 +48,36 @@ public class WallsAndGates {
             }
             distance++;
             queue = nextQueue;
+        }
+    }
+
+    /*************** Solution 2: Recur DFS ************************/
+    /**
+     * Time: O(G * (R * C)) worst O((R * C)^2)    Space: O(R * C)
+     */
+    int[][] rooms;
+    int r, c;
+
+    public void wallsAndGates(int[][] rooms) {
+        this.rooms = rooms;
+        r = rooms.length;
+        c = rooms[0].length;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (rooms[i][j] == 0) {
+                    recur(i, j, 1);
+                }
+            }
+        }
+    }
+
+    private void recur(int i, int j, int distance) {
+        for (int[] d : DIREC) {
+            int ni = i + d[0], nj = j + d[1];
+            if (0 <= ni && ni < r && 0 <= nj && nj < c && rooms[ni][nj] > distance) {
+                rooms[ni][nj] = distance;
+                recur(ni, nj, distance + 1);
+            }
         }
     }
 
@@ -63,10 +94,10 @@ public class WallsAndGates {
         WallsAndGates solution = new WallsAndGates();
 
         int[][] board1 = new int[][]{
-                {R, -1, 0, R},
-                {R, R, R, -1},
-                {R, -1, R, -1},
-                {0, -1, R, R}
+                {Integer.MAX_VALUE, -1, 0, Integer.MAX_VALUE},
+                {Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, -1},
+                {Integer.MAX_VALUE, -1, Integer.MAX_VALUE, -1},
+                {0, -1, Integer.MAX_VALUE, Integer.MAX_VALUE}
         };
         solution.wallsAndGates(board1);
         print(board1);

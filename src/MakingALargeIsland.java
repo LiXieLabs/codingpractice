@@ -40,11 +40,10 @@ public class MakingALargeIsland {
                     Set<Integer> uniqueIslands = new HashSet<>();
                     for (int[] d : DIREC) {
                         int ni = i + d[0], nj = j + d[1];
-                        if (0 <= ni && ni < n && 0 <= nj && nj < n && grid[ni][nj] == 1)
-                            uniqueIslands.add(uf.find(ni * n + nj));
-                    }
-                    for (int island : uniqueIslands) {
-                        curArea += uf.sz[island];
+                        if (0 <= ni && ni < n && 0 <= nj && nj < n && grid[ni][nj] == 1) {
+                            int island = uf.find(ni * n + nj);
+                            if (uniqueIslands.add(island)) curArea += uf.sz[island];
+                        }
                     }
                     maxArea = Math.max(maxArea, curArea);
                 }

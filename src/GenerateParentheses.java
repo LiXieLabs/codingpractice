@@ -8,6 +8,17 @@ import java.util.List;
  */
 public class GenerateParentheses {
 
+    /**
+     * ⚠️注意⚠️
+     * 1. string 组合的 backtracking -> path 用
+     *    (1) StringBuilder + append + deleteCharAt + toString
+     *    (2) List<String> + add + remove + String.join("", path)
+     *    add to res 都不用 copy！
+     * 2. parentheses 计数，
+     *    (1) l = n, r = n -> l > 0 && r > l
+     *    (2) l = n, r = 0 -> l > 0 && r > 0
+     */
+
     /********** Solution 1: 一种 Recursive Backtracking ****************/
     /**
      * StringBuilder && l starts from n && r starts from 0;

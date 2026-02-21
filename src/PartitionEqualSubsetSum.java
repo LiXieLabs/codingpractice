@@ -1,39 +1,62 @@
-import javafx.util.Pair;
-
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * 416. Partition Equal Subset Sum (https://leetcode.com/problems/partition-equal-subset-sum/description/)
  */
 public class PartitionEqualSubsetSum {
 
-    /************* Solution 1: BFS 按照 nums 扩展 ***************/
     /**
-     * BFS 按照 nums 扩展
-     * Set<Pair<Integer, Integer>> 记录 nums[0:i] 分成俩个 subsets 的和的情况
-     * 并分别记录将 nums[i] 更新给 left 和 right 的新的 subsets 的和的情况，更新给 next
+     * 题目可理解为：Can we choose some numbers that add up to Sum/2?
+     * 本质是：O/1 Backpack Problem - Decision Version
      *
-     * Time: O(2^N)   Space: O(2^N)
+     * Partition Problem	   Knapsack Interpretation
+     * nums[i]	               item weight
+     * target = S/2	           bag capacity
+     * pick or not pick	0/1    choice
+     * exact sum required	   subset sum
      */
+
+    /**
+     *                        LC416	           LC39
+     * 背包类型	              0/1 背包	      完全背包
+     * 目标	                  是否存在	      列出所有
+     * 递归含义	            处理第 i 个元素	选择下一个元素
+     *                     （index-driven） （combination-driven）
+     * 递归结构	             二叉决策	     for 循环枚举
+     * 是否必须遍历所有候选	❌ 不需要	       ✅ 必须
+     */
+
+    /************* Solution 1: Top-Down Recur + Memoization ***************/
+    /**
+     * Time: O(N * SUM/2) = O(N * SUM)
+     * Space: O(N * SUM/2) by memo + O(N) by recur stack = O(N * SUM)
+     */
+    int[] nums;
+    Boolean[][] memo; // null = unknown, true/false computed
+
     public boolean canPartition1(int[] nums) {
-        Set<Pair<Integer, Integer>> curr = new HashSet<>();
-        curr.add(new Pair<>(nums[0], 0));
-        for (int i = 1; i < nums.length; i++) {
-            Set<Pair<Integer, Integer>> next = new HashSet<>();
-            for (Pair<Integer, Integer> partition : curr) {
-                next.add(new Pair<>(partition.getKey() + nums[i], partition.getValue()));
-                next.add(new Pair<>(partition.getKey(), partition.getValue() + nums[i]));
-            }
-            curr = next;
-        }
-        for (Pair<Integer, Integer> partition : curr) {
-            if (partition.getKey().equals(partition.getValue())) return true;
-        }
-        return false;
+        int sum = 0;
+        for (int x : nums) sum += x;
+        if ((sum & 1) == 1) return false;
+
+        this.nums = nums;
+        sum /= 2;
+        memo = new Boolean[nums.length][sum + 1];
+        return recur(0, sum);
     }
 
-    /************** Solution 2: 2D DP - 不受邻居限制的 背包问题 *******************/
+    private boolean recur(int i, int target) {
+        // base case
+        if (target == 0) return true;
+        if (i == nums.length || target < 0) return false;
+
+        // memo found
+        if (memo[i][target] != null) return memo[i][target];
+
+        // ans = exclude i || include i
+        boolean ans = recur(i + 1, target) || recur(i + 1, target - nums[i]);
+        return memo[i][target] = ans;
+    }
+
+    /************** Solution 2: 2D DP => 1D DP - 不受邻居限制的 背包问题 *******************/
     /**
      * 不受邻居限制的 背包问题
      * 也有点类似 coin change，但是不能重复利用某一项
@@ -48,24 +71,25 @@ public class PartitionEqualSubsetSum {
      *
      * 则 dp[i][j] = dp[i-1][j-nums[i]] || dp[i-1][j]
      *
-     * Time: O(S X N)   Space: O(S)
-     * where S is the sum of nums, N is length os nums
+     * Time: O(N * SUM/2) = O(N * SUM)
+     * Space: O(SUM/2) by dp = O(SUM)
      */
     public boolean canPartition(int[] nums) {
         // 统计 sum，奇数直接 false，偶数用于确定 dp 列数
-        int total = 0;
-        for (int n : nums) total += n;
-        if (total % 2 == 1) return false;
+        int sum = 0;
+        for (int x : nums) sum += x;
+        if ((sum & 1) == 1) return false;
 
-        boolean[] dp = new boolean[total / 2 + 1];
+        sum /= 2;
+        boolean[] dp = new boolean[sum + 1];
         dp[0] = true;
         for (int n : nums) {
             // 自右向左，避免 j-n < 0 超出范围，以及 dp[j] 已经被修改
-            for (int j = dp.length - 1; j >= n; j--) {
-                dp[j] |= dp[j - n]; // 注意！！！|| 和 | 在 boolean 运算时的区别！！！
+            for (int j = sum; j >= n; j--) {
+                dp[j] |= dp[j - n];
             }
         }
-        return dp[total / 2];
+        return dp[sum];
     }
 
     public static void main(String[] args) {
