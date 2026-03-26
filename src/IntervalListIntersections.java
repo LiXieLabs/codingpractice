@@ -45,7 +45,7 @@ public class IntervalListIntersections {
             int s2 = secondList[p2][0], e2 = secondList[p2][1];
             int maxStart = Math.max(s1, s2);
             int minEnd = Math.min(e1, e2);
-            // e1 >= s2 && e2 >= s1
+            // e1 >= s2 && e2 >= s1, 本质是要添加的区间是 valid 的！
             if (minEnd >= maxStart) res.add(new int[]{maxStart, minEnd});
             // e1 == e2 可以两个都向前移动，因为两个list都是disjoint的
             if (e1 >= e2) p2++;

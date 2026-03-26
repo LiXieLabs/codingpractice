@@ -45,7 +45,7 @@ public class MaximumXOROfTwoNumbersInAnArray {
         for (int n : nums) maxNum = Math.max(maxNum, n);
         int maxLen = Integer.toBinaryString(maxNum).length();
 
-        int maxXor = 0, mask = 0;
+        int maxXor = 0, mask = 0; // mask 用于截取前 i 位
         Set<Integer> set = new HashSet<>();
         for (int i = maxLen - 1; i >= 0; i--) {
             mask |= (1 << i);
@@ -99,6 +99,7 @@ public class MaximumXOROfTwoNumbersInAnArray {
     // 将当前 n 加入 Trie 中。
     private void addNum(TrieNode421 root, int n, int maxLen) {
         String s = Integer.toBinaryString(n);
+        // ⚠️注意⚠️这样做是为了让所有数字对齐，比如 25 和 5，就会对齐为 11001 和 00101！
         for (int i = s.length() - maxLen; i < s.length(); i++) {
             int cur = i >= 0 && s.charAt(i) == '1' ? 1 : 0;
             if (root.children[cur] == null) root.children[cur] = new TrieNode421();

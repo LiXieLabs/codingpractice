@@ -8,6 +8,8 @@ public class CapacityToShipPackagesWithinDDays {
      * 类似:
      * 410. Split Array Largest Sum (https://leetcode.com/problems/split-array-largest-sum/)
      * 378. Kth Smallest Element in a Sorted Matrix (https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+     * 875. Koko Eating Bananas (https://leetcode.com/problems/koko-eating-bananas/description/)
+     * 878. Nth Magical Number (https://leetcode.com/problems/nth-magical-number/)
      * 1011. Capacity To Ship Packages Within D Days (https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/)
      * 1231. Divide Chocolate (https://leetcode.com/problems/divide-chocolate/)
      *
@@ -24,35 +26,36 @@ public class CapacityToShipPackagesWithinDDays {
      *
      */
     public int shipWithinDays(int[] weights, int days) {
-        int max = 0, sum = 0;
+        int total = 0, max = 0;
         for (int w : weights) {
+            total += w;
             max = Math.max(max, w);
-            sum += w;
         }
-        int lo = max, hi = sum;
+        int lo = max, hi = total;
+        if (days > weights.length) return lo;
+        if (days == 1) return total;
         while (lo < hi) {
-            int mid = (lo + hi) >> 1;
-            int needDays = tryShip(weights, mid);
-            if (needDays <= days) {
-                hi = mid;
-            } else {
+            int mid = lo + (hi - lo) / 2;
+            int curDays = ship(weights, mid);
+            if (curDays > days) {
                 lo = mid + 1;
+            } else {
+                hi = mid;
             }
         }
         return lo;
     }
 
-    private int tryShip(int[] weight, int maxWeight) {
-        int days = 0, curWeight = 0;
-        for (int w : weight) {
-            if (curWeight + w > maxWeight) {
+    private int ship(int[] weights, int capacity) {
+        int days = 1, total = 0;
+        for (int w : weights) {
+            if (total + w > capacity) {
                 days++;
-                curWeight = w;
-            } else {
-                curWeight += w;
+                total = 0;
             }
+            total += w;
         }
-        return days + 1;
+        return days;
     }
 
     public static void main(String[] args) {

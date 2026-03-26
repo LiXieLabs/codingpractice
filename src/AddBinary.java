@@ -14,6 +14,9 @@ public class AddBinary {
         while (ia >= 0 || ib >= 0 || carry > 0) {
             if (ia >= 0) carry += a.charAt(ia--) - '0';
             if (ib >= 0) carry += b.charAt(ib--) - '0';
+            // 也可以：
+//            if (ia >= 0 && a.charAt(ia--) == '1') carry++;
+//            if (ib >= 0 && b.charAt(ib--) == '1') carry++;
             sb.append(carry % 2);
             carry /= 2;
         }

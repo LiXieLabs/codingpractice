@@ -6,6 +6,11 @@ import java.util.List;
  */
 public class LongestIncreasingSubsequence {
 
+    /**
+     * 300. Longest Increasing Subsequence (https://leetcode.com/problems/longest-increasing-subsequence/description/)
+     * 368. Largest Divisible Subset (https://leetcode.com/problems/largest-divisible-subset/description/)
+     */
+
     /************ Solution 1: 1D DP **********************/
     /**
      * dp[i] = max(1, dp[j] + 1) for j = [0,i) and nums[j] < nums[i]

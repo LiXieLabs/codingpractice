@@ -29,7 +29,32 @@ public class RemoveKDigits {
         while (k-- > 0 && !stack.isEmpty()) stack.pop();
         StringBuilder sb = new StringBuilder();
         while (!stack.isEmpty()) sb.append(stack.pollLast());
-        return sb.length() == 0 ? "0" : sb.toString();
+        return sb.isEmpty() ? "0" : sb.toString();
+    }
+
+    // 另一种写法
+    public String removeKdigits2(String num, int k) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        int removed = 0;
+        for (char c : num.toCharArray()) {
+            int n = c - '0';
+            while (!stack.isEmpty() && stack.peek() > n && removed < k) {
+                stack.pop();
+                removed++;
+            }
+            stack.push(n);
+        }
+        StringBuilder res = new StringBuilder();
+        while (stack.size() > num.length() - k) {
+            stack.pop();
+        }
+        while (!stack.isEmpty() && stack.peekLast() == 0) {
+            stack.pollLast();
+        }
+        while (!stack.isEmpty()) {
+            res.append((char) (stack.pollLast() + '0'));
+        }
+        return res.isEmpty() ? "0" : res.toString();
     }
 
     public static void main(String[] args) {

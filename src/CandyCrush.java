@@ -93,6 +93,23 @@ public class CandyCrush {
         }
     }
 
+    // can be iterative! LIKE:
+    public int[][] candyCrush1(int[][] board) {
+        this.curBoard = board;
+        r = board.length;
+        c = board[0].length;
+
+        boolean changed = true;
+        while (changed) {
+            changed = false;
+
+            // mark horizontal
+            // mark vertical
+            // if changed, drop
+        }
+        return board;
+    }
+
     private static void print(int[][] input) {
         for (int[] row : input) {
             System.out.println("["

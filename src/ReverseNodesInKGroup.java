@@ -13,27 +13,26 @@ public class ReverseNodesInKGroup {
      * Space: O(1)
      */
     public ListNode reverseKGroup1(ListNode head, int k) {
-        ListNode dummy = new ListNode(0, head);
-        ListNode preTail = dummy;
-        ListNode curHead = head;
-        while (true) {
-            ListNode cur = curHead;
-            for (int i = 0; i < k - 1 && cur != null; i++) {
-                cur = cur.next;
+        ListNode dummy = new ListNode(-1);
+        ListNode prevTail = dummy, currHead = head;
+        do {
+            ListNode currTail = currHead;
+            for (int i = 0; i < k - 1 && currTail != null; i++) {
+                currTail = currTail.next;
             }
-            if (cur == null) break;
-            preTail.next = cur;
-            ListNode pre = cur.next;
-            cur = curHead;
+            if (currTail == null) break;
+            prevTail.next = currTail;
+            prevTail = currHead; // ⚠️注意⚠️ 别忘了这个！
+            ListNode prev = currTail.next;
             for (int i = 0; i < k; i++) {
-                ListNode tmp = cur.next;
-                cur.next = pre;
-                pre = cur;
-                cur = tmp;
+                ListNode temp = currHead.next;
+                currHead.next = prev;
+                prev = currHead;
+                currHead = temp;
             }
-            preTail = curHead;
-            curHead = cur;
-        }
+
+
+        } while (true);
         return dummy.next;
     }
 
@@ -44,23 +43,22 @@ public class ReverseNodesInKGroup {
      */
     public ListNode reverseKGroup(ListNode head, int k) {
         // 先数到K，或者遇到结尾。
-        ListNode cur = head;
-        for (int i = 0; i < k - 1 && cur != null; i++) {
-            cur = cur.next;
+        ListNode curr = head;
+        for (int i = 0; i < k - 1 && curr != null; i++) {
+            curr = curr.next;
         }
         // 如果没数到K，直接返回
-        if (cur == null) return head;
+        if (curr == null) return head;
         // 把后面的recursive搞好
-        ListNode pre = reverseKGroup(cur.next, k);
+        ListNode prev = reverseKGroup(curr.next, k);
         // reverse current k group
-        cur = head;
         for (int i = 0; i < k; i++) {
-            ListNode tmp = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = tmp;
+            ListNode temp = head.next;
+            head.next = prev;
+            prev = head;
+            head = temp;
         }
-        return pre;
+        return prev;
     }
 
     private static void print(ListNode head) {

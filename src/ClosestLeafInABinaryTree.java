@@ -1,8 +1,10 @@
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,7 +51,7 @@ public class ClosestLeafInABinaryTree {
         while (!queue.isEmpty()) {
             TreeNode curr = queue.poll();
             if (curr.left == null && curr.right == null) return curr.val;
-            for (TreeNode next : Arrays.asList(curr.left, curr.right, parents.getOrDefault(curr.val, null))) {
+            for (TreeNode next : Arrays.asList(curr.left, curr.right, parents.get(curr.val))) {
                 if (next != null && !visited.contains(next.val)) {
                     queue.offer(next);
                     visited.add(next.val);
@@ -57,6 +59,54 @@ public class ClosestLeafInABinaryTree {
             }
         }
         return -1;
+    }
+
+    // 双 BFS 更快！
+    public int findClosestLeaf2(TreeNode root, int k) {
+        Map<TreeNode, TreeNode> parents = new HashMap<>();
+        List<TreeNode> currLevel = new ArrayList<>();
+        currLevel.add(root);
+        TreeNode found = null;
+        while (found == null) {
+            List<TreeNode> nextLevel = new ArrayList<>();
+            for (TreeNode curr : currLevel) {
+                if (curr.val == k) {
+                    found = curr;
+                    break;
+                }
+                if (curr.left != null) {
+                    parents.put(curr.left, curr);
+                    nextLevel.add(curr.left);
+                }
+                if (curr.right != null) {
+                    parents.put(curr.right, curr);
+                    nextLevel.add(curr.right);
+                }
+            }
+            currLevel = nextLevel;
+        }
+
+        Set<Integer> visited = new HashSet<>();
+        visited.add(k);
+        currLevel = new ArrayList<>();
+        currLevel.add(found);
+        while (true) {
+            List<TreeNode> nextLevel = new ArrayList<>();
+            for (TreeNode curr : currLevel) {
+                if (curr.left == null && curr.right == null) return curr.val;
+                if (curr.left != null && visited.add(curr.left.val)) {
+                    nextLevel.add(curr.left);
+
+                }
+                if (curr.right != null && visited.add(curr.right.val)) {
+                    nextLevel.add(curr.right);
+                }
+                if (parents.get(curr) != null && visited.add(parents.get(curr).val)) {
+                    nextLevel.add(parents.get(curr));
+                }
+            }
+            currLevel = nextLevel;
+        }
     }
 
     public static void main(String[] args) {

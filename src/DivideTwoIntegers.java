@@ -76,6 +76,8 @@ public class DivideTwoIntegers {
      * total times: 596; dividend: 134
      *
      * 157 x 2^9 + 157 x 2^6 + 157 x 2^4 + 157 x 2^2 = 93572 < 93706
+     * 157 x (2^9 + 2^6 + 2^4 + 2^2) = 157 x (1001010100)binary = 157 x 596 = 157 x total times
+     * 本质在求商的二进制表达！！！
      *
      * Time: logN
      */

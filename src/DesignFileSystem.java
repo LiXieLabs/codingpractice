@@ -3,42 +3,37 @@ import java.util.Map;
 
 public class DesignFileSystem {
 
-    DesignFileSystemNode root;
+    TrieNode1166 root;
 
-    public DesignFileSystem() {
-        root = new DesignFileSystemNode("");
-    }
+    public DesignFileSystem() { root = new TrieNode1166(-1); }
 
     // Time:  O(Longest Path Length)  worst O(Total Path Count)
     // Space: O(Path Length)
     // Returns false if the path already exists or its parent path doesn't exist.
     // Returns true if the path doesn't exist and its parent path exists.
     public boolean createPath(String path, int value) {
-        String[] nodes = path.split("/");
-        DesignFileSystemNode curr = root;
+        String[] steps = path.split("/");
+        TrieNode1166 curr = root;
         // find parent folder
-        for (int i = 1; i < nodes.length - 1; i++) {
-            String node = nodes[i];
-            if (!curr.children.containsKey(node)) return false;
-            curr = curr.children.get(node);
+        // ⚠️注意⚠️ 必须从 1 开始找！因为 "/a" split 完是 ["", "a"]
+        for (int i = 1; i < steps.length - 1; i++) {
+            if (!curr.children.containsKey(steps[i])) return false;
+            curr = curr.children.get(steps[i]);
         }
-        // add last new folder
-        String last = nodes[nodes.length - 1];
-        if (curr.children.containsKey(last)) return false;
-        curr.children.put(last, new DesignFileSystemNode(last));
-        curr.children.get(last).val = value;
+        // add new folder
+        if (curr.children.containsKey(steps[steps.length - 1])) return false;
+        curr.children.put(steps[steps.length - 1], new TrieNode1166(value));
         return true;
     }
 
     // Time:  O(Longest Path Length)  worst O(Total Path Count)
     // Space: O(1)
     public int get(String path) {
-        String[] nodes = path.split("/");
-        DesignFileSystemNode curr = root;
-        for (int i = 1; i < nodes.length; i++) {
-            String node = nodes[i];
-            if (!curr.children.containsKey(node)) return -1;
-            curr = curr.children.get(node);
+        String[] steps = path.split("/");
+        TrieNode1166 curr = root;
+        for (int i = 1; i < steps.length; i++) {
+            if (!curr.children.containsKey(steps[i])) return -1;
+            curr = curr.children.get(steps[i]);
         }
         return curr.val;
     }
@@ -68,15 +63,13 @@ public class DesignFileSystem {
     }
 }
 
-class DesignFileSystemNode {
+class TrieNode1166 {
 
-    String key;
+    Map<String, TrieNode1166> children;
     int val;
-    Map<String, DesignFileSystemNode> children;
 
-    public DesignFileSystemNode(String key) {
-        this.key = key;
-        val = -1;
+    public TrieNode1166(int val) {
         children = new HashMap<>();
+        this.val = val;
     }
 }

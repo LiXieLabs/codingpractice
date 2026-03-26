@@ -29,8 +29,13 @@ public class InsertDeleteGetRandomO1 {
 
         public boolean insert(int val) {
             if (!valToIdx.containsKey(val)) {
-                values.add(val);
-                valToIdx.put(val, values.size() - 1);
+                if (valToIdx.size() == values.size()) {
+                    values.add(val);
+                    valToIdx.put(val, values.size() - 1);
+                } else {
+                    values.set(valToIdx.size(), val);
+                    valToIdx.put(val, valToIdx.size());
+                }
                 return true;
             }
             return false;
@@ -40,25 +45,25 @@ public class InsertDeleteGetRandomO1 {
             if (valToIdx.containsKey(val)) {
                 int idx = valToIdx.remove(val);
                 // 把 last element 换过来！
-                // ⚠️注意⚠️如果 idx == values.size() - 1，则要删除的已经是最后一个，也可能只有这一个了，不必交换了！
-                if (idx != values.size() - 1) {
-                    int last = values.get(values.size() - 1);
+                // ⚠️注意⚠️如果 idx == values.size()，则要删除的已经是最后一个，也可能只有这一个了，不必交换了！
+                if (idx != valToIdx.size()) {
+                    int last = values.get(valToIdx.size());
                     values.set(idx, last);
                     valToIdx.put(last, idx);
                 }
-                values.remove(values.size() - 1);
                 return true;
             }
             return false;
         }
 
         public int getRandom() {
-            return values.get(rand.nextInt(values.size()));
+            return values.get(rand.nextInt(valToIdx.size()));
         }
     }
 
     // follow-up: allow duplicate
-    // solution: hashmap value if set of indices
+    // solution: hashmap value is set of indices
+    // 此处values最后一个位置，交换完后得移除！不然不知道总数了，除非维护一个total，不能用valToIndices.size()了！
     static class RandomizedSetAllowDuplicate {
 
         List<Integer> values;

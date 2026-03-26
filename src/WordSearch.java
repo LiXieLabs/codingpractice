@@ -6,11 +6,11 @@ import java.util.Set;
  */
 public class WordSearch {
 
-    private final static int[][] direc = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    private char[][] board;
-    private int r, c;
-    private String word;
-    private Set<Integer> visited;
+    private static final int[][] DIREC = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+    char[][] board;
+    int r, c;
+    String word;
 
     /******************* Solution 1: Backtracking *********************/
     /**
@@ -19,32 +19,34 @@ public class WordSearch {
      * Space: O(L) from call stack
      */
     public boolean exist(char[][] board, String word) {
-        this.word = word;
         this.board = board;
         r = board.length;
         c = board[0].length;
-        visited = new HashSet<>();
+        this.word = word;
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
-                if (this.word.charAt(0) == this.board[i][j]) {
-                    if (recurFind(i, j, 1)) return true;
+                if (board[i][j] == word.charAt(0) && recur(i, j, 1)) {
+                    return true;
                 }
             }
         }
         return false;
     }
 
-    public boolean recurFind(int i, int j, int idx) {
-        if (idx == word.length()) return true;
-        visited.add(i * c + j);
-        for (int[] d : direc) {
+    private boolean recur(int i, int j, int k) {
+        if (k == word.length()) return true;
+        boolean res = false;
+        char original = board[i][j];
+        board[i][j] = '*';
+        for (int[] d : DIREC) {
             int ni = i + d[0], nj = j + d[1];
-            if (0 <= ni && ni < r && 0 <= nj && nj < c && board[ni][nj] == word.charAt(idx) && !visited.contains(ni * c + nj)) {
-                if (recurFind(ni, nj, idx + 1)) return true;
+            if (0 <= ni && ni < r && 0 <= nj && nj < c && board[ni][nj] == word.charAt(k)) {
+                res = recur(ni, nj, k + 1);
+                if (res) break;
             }
         }
-        visited.remove(i * c + j);
-        return false;
+        board[i][j] = original;
+        return res;
     }
 
     public static void main(String[] args) {

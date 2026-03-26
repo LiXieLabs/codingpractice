@@ -10,7 +10,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
     /**
      * Time: O(N)  Space: O(1)
      */
-    public int lengthOfLongestSubstring(String s) {
+    public int lengthOfLongestSubstring1(String s) {
         int l = 0, res = 0;
         Map<Character, Integer> counter = new HashMap<>();
         for (int r = 0; r < s.length(); r++) {
@@ -26,6 +26,20 @@ public class LongestSubstringWithoutRepeatingCharacters {
             res = Math.max(res, r - l + 1);
         }
         return res;
+    }
+
+    // 优化：左边不用一个一个推进，直接跳到 cr last seen 的 index + 1 即可！
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> lastSeen = new HashMap<>();
+        int maxLen = 0, l = 0;
+        for (int r = 0; r < s.length(); r++) {
+            char cr = s.charAt(r);
+            int idx = lastSeen.getOrDefault(cr, -1);
+            if (idx >= l) l = idx + 1;
+            maxLen = Math.max(maxLen, r - l + 1);
+            lastSeen.put(cr, r);
+        }
+        return maxLen;
     }
 
     public static void main(String[] args) {

@@ -57,7 +57,7 @@ public class WordBreakII {
      */
     Set<String> wordSet;
     Map<Integer, List<String>> memo;
-    public List<String> wordBreak(String s, List<String> wordDict) {
+    public List<String> wordBreak2(String s, List<String> wordDict) {
         wordSet = new HashSet<>(wordDict);
         memo = new HashMap<>();
         memo.put(0, Collections.singletonList(""));
@@ -80,8 +80,58 @@ public class WordBreakII {
         return memo.get(i);
     }
 
+    TrieNode140 root;
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        wordSet = new HashSet<>(wordDict);
+        memo = new HashMap<>();
+        memo.put(s.length(), Collections.singletonList(""));
+        root = new TrieNode140();
+        for (String w : new HashSet<>(wordDict)) add(w);
+        return dfs(s, 0);
+    }
+
+    private List<String> dfs(String s, int start) {
+        if (!memo.containsKey(start)) {
+            List<String> res = new ArrayList<>();
+            TrieNode140 curr = root;
+            for (int end = start; end < s.length(); end++) {
+                char c = s.charAt(end);
+                if (curr.children[c - 'a'] == null) break;
+                curr = curr.children[c - 'a'];
+                if (curr.isWord) {
+                    List<String> tails = dfs(s, end + 1);
+                    String word = s.substring(start, end + 1);
+                    for (String tail : tails) {
+                        res.add(tail.isEmpty() ? word : word + " " + tail);
+                    }
+                }
+            }
+            memo.put(start, res);
+        }
+        return memo.get(start);
+    }
+
+    private void add(String word) {
+        TrieNode140 curr = root;
+        for (char c : word.toCharArray()) {
+            if (curr.children[c - 'a'] == null) curr.children[c - 'a'] = new TrieNode140();
+            curr = curr.children[c - 'a'];
+        }
+        curr.isWord = true;
+    }
+
     public static void main(String[] args) {
         WordBreakII solution = new WordBreakII();
         System.out.println(solution.wordBreak("catsanddog", Arrays.asList("cat","cats","and","sand","dog")));
     }
+}
+
+class TrieNode140 {
+    TrieNode140[] children = new TrieNode140[26];
+    boolean isWord;
+
+    public TrieNode140() {
+        children = new TrieNode140[26];
+    }
+
 }

@@ -146,12 +146,26 @@ public class FindTheDuplicateNumber {
 
     /************** ✅ Solution 6: Floyd's Tortoise & Hare (Cycle Detection) Algo *******************/
     /**
+     * 1️⃣ 数组 → 链表
+     * 2️⃣ 重复数字 → 多个节点指向同一个点 → 形成环
+     * 3️⃣ 环入口 → 重复数字
+     *
+     * 0 -> a steps -> entrance -> b -> slow/fast meet
+     *                    ^                 |
+     *                    |----- c steps ---|
+     * 第一次相遇：
+     *  slow = a + b
+     *  fast = 2(a + b) = (a + b) + kL
+     *  a + b = kL
+     *  a = kL - b = (k-1)L + (L - b) = (k-1)L + c
+     *  则 a, c 步之后一定在入口相遇！
+     *
      *  0,1,2,3,4,5  -> index
      * [3,2,4,5,1,2] -> nums
-     *
-     * nums[0](3) -> nums[3](5) -> nums[5](2) -> nums[2](4) -> nums[4](1)
-     *                                  ^                           |
-     *                                  |__________________________ |
+     *                                     nums[1](2)
+     *  （0）-> nums[0](3) -> nums[3](5) -> nums[5](2) -> nums[2](4) -> nums[4](1)
+     *                                             ^                           |
+     *                                             |__________________________ |
      *
      * 完全相同:
      * 142. Linked List Cycle II (https://leetcode.com/problems/linked-list-cycle-ii/)
@@ -160,16 +174,21 @@ public class FindTheDuplicateNumber {
      */
     public int findDuplicate(int[] nums) {
         int slow = 0, fast = 0;
+
+        // phase 1: find intersection
         do {
             slow = nums[slow];
             fast = nums[nums[fast]];
-        } while (nums[slow] != nums[fast]);
+        } while (slow != fast);
+
+        // phase 2: find entrance
         slow = 0;
-        while (nums[slow] != nums[fast]) {
+        while (slow != fast) {
             slow = nums[slow];
             fast = nums[fast];
         }
-        return nums[slow];
+
+        return slow;
     }
 
     public static void main(String[] args) {

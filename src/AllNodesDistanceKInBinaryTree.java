@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
  */
 public class AllNodesDistanceKInBinaryTree {
 
-    /************ Solution 1: DFS + BFS ****************/
+    /************ Solution 1: BFS + BFS ****************/
     /**
      * 类似 742. Closest Leaf in a Binary Tree (https://leetcode.com/problems/closest-leaf-in-a-binary-tree/)
      *
-     * DFS to convert to graph by building adj list
+     * BFS to convert to graph by building adj list
      * BFS from kNode to find the closest leaf
      *
      * 需要跨root查找的需要看作graph而非tree
@@ -29,19 +29,19 @@ public class AllNodesDistanceKInBinaryTree {
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
         // DFS to build adj list until k is found - map from child to parent
         Map<Integer, TreeNode> parents = new HashMap<>();
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        stack.push(root);
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
         boolean found = false;
         while (!found) {
-            TreeNode curr = stack.pop();
+            TreeNode curr = queue.poll();
             if (curr == target) found = true;
-            if (curr.right != null) {
-                parents.put(curr.right.val, curr);
-                stack.push(curr.right);
-            }
             if (curr.left != null) {
                 parents.put(curr.left.val, curr);
-                stack.push(curr.left);
+                queue.push(curr.left);
+            }
+            if (curr.right != null) {
+                parents.put(curr.right.val, curr);
+                queue.push(curr.right);
             }
         }
 

@@ -61,6 +61,8 @@ public class KthSmallestElementInASortedMatrix {
      * 类似:
      * 410. Split Array Largest Sum (https://leetcode.com/problems/split-array-largest-sum/)
      * 378. Kth Smallest Element in a Sorted Matrix (https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+     * 875. Koko Eating Bananas (https://leetcode.com/problems/koko-eating-bananas/description/)
+     * 878. Nth Magical Number (https://leetcode.com/problems/nth-magical-number/)
      * 1011. Capacity To Ship Packages Within D Days (https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/)
      * 1231. Divide Chocolate (https://leetcode.com/problems/divide-chocolate/)
      *

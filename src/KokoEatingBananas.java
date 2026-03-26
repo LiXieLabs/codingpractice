@@ -11,6 +11,14 @@ public class KokoEatingBananas {
      * Time: O(NlogM)
      * N is the piles.length, M is max(piles)
      *
+     * 类似:
+     * 410. Split Array Largest Sum (https://leetcode.com/problems/split-array-largest-sum/)
+     * 378. Kth Smallest Element in a Sorted Matrix (https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+     * 875. Koko Eating Bananas (https://leetcode.com/problems/koko-eating-bananas/description/)
+     * 878. Nth Magical Number (https://leetcode.com/problems/nth-magical-number/)
+     * 1011. Capacity To Ship Packages Within D Days (https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/)
+     * 1231. Divide Chocolate (https://leetcode.com/problems/divide-chocolate/)
+     *
      * Space: O(1)
      */
     public int minEatingSpeed(int[] piles, int h) {
@@ -30,11 +38,32 @@ public class KokoEatingBananas {
         return lo;
     }
 
+    /**
+     * ceil(b / k) = (b + k - 1) / k   // integer division
+     * “想要整数除法向上取整，就加 divisor - 1”
+     * ⚠️注意⚠️ 只在 b >= 0, k > 0 时有效！
+     *
+     * 假设 a = -10, b = 3
+     * | 表达式                   | 结果 |
+     * | --------------------- | -: |
+     * | `a / b`               | -3 |
+     * | `Math.ceilDiv(a, b)`  | -3 |
+     * | `Math.floorDiv(a, b)` | -4 |
+     *
+     * 假设 a = 10, b = 3
+     * | 表达式                   | 结果 |
+     * | --------------------- | -: |
+     * | `a / b`               |  3 |
+     * | `Math.floorDiv(a, b)` |  3 |
+     * | `(a + b - 1) / b`     |  4 |
+     * | `Math.ceilDiv(a, b)`  |  4 |
+     */
     private int tryEat(int[] piles, int k) {
         int hrs = 0;
-        for (int pile : piles) {
-            hrs += Math.ceil((double) pile / k);
-//            hrs += (pile / k) + (pile % k == 0 ? 0 : 1);
+        for (int b : piles) {
+            hrs += (b + k - 1) / k;
+//            hrs += Math.ceil((double) b / k);
+//            hrs += (b / k) + (b % k == 0 ? 0 : 1);
         }
         return hrs;
     }

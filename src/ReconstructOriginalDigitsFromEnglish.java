@@ -60,27 +60,26 @@ public class ReconstructOriginalDigitsFromEnglish {
      * Time: O(N)   Space: O(1)
      */
     public String originalDigits(String s) {
-        Map<Character, Integer> count = new HashMap<>();
+        Map<Character, Integer> charToCnt = new HashMap<>();
         for (Character c : s.toCharArray()) {
-            count.put(c, count.getOrDefault(c, 0) + 1);
+            charToCnt.put(c, charToCnt.getOrDefault(c, 0) + 1);
         }
-        int[] digit = new int[10];
-        digit[0] = count.getOrDefault('z', 0);
-        digit[2] = count.getOrDefault('w', 0);
-        digit[4] = count.getOrDefault('u', 0);
-        digit[6] = count.getOrDefault('x', 0);
-        digit[8] = count.getOrDefault('g', 0);
-        digit[3] = count.getOrDefault('h', 0) - digit[8];
-        digit[5] = count.getOrDefault('f', 0) - digit[4];
-        digit[7] = count.getOrDefault('s', 0) - digit[6];
-        digit[9] = count.getOrDefault('i', 0) - digit[5] - digit[6] - digit[8];
-        digit[1] = count.getOrDefault('n', 0) - digit[7] - 2 * digit[9];
+        int[] cnt = new int[10];
+        cnt[0] = charToCnt.getOrDefault('z', 0);
+        cnt[2] = charToCnt.getOrDefault('w', 0);
+        cnt[4] = charToCnt.getOrDefault('u', 0);
+        cnt[6] = charToCnt.getOrDefault('x', 0);
+        cnt[8] = charToCnt.getOrDefault('g', 0);
+        cnt[1] = charToCnt.getOrDefault('o', 0) - cnt[0] - cnt[2] - cnt[4];
+        cnt[3] = charToCnt.getOrDefault('h', 0) - cnt[8];
+        cnt[5] = charToCnt.getOrDefault('f', 0) - cnt[4];
+        cnt[7] = charToCnt.getOrDefault('v', 0) - cnt[5];
+        cnt[9] = charToCnt.getOrDefault('i', 0) - cnt[5] - cnt[6] - cnt[8];
 
         StringBuilder sb = new StringBuilder();
         for (int n = 0; n < 10; n++) {
-            for (int i = 0; i < digit[n]; i++) {
-                sb.append(n);
-            }
+            // ⚠️注意⚠️ s = str.repeat(n);
+            sb.append(String.valueOf(n).repeat(cnt[n]));
         }
         return sb.toString();
     }

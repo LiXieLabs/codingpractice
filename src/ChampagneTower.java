@@ -2,11 +2,48 @@ public class ChampagneTower {
 
     /*************** Solution 1: Simulation by 2D DP *******************/
     /**
+     *         // 0
+     *         // 0 1
+     *         // 0 1 2
+     *         // 0 1 2 3
+     *         // 0 1 2 3 4
+     *         // 0 1 2 3 4 5
+     *         // 0 1 2 3 4 5 6
+     *         // 0 1 2 3 4 5 6 7
+     *         //         ^
      *
      * Pascal Triangle
      * A[i][j] =          左上方溢出的一半            +        右上方溢出的一半
      *          Math.max(A[i-1][j-1] - 1, 0) / 2.0 + Math.max(A[i-1][j] - 1, 0) / 2.0
      *
+     * Time: O(R^2)   Space: O(R^2)
+     */
+    public double champagneTower1(int poured, int query_row, int query_glass) {
+        double[][] dp = new double[query_row + 1][query_row + 1];
+        dp[0][0] = poured;
+        for (int i = 1; i <= query_row; i++) {
+            double maxInRow = 0;
+            for (int j = 0; j <= query_row; j++) {
+                if (j - 1 >= 0 && dp[i - 1][j - 1] > 1) dp[i][j] += (dp[i - 1][j - 1] - 1) / 2;
+                if (j < i && dp[i - 1][j] > 1) dp[i][j] += (dp[i - 1][j] - 1) / 2;
+                maxInRow = Math.max(maxInRow, dp[i][j]);
+            }
+            if (maxInRow == 0) break;
+        }
+        return Math.min(dp[query_row][query_glass], 1);
+    }
+
+    /*************** Solution 2: Solution 1 的优化 *******************/
+    /**            0 1 2 3 4 5 6
+     *      0   // 0
+     *      1   // 0 1
+     *      2   // 0 1 2
+     *      3   // 0 1 2 3
+     *      4   //   1 2 3 4
+     *      5   //     2 3 4
+     *      6   //       3 4
+     *      7   //         4
+     *      8   //         ^
      * 优化：
      *  假设 query_row == r, query_glass == c
      * （1）实际上不用遍历整个(0,0)到(r,c)的三角形，只需要遍历由(0,0),(r-c,0),(r,c),(c,c)构成的平行四边形即可
@@ -17,7 +54,7 @@ public class ChampagneTower {
      * （3）dp用了guardians防止溢出，其值为0，表示没有酒
      * （4）1D DP + prev 表示 2D DP 按行滚动
      *
-     * Time: O(N^2)  Space: O(N^2)
+     * Time: O(R^2)  Space: O(R)
      */
     public double champagneTower(int poured, int query_row, int query_glass) {
         double[] dp = new double[query_row + 3];

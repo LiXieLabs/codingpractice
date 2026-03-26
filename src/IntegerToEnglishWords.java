@@ -4,6 +4,7 @@ import java.util.List;
 
 public class IntegerToEnglishWords {
 
+    /*********** Solution 1: Iterative ************************/
     static String[] Ones = new String[]{
             "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
             "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",
@@ -32,7 +33,7 @@ public class IntegerToEnglishWords {
         return String.join(" ", res).trim();
     }
 
-    public String build(int n) {
+    private String build(int n) {
         List<String> res = new ArrayList<>();
         if (n / 100 > 0) {
             res.add(Ones[n/100]);
@@ -47,6 +48,56 @@ public class IntegerToEnglishWords {
             res.add(Ones[n]);
         }
         return String.join(" ", res).trim();
+    }
+
+    /************ Solution 2: Recursive *******************/
+    String[][] a1 = new String[][]{
+            {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"},
+            {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"}
+    };
+    String[] a2 = new String[]{"", "Thousand", "Million", "Billion"};
+
+    int i, n;
+    List<String> res;
+
+    public String numberToWords2(int num) {
+        i = 0;
+        n = num;
+        res = new ArrayList<>();
+        recur();
+        if (!res.isEmpty()) {
+            Collections.reverse(res);
+            return String.join(" ", res);
+        } else {
+            return "Zero";
+        }
+    }
+
+    private void recur() {
+        List<String> curr = new ArrayList<>();
+        int n2 = n % 100;
+        if (10 <= n2 && n2 < 20) {
+            curr.add(a1[1][n2]);
+        } else {
+            if (n2 % 10 != 0) curr.add(a1[0][n2 % 10]);
+            if (n2 / 10 != 0) curr.add(a1[1][n2 / 10]);
+        }
+        n /= 100;
+        int n3 = n % 10;
+        if (n3 > 0) {
+            curr.add("Hundred");
+            curr.add(a1[0][n3]);
+        }
+        n /= 10;
+        if (!curr.isEmpty()) {
+            Collections.reverse(curr);
+            if (i / 3 != 0) curr.add(a2[i / 3]);
+            res.add(String.join(" ", curr));
+        }
+        if (n > 0) {
+            i += 3;
+            recur();
+        }
     }
 
     public static void main(String[] args) {

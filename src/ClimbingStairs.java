@@ -22,6 +22,27 @@ public class ClimbingStairs {
         return pre;
     }
 
+    /********* Solution 2: Top-down recur with memoization *****************/
+    /**
+     * Time: O(N) [O(2^N) without memo]
+     * Space: O(logN + N) = O(N)
+     */
+    int[] memo;
+
+    public int climbStairs2(int n) {
+        memo = new int[n + 1];
+        memo[0] = 1;
+        memo[1] = 1;
+        return recur(n);
+    }
+
+    private int recur(int cur) {
+        if (memo[cur] == 0) {
+            memo[cur] = recur(cur - 1) + recur(cur - 2);
+        }
+        return memo[cur];
+    }
+
     public static void main(String[] args) {
         ClimbingStairs solution = new ClimbingStairs();
         System.out.println(solution.climbStairs(1)); // 1

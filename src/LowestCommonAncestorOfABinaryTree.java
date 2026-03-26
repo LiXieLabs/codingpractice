@@ -30,23 +30,23 @@ public class LowestCommonAncestorOfABinaryTree {
     }
 
     public List<TreeNode> findPath(TreeNode root, TreeNode node) {
-        List<TreeNode> res = new ArrayList<>();
-        if (root == null) return res;
+        if (root == null) return null;
         if (root == node) {
+            List<TreeNode> res = new ArrayList<>();
             res.add(root);
             return res;
         }
         List<TreeNode> leftPath = findPath(root.left, node);
-        if (leftPath.size() != 0) {
+        if (leftPath != null) {
             leftPath.add(root);
             return leftPath;
         }
         List<TreeNode> rightPath = findPath(root.right, node);
-        if (rightPath.size() != 0) {
+        if (rightPath != null) {
             rightPath.add(root);
             return rightPath;
         }
-        return res;
+        return null;
     }
 
     /*********** Solution 2: Optimize Solution 1 - Build Path by HashMap in 1 iterate  ********/
@@ -82,6 +82,36 @@ public class LowestCommonAncestorOfABinaryTree {
             q = parent.get(q);
         }
         return q;
+    }
+
+    // backtracking 找 path，只需一遍
+    List<TreeNode> path1, path2;
+    TreeNode p, q;
+
+    public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode p, TreeNode q) {
+        path1 = null;
+        path2 = null;
+        this.p = p;
+        this.q = q;
+        recur(root, new ArrayList<>());
+
+        int i = 0, m = Math.min(path1.size(), path2.size());
+        while (i < m && path1.get(i) == path2.get(i)) {
+            i++;
+        }
+        return path1.get(i - 1);
+
+    }
+
+    private void recur(TreeNode curr, List<TreeNode> path) {
+        if (curr == null) return;
+        path.add(curr);
+        // 找到 p q 不能提前结束，有可能 subtree 里面还有另一个
+        if (curr == p) path1 = new ArrayList<>(path);
+        if (curr == q) path2 = new ArrayList<>(path);
+        if (path1 == null || path2 == null) recur(curr.left, path);
+        if (path1 == null || path2 == null) recur(curr.right, path);
+        path.remove(path.size() - 1);
     }
 
     /*********** Solution 3: Recursive Post-order Traversal ********/

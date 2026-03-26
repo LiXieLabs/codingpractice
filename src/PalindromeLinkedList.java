@@ -16,8 +16,12 @@ public class PalindromeLinkedList {
         }
         // Step 2
         // reverse second half
+        //          null
+        //           |
         // 1 -> 2 -> 3 <- 4
         // 1 -> 2 -> 3 <- 4 <- 5
+        //           |
+        //          null
         ListNode prev = null, curr = slow;
         while (curr != null) {
             ListNode temp = curr.next;
@@ -31,6 +35,41 @@ public class PalindromeLinkedList {
             if (l.val != r.val) return false;
             l = l.next;
             r = r.next;
+        }
+        return true;
+    }
+
+    /************** Soluion 1 快慢指针提前一步截止也可以 **************/
+    public boolean isPalindrome2(ListNode head) {
+        // Step 1
+        // 找到中点
+        // 1 -> 2 -> 3 -> 4 is 2
+        // 1 -> 2 -> 3 -> 4 -> 5 is 3
+        ListNode slow = head, fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        // Step 2
+        // reverse second half
+        //          null
+        //           |
+        // 1 -> 2 -> 3 <- 4
+        // 1 -> 2 -> 3 -> 4 <- 5
+        //                |
+        //               null
+        ListNode prev = null, tail = slow.next;
+        while (tail != null) {
+            ListNode temp = tail.next;
+            tail.next = prev;
+            prev = tail;
+            tail = temp;
+        }
+        tail = prev;
+        while (tail != null) {
+            if (head.val != tail.val) return false;
+            head = head.next;
+            tail = tail.next;
         }
         return true;
     }

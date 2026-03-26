@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 91. Decode Ways (https://leetcode.com/problems/decode-ways/description/)
  */
@@ -9,59 +6,34 @@ public class DecodeWays {
     /********************* Solution 1: Top Down Recursive + Memoization *********************/
     /**
      * Time: Memoized to O(N) as each index calls recur once
-     * Space: O(N) by memo HashMap & recur stack
+     * Space: O(N) by memo array & recur stack
      */
-    Map<Integer, Integer> memo;
+    Integer[] memo;
+    String s;
+
     public int numDecodings1(String s) {
-        memo = new HashMap<>();
-        memo.put(s.length(), 1);
-        return recur1(s, 0);
+        memo = new Integer[s.length() + 1];
+        memo[s.length()] = 1;
+        this.s = s;
+        return recur(0);
     }
 
-    private int recur1(String s, int startIdx) {
-        if (!memo.containsKey(startIdx)) {
-            int res = 0;
-            for (int endIdx = startIdx + 1; endIdx - startIdx <= 2 && endIdx <= s.length(); endIdx++) {
-                String str = s.substring(startIdx, endIdx);
-                int num = Integer.parseInt(str);
-                if (1 <= num && num <= 26 && !str.startsWith("0")) {
-                    res += recur1(s, endIdx);
+    private int recur(int i) {
+        if (memo[i] == null) {
+            memo[i] = 0;
+            int n1 = s.charAt(i) - '0';
+            if (n1 > 0) memo[i] = recur(i + 1);
+            if (i + 1 < s.length()) {
+                int n2 = s.charAt(i + 1) - '0';
+                if (n1 == 1 || n1 == 2 && n2 <= 6) {
+                    memo[i] += recur(i + 2);
                 }
             }
-            memo.put(startIdx, res);
         }
-        return memo.get(startIdx);
+        return memo[i];
     }
 
-    /********************* Solution 2: Solution 1 更好理解的版本 *********************/
-    /**
-     * Time: Memoized to O(N) as each index calls recur once
-     * Space: O(N) by memo HashMap & recur stack
-     */
-    public int numDecodings2(String s) {
-        memo = new HashMap<>();
-        memo.put(s.length(), 1);
-        return recur2(s, 0);
-    }
-
-    private int recur2(String s, int i) {
-        if (!memo.containsKey(i)) {
-            int res = 0;
-            // s[i] 单独 decode
-            if (s.charAt(i) != '0') res = recur2(s, i + 1);
-            // s[i,i+2] 一起 decode
-            if (i + 1 < s.length() && s.charAt(i) != '0') {
-                int doubleDigitNum = Integer.parseInt(s.substring(i, i + 2));
-                if (1 <= doubleDigitNum && doubleDigitNum <= 26) {
-                    res += recur2(s, i + 2);
-                }
-            }
-            memo.put(i, res);
-        }
-        return memo.get(i);
-    }
-
-    /********************* Solution 3: Bottom Up 1D DP *********************/
+    /********************* Solution 2: Bottom Up 1D DP *********************/
     /**
      * dp[i] 表示以 i 为 end index (exclusive) 的 s[0:i] 有 dp[i] 种 decode 结果
      *
@@ -75,69 +47,21 @@ public class DecodeWays {
      * Time: O(N)   Space: O(N)
      */
     public int numDecodings3(String s) {
-        int[] dp = new int[s.length() + 1];
-        dp[0] = 1;
-        for (int endIdx = 1; endIdx <= s.length(); endIdx++) {
-            for (int startIdx = endIdx - 1; endIdx - startIdx <= 2 && startIdx >= 0; startIdx--) {
-                String str = s.substring(startIdx, endIdx);
-                int num = Integer.parseInt(str);
-                if (1 <= num && num <= 26 && !str.startsWith("0")) {
-                    dp[endIdx] += dp[startIdx];
-                }
-            }
-        }
-        return dp[s.length()];
-    }
-
-    /********************* Solution 4: Solution 3 优化为 O(1) space *********************/
-    /**
-     * Time: O(N)   Space: O(1)
-     */
-    public int numDecodings4(String s) {
-        int[] dp = new int[3];
-        dp[0] = 1;
-        for (int endIdx = 1; endIdx <= s.length(); endIdx++) {
-            dp[endIdx % 3] = 0; // 注意！！！不清空会越来越大！！！
-            for (int startIdx = endIdx - 1; endIdx - startIdx <= 2 && startIdx >= 0; startIdx--) {
-                String str = s.substring(startIdx, endIdx);
-                int num = Integer.parseInt(str);
-                if (1 <= num && num <= 26 && !str.startsWith("0")) {
-                    dp[endIdx % 3] += dp[startIdx % 3];
-                }
-            }
-        }
-        return dp[s.length() % 3];
-    }
-
-    /********************* Solution 5: Solution 4 更容易理解的版本 *********************/
-    /**
-     * dp[i] 表示到 s[i] 为止有多少种 decode ways
-     * dp[i] = s[i] 单独 decode
-     *       + s[i-1,i+1] 一起 decode
-     *       = dp[i-1] (s[i] != 0)
-     *       + dp[i-2] (1 <= s[i-1,i+1] <= 26)
-     * Time: O(N)   Space: O(1)
-     */
-    public int numDecodings5(String s) {
-        int prepre = 0, pre = 1;
+        int[] dp = new int[s.length()];
         for (int i = 0; i < s.length(); i++) {
-            int cur = 0;
-            // s[i] 单独 decode
-            if (s.charAt(i) != '0') cur = pre;
-            // s[i-1,i+1] 一起 decode
-            if (i - 1 >= 0 && s.charAt(i - 1) != '0') {
-                int doubleDigitNum = Integer.parseInt(s.substring(i - 1, i + 1));
-                if (1 <= doubleDigitNum && doubleDigitNum <= 26) {
-                    cur += prepre;
+            int n1 = s.charAt(i) - '0';
+            if (n1 != 0) dp[i] = i - 1 >= 0 ? dp[i - 1] : 1;
+            if (i - 1 >= 0) {
+                int n2 = s.charAt(i - 1) - '0';
+                if (n2 == 1 || n2 == 2 && n1 <= 6) {
+                    dp[i] += i - 2 >= 0 ? dp[i - 2] : 1;
                 }
             }
-            prepre = pre;
-            pre = cur;
         }
-        return pre;
+        return dp[s.length() - 1];
     }
 
-    /********************* Solution 6: Solution 5 不用 Integer.parseInt *********************/
+    /********************* Solution 3: Solution 5 O(1) Space *********************/
     /**
      * dp[i] 表示到 s[i] 为止有多少种 decode ways
      * dp[i] = s[i] 单独 decode
@@ -150,13 +74,13 @@ public class DecodeWays {
         int prepre = 1, pre = 1;
         for (int i = 0; i < s.length(); i++) {
             int cur = 0;
-            if ('0' < s.charAt(i) && s.charAt(i) <= '9') {
-                cur = pre;
-            }
-            if (i - 1 >= 0 &&
-                    (s.charAt(i - 1) == '1' && '0' <= s.charAt(i) && s.charAt(i) <= '9' // 10 - 19
-                            || s.charAt(i - 1) == '2' && '0' <= s.charAt(i) && s.charAt(i) <= '6')) { // 20 - 26
-                cur += prepre;
+            int n1 = s.charAt(i) - '0';
+            if (n1 != 0) cur = i - 1 >= 0 ? pre : 1;
+            if (i - 1 >= 0) {
+                int n2 = s.charAt(i - 1) - '0';
+                if (n2 == 1 || n2 == 2 && n1 <= 6) {
+                    cur += i - 2 >= 0 ? prepre : 1;
+                }
             }
             prepre = pre;
             pre = cur;
