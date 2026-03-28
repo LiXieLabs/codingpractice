@@ -5,26 +5,28 @@ public class DotProductOfTwoSparseVectors {
 
     static class SparseVector {
 
-        Map<Integer, Integer> map;
+        Map<Integer, Integer> idxToVal;
 
         SparseVector(int[] nums) {
-            map = new HashMap<>();
+            idxToVal = new HashMap<>();
             for (int i = 0; i < nums.length; i++) {
-                if (nums[i] != 0) {
-                    map.put(i, nums[i]);
-                }
+                if (nums[i] != 0) idxToVal.put(i, nums[i]);
             }
         }
 
         // Return the dotProduct of two sparse vectors
         public int dotProduct(SparseVector vec) {
-            int res = 0;
-            Map<Integer, Integer> smaller = vec.map.size() < this.map.size() ? vec.map : this.map;
-            Map<Integer, Integer> larger = vec.map.size() >= this.map.size() ? vec.map : this.map;
-            for (Map.Entry<Integer, Integer> e : smaller.entrySet()) {
-                res += larger.getOrDefault(e.getKey(), 0) * e.getValue();
+            if (this.idxToVal.size() > vec.idxToVal.size()) {
+                return vec.dotProduct(this);
             }
-            return res;
+
+            int product = 0;
+            for (int i : idxToVal.keySet()) {
+                if (vec.idxToVal.containsKey(i)) {
+                    product += idxToVal.get(i) * vec.idxToVal.get(i);
+                }
+            }
+            return product;
         }
     }
 
