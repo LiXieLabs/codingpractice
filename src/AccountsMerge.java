@@ -216,5 +216,4 @@ class UnionFind721 {
         if (s1Root.equals(s2Root)) return;
         roots.put(s1Root, s2Root);
     }
-
 }
